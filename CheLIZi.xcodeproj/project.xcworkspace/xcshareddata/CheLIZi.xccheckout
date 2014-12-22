@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B9C06095-FFA8-4CEF-AA83-7CEE285621D8</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CheLIZi</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5FF098CE9AC2FF3224D3223145CCDAFC98FC9775</key>
+		<string>ssh://192.168.16.58/repository/timehold/obd/IOV_ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CheLIZi/CheLIZi.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5FF098CE9AC2FF3224D3223145CCDAFC98FC9775</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://192.168.16.58/repository/timehold/obd/IOV_ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5FF098CE9AC2FF3224D3223145CCDAFC98FC9775</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5FF098CE9AC2FF3224D3223145CCDAFC98FC9775</string>
+			<key>IDESourceControlWCCName</key>
+			<string>IOV_ios</string>
+		</dict>
+	</array>
+</dict>
+</plist>
