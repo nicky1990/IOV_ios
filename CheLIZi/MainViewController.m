@@ -18,7 +18,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     NSLog(@"%@",NSStringFromCGRect(self.view.frame));
-    NSLog(@"54545");
+
 }
 
 - (void)didReceiveMemoryWarning {
