@@ -1,13 +1,13 @@
 //
-//  MainViewController.h
+//  HomeViewController.h
 //  CheLIZi
 //
-//  Created by 点睛石 on 14-12-18.
+//  Created by 点睛石 on 14/12/25.
 //  Copyright (c) 2014年 骐俊通联. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController
+@interface HomeViewController : UIViewController
 
 @end

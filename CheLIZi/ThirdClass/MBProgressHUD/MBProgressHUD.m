@@ -1,7 +1,7 @@
 //
 // MBProgressHUD.m
-// Version 0.8
-// Created by Matej Bukovinski on 2.4.09.
+//  Created by 点睛石 on 14/12/24.
+//  Copyright (c) 2014年 骐俊通联. All rights reserved.
 //
 
 #import "MBProgressHUD.h"

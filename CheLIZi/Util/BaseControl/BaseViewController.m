@@ -16,7 +16,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = RGBCOLOR(249, 249, 249);
+    [self customNavigationButton];
     // Do any additional setup after loading the view from its nib.
+}
+-(void)customNavigationButton{
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"nav_back_button"] style:UIBarButtonItemStyleBordered target:self action:@selector(leftButtonClick)];
+    leftBarButton.tintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"nav_back_button"]];
+    self.navigationItem.leftBarButtonItem = leftBarButton;
+}
+
+-(void)leftButtonClick{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {

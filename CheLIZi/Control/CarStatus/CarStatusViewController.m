@@ -1,24 +1,25 @@
 //
-//  MainViewController.m
+//  CarStatusViewController.m
 //  CheLIZi
 //
-//  Created by 点睛石 on 14-12-18.
+//  Created by 点睛石 on 14/12/31.
 //  Copyright (c) 2014年 骐俊通联. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "CarStatusViewController.h"
 
-@interface MainViewController ()
+@interface CarStatusViewController ()
 
 @end
 
-@implementation MainViewController
+@implementation CarStatusViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = NO;
+    self.title = @"爱车车况";
     // Do any additional setup after loading the view from its nib.
-    NSLog(@"%@",NSStringFromCGRect(self.view.frame));
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,4 +37,9 @@
 }
 */
 
+- (IBAction)warnSettingClick:(UIButton *)sender {
+}
+
+- (IBAction)averageSpeedClick:(UIButton *)sender {
+}
 @end

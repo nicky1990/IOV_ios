@@ -7,7 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "MainViewController.h"
+#import "CustomTabbar.h"
+#import "HomeViewController.h"
+#import "PersonCenterViewController.h"
+#import "ShowDLineViewController.h"
 
 
 @implementation AppDelegate
@@ -19,10 +22,45 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    MainViewController *main = [[MainViewController alloc]init];
-    self.window.rootViewController = main;
+    
+//    CustomTabbar *root = [[CustomTabbar alloc] init];
+    
+    [self createTabBar];
+    
+    
+    self.window.rootViewController = _tabBarC;
     return YES;
 }
+
+-(void)createTabBar{
+    HomeViewController *homeVC = [[HomeViewController alloc]init];
+    UINavigationController *homeNav = [[UINavigationController alloc]initWithRootViewController:homeVC];
+    [homeNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+    homeVC.tabBarItem.title = @"首页";
+    homeVC.tabBarItem.image = [UIImage imageNamed:@"home_home"];
+    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_home"];
+    
+    PersonCenterViewController *personCenterVC = [[PersonCenterViewController alloc]init];
+    UINavigationController *personCenterNav = [[UINavigationController alloc]initWithRootViewController:personCenterVC];
+    [personCenterNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+    personCenterVC.tabBarItem.title = @"个人中心";
+    personCenterVC.tabBarItem.image = [UIImage imageNamed:@"home_person"];
+    personCenterVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_person"];
+    
+    ShowDLineViewController *showDLineVC = [[ShowDLineViewController alloc]init];
+    UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:showDLineVC];
+    [showDLineNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+    showDLineNav.tabBarItem.image = [UIImage imageNamed:@"home_compass"];
+    
+    _tabBarC = [[UITabBarController alloc]init];
+    _tabBarC.tabBar.backgroundImage = [UIImage imageNamed:@"home_bottomback"];
+    _tabBarC.tabBar.translucent  = NO;
+    _tabBarC.tabBar.tintColor = [UIColor greenColor];
+    
+    [_tabBarC setViewControllers:[NSArray arrayWithObjects:homeNav,showDLineNav,personCenterNav, nil]];
+}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
