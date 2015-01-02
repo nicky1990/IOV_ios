@@ -17,6 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentOil;
 - (IBAction)warnSettingClick:(UIButton *)sender;
 - (IBAction)averageSpeedClick:(UIButton *)sender;
-@property (weak, nonatomic) IBOutlet UIButton *trackClick;
+- (IBAction)trackClick:(id)sender;
 
 @end

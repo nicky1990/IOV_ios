@@ -34,4 +34,14 @@
     return label;
 }
 
++(UIButton *)getButtonWithFrame:(CGRect)rect withImage:(NSString *)imageName withTitle:(NSString *)title withTarget:(UIViewController *)VC andAction:(SEL)action{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = rect;
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [button setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:imageName]]];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button addTarget:VC action:action forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
 @end

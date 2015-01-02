@@ -7,7 +7,7 @@
 //
 
 #import "UniversalSetViewController.h"
-#import "Tool.h"
+#import "ToolClearCaches.h"
 
 @interface UniversalSetViewController ()<UIAlertViewDelegate>
 {
@@ -44,7 +44,7 @@
     if (indexPath.row == 0) {
         cell.textLabel.text = _typeArray[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%.02fMB",[Tool getCachesSize]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%.02fMB",[ToolClearCaches getCachesSize]];
     }else{
         UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
         [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
@@ -78,7 +78,7 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
         NSLog(@"清除");
-        
+        [ToolClearCaches clearCaches];
     }
 }
 

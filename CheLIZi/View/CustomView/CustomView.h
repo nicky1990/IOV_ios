@@ -12,5 +12,5 @@
 
 +(UIButton *)buttonViewWithTitle:(NSString *)title withImageName:(NSString *)imageName withFrame:(CGRect) rect;
 +(UILabel *)getLabelWith:(CGRect)rect andSize:(NSInteger)size;
-
++(UIButton *)getButtonWithFrame:(CGRect)rect withImage:(NSString *)imageName withTitle:(NSString *)title withTarget:(UIViewController *)VC andAction:(SEL)action;
 @end

@@ -14,7 +14,6 @@
                 <outlet property="averageSpeed" destination="4dg-cG-YxK" id="nOq-XP-pF0"/>
                 <outlet property="currentOil" destination="vhO-R4-bqS" id="t3U-6C-TW1"/>
                 <outlet property="sumRunMIle" destination="Hqx-wg-uOX" id="wEx-Ee-slX"/>
-                <outlet property="trackClick" destination="1mz-W3-vuA" id="iOe-85-e7Z"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="winPercent" destination="RGt-Ic-9ZO" id="G23-Hf-GUs"/>
             </connections>
@@ -169,6 +168,9 @@
                             </fragment>
                         </attributedString>
                     </state>
+                    <connections>
+                        <action selector="trackClick:" destination="-1" eventType="touchUpInside" id="zyD-08-68H"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a7o-w8-kxm">
                     <rect key="frame" x="0.0" y="280" width="107" height="91"/>

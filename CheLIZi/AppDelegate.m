@@ -11,6 +11,9 @@
 #import "HomeViewController.h"
 #import "PersonCenterViewController.h"
 #import "ShowDLineViewController.h"
+#import "UMSocial.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialSinaHandler.h"
 
 
 @implementation AppDelegate
@@ -21,8 +24,8 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
-    
+    [self UMShareUse];
+    [self BaiduMapUse];
 //    CustomTabbar *root = [[CustomTabbar alloc] init];
     
     [self createTabBar];
@@ -31,7 +34,13 @@
     self.window.rootViewController = _tabBarC;
     return YES;
 }
-
+-(void)BaiduMapUse{
+    _mapManager = [[BMKMapManager alloc]init];
+    BOOL ret = [_mapManager start:@"t1NHBIEzCIMfRFnyvEGNGHMr"  generalDelegate:nil];
+    if (!ret) {
+        NSLog(@"manager start failed!");
+    }
+}
 -(void)createTabBar{
     HomeViewController *homeVC = [[HomeViewController alloc]init];
     UINavigationController *homeNav = [[UINavigationController alloc]initWithRootViewController:homeVC];
@@ -66,6 +75,28 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    [BMKMapView willBackGround];//当应用即将后台时调用，停止一切调用opengl相关的操作
+}
+#pragma mark UMShare
+-(void)UMShareUse{
+    
+    [UMSocialData setAppKey:@"53843dba56240bc4661b1867"];
+    [UMSocialWechatHandler setWXAppId:@"wxd930ea5d5a258f4f" appSecret:@"db426a9829e4b49a0dcac7b4162da6b6" url:@"http://www.umeng.com/social"];
+    [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+//    [UMSocialData openLog:YES];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return  [UMSocialSnsService handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    return  [UMSocialSnsService handleOpenURL:url];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -82,6 +113,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [BMKMapView didForeGround];//当应用恢复前台状态时调用，回复地图的渲染和opengl相关的操作
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
