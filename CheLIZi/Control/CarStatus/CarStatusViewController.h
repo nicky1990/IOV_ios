@@ -15,8 +15,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *sumRunMIle;
 @property (weak, nonatomic) IBOutlet UILabel *averageSpeed;
 @property (weak, nonatomic) IBOutlet UILabel *currentOil;
+
 - (IBAction)warnSettingClick:(UIButton *)sender;
-- (IBAction)averageSpeedClick:(UIButton *)sender;
+- (IBAction)carStatusScan:(UIButton *)sender;
 - (IBAction)trackClick:(id)sender;
 
 @end

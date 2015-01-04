@@ -10,4 +10,13 @@
 
 @interface Tool : NSObject
 
+
+
++(NSString *)md5:(NSString *)str;
+//获取时间戳
++(NSNumber *)getCurrentTimeStamp;
++(NSString *)teaEncryptWithString:(NSString *)encryptString;
++ (BOOL)checkPhoneNumber:(NSString *)phoneNumber;
++ (void)showAlertMessage:(NSString *)msg;
+
 @end

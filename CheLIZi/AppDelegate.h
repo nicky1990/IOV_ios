@@ -12,6 +12,6 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) UITabBarController *tabBarC;
+
 @property (strong,nonatomic) BMKMapManager *mapManager;
 @end

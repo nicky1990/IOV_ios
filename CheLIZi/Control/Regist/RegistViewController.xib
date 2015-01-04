@@ -26,7 +26,7 @@
                         <constraint firstAttribute="height" constant="45" id="DlL-Di-khJ"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="YAd-dh-BGI"/>
                     </connections>
@@ -121,7 +121,7 @@
                         <constraint firstAttribute="height" constant="45" id="6nL-lY-nFK"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="q0g-6q-8Il"/>
                     </connections>

@@ -14,6 +14,7 @@
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialSinaHandler.h"
+#import "LoginViewController.h"
 
 
 @implementation AppDelegate
@@ -23,15 +24,15 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
     [self UMShareUse];
     [self BaiduMapUse];
-//    CustomTabbar *root = [[CustomTabbar alloc] init];
+    [self openPush];
+    LoginViewController *loginVC = [[LoginViewController alloc]init];
+    UINavigationController *loginNav = [[UINavigationController alloc]initWithRootViewController:loginVC];
+    [loginNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+    self.window.rootViewController = loginNav;
     
-    [self createTabBar];
-    
-    
-    self.window.rootViewController = _tabBarC;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 -(void)BaiduMapUse{
@@ -41,34 +42,6 @@
         NSLog(@"manager start failed!");
     }
 }
--(void)createTabBar{
-    HomeViewController *homeVC = [[HomeViewController alloc]init];
-    UINavigationController *homeNav = [[UINavigationController alloc]initWithRootViewController:homeVC];
-    [homeNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-    homeVC.tabBarItem.title = @"首页";
-    homeVC.tabBarItem.image = [UIImage imageNamed:@"home_home"];
-    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_home"];
-    
-    PersonCenterViewController *personCenterVC = [[PersonCenterViewController alloc]init];
-    UINavigationController *personCenterNav = [[UINavigationController alloc]initWithRootViewController:personCenterVC];
-    [personCenterNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-    personCenterVC.tabBarItem.title = @"个人中心";
-    personCenterVC.tabBarItem.image = [UIImage imageNamed:@"home_person"];
-    personCenterVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_person"];
-    
-    ShowDLineViewController *showDLineVC = [[ShowDLineViewController alloc]init];
-    UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:showDLineVC];
-    [showDLineNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-    showDLineNav.tabBarItem.image = [UIImage imageNamed:@"home_compass"];
-    
-    _tabBarC = [[UITabBarController alloc]init];
-    _tabBarC.tabBar.backgroundImage = [UIImage imageNamed:@"home_bottomback"];
-    _tabBarC.tabBar.translucent  = NO;
-    _tabBarC.tabBar.tintColor = [UIColor greenColor];
-    
-    [_tabBarC setViewControllers:[NSArray arrayWithObjects:homeNav,showDLineNav,personCenterNav, nil]];
-}
-
 
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -79,7 +52,6 @@
 }
 #pragma mark UMShare
 -(void)UMShareUse{
-    
     [UMSocialData setAppKey:@"53843dba56240bc4661b1867"];
     [UMSocialWechatHandler setWXAppId:@"wxd930ea5d5a258f4f" appSecret:@"db426a9829e4b49a0dcac7b4162da6b6" url:@"http://www.umeng.com/social"];
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
@@ -114,6 +86,44 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [BMKMapView didForeGround];//当应用恢复前台状态时调用，回复地图的渲染和opengl相关的操作
+}
+//启动推送
+-(void)openPush{
+    if(SYSTEM_VERSION8){
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        } else {
+            UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+        }
+        
+    }else{
+        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+    }
+}
+
+#ifdef SYSTEM_VERSION8
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    [application registerForRemoteNotifications];
+}
+#endif
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString *token = [[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                        stringByReplacingOccurrencesOfString: @">" withString: @""]
+                       stringByReplacingOccurrencesOfString: @" " withString: @""];
+    [[NSUserDefaults standardUserDefaults]setObject:token forKey:@"devicetoken"];
+    NSLog(@"deviceToken : %@", token);
+    
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"error : %@", [error localizedDescription]);
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

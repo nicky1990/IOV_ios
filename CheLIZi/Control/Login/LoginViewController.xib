@@ -25,18 +25,6 @@
                         <constraint firstAttribute="width" constant="80" id="rlS-M1-y6l"/>
                     </constraints>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="输入密码" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="eXQ-Ui-vPc">
-                    <rect key="frame" x="0.0" y="160" width="375" height="50"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="XTM-Lw-ia6"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="Gzl-3x-F7m"/>
-                    </connections>
-                </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="手机号" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aH8-aG-ggq">
                     <rect key="frame" x="0.0" y="110" width="375" height="50"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -44,7 +32,7 @@
                         <constraint firstAttribute="height" constant="50" id="Ewt-aY-a5L"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="z2q-7D-ydB"/>
                     </connections>
@@ -111,6 +99,18 @@
                         <constraint firstAttribute="height" constant="1" id="sQ7-KZ-ZWd"/>
                     </constraints>
                 </view>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="输入密码" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="eXQ-Ui-vPc">
+                    <rect key="frame" x="0.0" y="159" width="375" height="50"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="XTM-Lw-ia6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Gzl-3x-F7m"/>
+                    </connections>
+                </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>

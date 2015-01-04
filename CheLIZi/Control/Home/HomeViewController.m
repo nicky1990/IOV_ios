@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "CustomView.h"
 #import "CarStatusViewController.h"
+#import "LoginViewController.h"
 
 #define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?45:25)
 #define kButtonHeight (([[UIScreen mainScreen] bounds].size.height == 568)?125:81)
@@ -31,8 +32,10 @@
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     // Do any additional setup after loading the view from its nib.
     [self initUI];

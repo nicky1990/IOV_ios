@@ -11,6 +11,8 @@
 #import "UMSocialConfig.h"
 #import "UMSocial.h"
 #import "CarTrackViewController.h"
+#import "CarStatuScanViewController.h"
+#import "CarWarnSetViewController.h"
 
 @interface CarStatusViewController ()<UMSocialUIDelegate,UMSocialUIDelegate>
 
@@ -72,10 +74,15 @@
 */
 
 - (IBAction)warnSettingClick:(UIButton *)sender {
+    CarWarnSetViewController *carWarnSetVC = [[CarWarnSetViewController alloc]init];
+    [self.navigationController pushViewController:carWarnSetVC animated:YES];
 }
 
-- (IBAction)averageSpeedClick:(UIButton *)sender {
+- (IBAction)carStatusScan:(UIButton *)sender {
+    CarStatuScanViewController *carStatusScanVC = [[CarStatuScanViewController alloc]init];
+    [self.navigationController pushViewController:carStatusScanVC animated:YES];
 }
+
 - (IBAction)trackClick:(id)sender {
     CarTrackViewController *carTrack = [[CarTrackViewController alloc]init];
     [self.navigationController pushViewController:carTrack animated:YES];
