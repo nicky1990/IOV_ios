@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "CustomTabbar.h"
 #import "HomeViewController.h"
 #import "PersonCenterViewController.h"
 #import "ShowDLineViewController.h"
@@ -15,7 +14,10 @@
 #import "UMSocialWechatHandler.h"
 #import "UMSocialSinaHandler.h"
 #import "LoginViewController.h"
+#import "UMessage.h"
 
+#define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define _IPHONE80_ 80000
 
 @implementation AppDelegate
 
@@ -24,9 +26,11 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    [self checkNetworkStatus];
     [self UMShareUse];
     [self BaiduMapUse];
-    [self openPush];
+    [UMessage startWithAppkey:@"54aa9a0afd98c5b0bd000352" launchOptions:launchOptions];
+    [self UMPush];
     LoginViewController *loginVC = [[LoginViewController alloc]init];
     UINavigationController *loginNav = [[UINavigationController alloc]initWithRootViewController:loginVC];
     [loginNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
@@ -37,7 +41,7 @@
 }
 -(void)BaiduMapUse{
     _mapManager = [[BMKMapManager alloc]init];
-    BOOL ret = [_mapManager start:@"t1NHBIEzCIMfRFnyvEGNGHMr"  generalDelegate:nil];
+    BOOL ret = [_mapManager start:@"VgZrztloHFGen1uapvGwkY7W"  generalDelegate:nil];
     if (!ret) {
         NSLog(@"manager start failed!");
     }
@@ -52,8 +56,8 @@
 }
 #pragma mark UMShare
 -(void)UMShareUse{
-    [UMSocialData setAppKey:@"53843dba56240bc4661b1867"];
-    [UMSocialWechatHandler setWXAppId:@"wxd930ea5d5a258f4f" appSecret:@"db426a9829e4b49a0dcac7b4162da6b6" url:@"http://www.umeng.com/social"];
+    [UMSocialData setAppKey:@"54aa9a0afd98c5b0bd000352"];
+    [UMSocialWechatHandler setWXAppId:@"wx27cb5fecf4cd56aa" appSecret:@"390e8490941ba262651d77bf0b9df993" url:nil];
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
 //    [UMSocialData openLog:YES];
 }
@@ -87,6 +91,52 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [BMKMapView didForeGround];//当应用恢复前台状态时调用，回复地图的渲染和opengl相关的操作
 }
+-(void)UMPush{
+    //set AppKey and LaunchOptions
+  
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
+    if(UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
+    {
+        //register remoteNotification types
+        UIMutableUserNotificationAction *action1 = [[UIMutableUserNotificationAction alloc] init];
+        action1.identifier = @"action1_identifier";
+        action1.title=@"Accept";
+        action1.activationMode = UIUserNotificationActivationModeForeground;//当点击的时候启动程序
+        
+        UIMutableUserNotificationAction *action2 = [[UIMutableUserNotificationAction alloc] init];  //第二按钮
+        action2.identifier = @"action2_identifier";
+        action2.title=@"Reject";
+        action2.activationMode = UIUserNotificationActivationModeBackground;//当点击的时候不启动程序，在后台处理
+        action2.authenticationRequired = YES;//需要解锁才能处理，如果action.activationMode = UIUserNotificationActivationModeForeground;则这个属性被忽略；
+        action2.destructive = YES;
+        
+        UIMutableUserNotificationCategory *categorys = [[UIMutableUserNotificationCategory alloc] init];
+        categorys.identifier = @"category1";//这组动作的唯一标示
+        [categorys setActions:@[action1,action2] forContext:(UIUserNotificationActionContextDefault)];
+        
+        UIUserNotificationSettings *userSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert
+                                                                                     categories:[NSSet setWithObject:categorys]];
+        [UMessage registerRemoteNotificationAndUserNotificationSettings:userSettings];
+        
+    } else{
+        //register remoteNotification types
+        [UMessage registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge
+         |UIRemoteNotificationTypeSound
+         |UIRemoteNotificationTypeAlert];
+    }
+#else
+    //register remoteNotification types
+    [UMessage registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge
+     |UIRemoteNotificationTypeSound
+     |UIRemoteNotificationTypeAlert];
+#endif
+    
+    //for log
+//    [UMessage setLogEnabled:YES];
+}
+
+/*
 //启动推送
 -(void)openPush{
     if(SYSTEM_VERSION8){
@@ -110,9 +160,10 @@
     [application registerForRemoteNotifications];
 }
 #endif
-
+*/
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    [UMessage registerDeviceToken:deviceToken];
     NSString *token = [[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
                         stringByReplacingOccurrencesOfString: @">" withString: @""]
                        stringByReplacingOccurrencesOfString: @" " withString: @""];
@@ -120,7 +171,11 @@
     NSLog(@"deviceToken : %@", token);
     
 }
-
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+//    如需关闭推送，请使用[UMessage unregisterForRemoteNotifications]
+    [UMessage didReceiveRemoteNotification:userInfo];
+}
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSLog(@"error : %@", [error localizedDescription]);
@@ -130,5 +185,37 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
+- (void)checkNetworkStatus {
+    //获取一个网络连接
+    self.reachability = [Reachability reachabilityWithHostname:@"www.apple.com"];
+    //订阅系统在网络连接状态改变时发的通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
+    //监控网络连接状态
+    [self.reachability startNotifier];
+}
+//在网络连接状态改变时调用
+- (void)reachabilityChanged {
+    NetworkStatus status = [self.reachability currentReachabilityStatus];
+    NSString *msg = nil;
+    switch (status) {
+        case NotReachable:
+        {
+            msg = @"没有可用网络";
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:msg message:@"请检查网络连接!" delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil];
+            [alert show];
+        }
+            break;
+        case ReachableViaWiFi:
+            msg = @"通过WiFi连接";
+            NSLog(@"网络连接方式：%@",msg);
+            break;
+        case ReachableViaWWAN:
+            msg = @"通过2G/3G/4G连接";
+            NSLog(@"网络连接方式：%@",msg);
+            break;
+        default:
+            break;
+    }
+    
+}
 @end

@@ -10,8 +10,9 @@
 #import "CarWarnSetViewController.h"
 #import "UniversalSetViewController.h"
 #import "AboutUsViewController.h"
+#import "WebViewController.h"
 
-@interface PersonCenterViewController ()<UIAlertViewDelegate>
+@interface PersonCenterViewController ()<UIAlertViewDelegate,ToolRequestDelegate>
 {
     NSArray *_typeArray;
     NSArray *_imageArray;
@@ -76,7 +77,7 @@
             cell.imageView.image = [UIImage imageNamed:@"person_mycar"];
         }else{
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = @"车辆预警";
+            cell.textLabel.text = @"预警设置";
             cell.imageView.image = [UIImage imageNamed:@"person_warnsetting"];
         }
         
@@ -133,21 +134,38 @@
                 break;
         }
     }
+    
+//c=html5&a=userInfo&access_token=xxxx
+//c=html5&a=integral&access_token=xxxx
+//c=html5&a=prize&access_token=xxxx
     if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0:
             {
-                
+                WebViewController *webVC = [[WebViewController alloc]init];
+                webVC.title = @"个人资料";
+                NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=userInfo&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+                webVC.urlStr = urtStr;
+                [self.navigationController pushViewController:webVC animated:YES];
             }
                 break;
             case 1:
             {
-                
+                WebViewController *webVC = [[WebViewController alloc]init];
+                webVC.title = @"积分匣子";
+                NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=integral&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+                webVC.urlStr = urtStr;
+                [self.navigationController pushViewController:webVC animated:YES];
+
             }
                 break;
             case 2:
             {
-               
+                WebViewController *webVC = [[WebViewController alloc]init];
+                webVC.title = @"奖品卡券";
+                NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=prize&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+                webVC.urlStr = urtStr;
+                [self.navigationController pushViewController:webVC animated:YES];
             }
                 break;
             case 3:
@@ -178,14 +196,21 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
-        [self.tabBarController.navigationController popViewControllerAnimated:YES];
+        NSDictionary *paraDic = @{@"c":@"user",
+                                  @"a":@"logout",
+                                  @"t":[Tool getCurrentTimeStamp],
+                                  @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                                  @"app_key":kAPP_KEY,
+                                  };
+        ToolRequest *toolRequest = [[ToolRequest alloc]init];
+        [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
     }
 }
 
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
-    
+#pragma mark Request Succeed
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    [self.tabBarController.navigationController popViewControllerAnimated:YES];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -57,7 +57,7 @@
                         <constraint firstAttribute="height" constant="45" id="cYw-do-MVP"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="042-5c-fFF"/>
                     </connections>
@@ -69,7 +69,7 @@
                         <constraint firstAttribute="height" constant="45" id="bSD-ow-zgr"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="FRn-B4-IyU"/>
                     </connections>

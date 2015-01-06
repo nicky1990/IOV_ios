@@ -13,8 +13,9 @@
 #import "HomeViewController.h"
 #import "PersonCenterViewController.h"
 #import "ShowDLineViewController.h"
+#import "CustomView.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>
+@interface LoginViewController ()<UITextFieldDelegate,ToolRequestDelegate>
 {
     UITabBarController *_tabBarC;
 }
@@ -24,6 +25,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+   
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -41,6 +43,9 @@
 
 #pragma mark 控件属性
 -(void)setUI{
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"] != nil) {
+        self.userPhoneNum.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
+    }
     self.userHead.layer.cornerRadius = self.userHead.frame.size.width/2.0;
     self.userHead.layer.masksToBounds = YES;
     [self.userPhoneNum setLeftImageWithImage:@"login_user"];
@@ -48,9 +53,10 @@
 }
 
 -(void)customNavigationButton{
-    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"login_close"] style:UIBarButtonItemStyleBordered target:self action:@selector(leftButtonClick)];
-    leftBarButton.tintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_close"]];
-    self.navigationItem.leftBarButtonItem = leftBarButton;
+    self.navigationItem.leftBarButtonItem = nil;
+//    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"login_close"] style:UIBarButtonItemStyleBordered target:self action:@selector(leftButtonClick)];
+//    leftBarButton.tintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"login_close"]];
+//    self.navigationItem.leftBarButtonItem = leftBarButton;
 }
 
 -(void)leftButtonClick{
@@ -113,7 +119,9 @@
         if(password.length == 0){
             [Tool showAlertMessage:@"请输入密码！"];
         }else{
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            NSUserDefaults *phoneNumDefault = [NSUserDefaults standardUserDefaults];
+            [phoneNumDefault setObject:phoneNum forKey:@"phoneNumberDefault"];
+            [phoneNumDefault synchronize];
             NSDictionary *paraDic = @{@"c":@"public",
                                       @"a":@"login",
                                       @"t":[Tool getCurrentTimeStamp],
@@ -124,29 +132,8 @@
                                       @"signature":kSIGNATURE,
                                       @"password":[Tool teaEncryptWithString:password]
                                       };
-            [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSLog(@"%@",responseObject);
-                NSDictionary *dic = responseObject;
-                if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
-                    NSNumber *userid = [dic objectForKey:@"user_id"];
-                    NSString *usersid = [dic objectForKey:@"sid"];
-                    NSString *useraccess_token = [dic objectForKey:@"access_token"];
-                    [UserInfo sharedUserInfo].user_id = userid;
-                    [UserInfo sharedUserInfo].userS_id = usersid;
-                    [UserInfo sharedUserInfo].userAccess_token = useraccess_token;
-                    [Tool showAlertMessage:@"登录成功"];
-                    
-                }else{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    NSString *failMessage = [dic objectForKey:@"error_msg"];
-                    [Tool showAlertMessage:failMessage];
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSLog(@"失败%@",error);
-                [Tool showAlertMessage:@"网络请求失败，请重试！"];
-            }];
+            ToolRequest *toolRequest = [[ToolRequest alloc]init];
+            [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
         }
     }else{
         [Tool showAlertMessage:@"请输入正确的手机号！"];
@@ -162,30 +149,40 @@
     HomeViewController *homeVC = [[HomeViewController alloc]init];
     UINavigationController *homeNav = [[UINavigationController alloc]initWithRootViewController:homeVC];
     [homeNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-    homeVC.tabBarItem.title = @"首页";
-    homeVC.tabBarItem.image = [UIImage imageNamed:@"home_home"];
-    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_home"];
+//    homeVC.tabBarItem.title = @"首页";
+//    homeVC.tabBarItem.image = [UIImage imageNamed:@"home_home"];
+//    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_home"];
     
     PersonCenterViewController *personCenterVC = [[PersonCenterViewController alloc]init];
     UINavigationController *personCenterNav = [[UINavigationController alloc]initWithRootViewController:personCenterVC];
     [personCenterNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-    personCenterVC.tabBarItem.title = @"个人中心";
-    personCenterVC.tabBarItem.image = [UIImage imageNamed:@"home_person"];
-    personCenterVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_person"];
+//    personCenterVC.tabBarItem.title = @"个人中心";
+//    personCenterVC.tabBarItem.image = [UIImage imageNamed:@"home_person"];
+//    personCenterVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_person"];
     
     ShowDLineViewController *showDLineVC = [[ShowDLineViewController alloc]init];
     UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:showDLineVC];
     [showDLineNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-    showDLineNav.tabBarItem.image = [UIImage imageNamed:@"home_compass"];
+//    showDLineNav.tabBarItem.image = [UIImage imageNamed:@"home_compass"];
     
     _tabBarC = [[UITabBarController alloc]init];
-    _tabBarC.tabBar.backgroundImage = [UIImage imageNamed:@"home_bottomback"];
-    _tabBarC.tabBar.translucent  = NO;
-    _tabBarC.tabBar.tintColor = [UIColor greenColor];
+//    _tabBarC.tabBar.backgroundImage = [UIImage imageNamed:@"home_bottomback"];
+//    _tabBarC.tabBar.translucent  = NO;
+//    _tabBarC.tabBar.tintColor = [UIColor greenColor];
     
     [_tabBarC setViewControllers:[NSArray arrayWithObjects:homeNav,showDLineNav,personCenterNav, nil]];
 }
 
+#pragma mark Request Succeed
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    NSNumber *userid = [dic objectForKey:@"user_id"];
+    NSString *usersid = [dic objectForKey:@"sid"];
+    NSString *useraccess_token = [dic objectForKey:@"access_token"];
+    [UserInfo sharedUserInfo].user_id = userid;
+    [UserInfo sharedUserInfo].userS_id = usersid;
+    [UserInfo sharedUserInfo].userAccess_token = useraccess_token;
+    [self.navigationController pushViewController:_tabBarC animated:YES];
+}
 
 - (IBAction)forgetPsdClick:(UIButton *)sender {
     ResetPsdViewController *resetPsdVC = [[ResetPsdViewController alloc]init];

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailViewController">
+            <connections>
+                <outlet property="contentLable" destination="bcR-TO-eoE" id="4u3-9v-KyS"/>
+                <outlet property="dateLable" destination="M4d-ex-rqj" id="MwO-wE-uMN"/>
+                <outlet property="timeLabel" destination="RHZ-Pa-t27" id="XfS-Ax-yvY"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014年12月20日" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4d-ex-rqj">
+                    <rect key="frame" x="8" y="13" width="138" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:08" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHZ-Pa-t27">
+                    <rect key="frame" x="236" y="13" width="59" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="59" id="7VG-5c-9at"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当2015年第一缕阳光洒向中华大地，古老而又充满活力的中华民族又迎来了崭新一年。站在岁首回望，刚刚过去的2014年无疑是波澜壮阔、高潮迭起的，" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcR-TO-eoE">
+                    <rect key="frame" x="8" y="46" width="287" height="79"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="79" id="QJ4-7g-max"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="baseline" secondItem="RHZ-Pa-t27" secondAttribute="baseline" id="Hip-WO-BiS"/>
+                <constraint firstItem="RHZ-Pa-t27" firstAttribute="leading" secondItem="M4d-ex-rqj" secondAttribute="trailing" constant="90" id="QLq-LK-hVV"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="leading" secondItem="bcR-TO-eoE" secondAttribute="leading" id="WP7-2a-TZS"/>
+                <constraint firstAttribute="trailing" secondItem="RHZ-Pa-t27" secondAttribute="trailing" constant="25" id="aKX-U9-hLw"/>
+                <constraint firstItem="RHZ-Pa-t27" firstAttribute="trailing" secondItem="bcR-TO-eoE" secondAttribute="trailing" id="hLn-o1-6mZ"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="wzQ-ZC-dRe"/>
+                <constraint firstItem="bcR-TO-eoE" firstAttribute="top" secondItem="M4d-ex-rqj" secondAttribute="bottom" constant="12" id="xlk-GH-PAp"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="13" id="yOv-Nb-Ahw"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

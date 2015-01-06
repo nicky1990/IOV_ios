@@ -7,6 +7,9 @@
 //
 
 #import "AboutUsViewController.h"
+#import "WeiBoViewController.h"
+#import "WeiXinViewController.h"
+#import "FunctionViewController.h"
 
 @interface AboutUsViewController ()<UIAlertViewDelegate>
 {
@@ -114,17 +117,20 @@
                 break;
             case 1:
             {
-                
+                WeiXinViewController *weixinVC = [[WeiXinViewController alloc]init];
+                [self.navigationController pushViewController:weixinVC animated:YES];
             }
                 break;
             case 2:
             {
-                
+                WeiBoViewController *weiboVC = [[WeiBoViewController alloc]init];
+                [self.navigationController pushViewController:weiboVC animated:YES];
             }
                 break;
             case 3:
             {
-                
+                FunctionViewController *functionVC = [[FunctionViewController alloc]init];
+                [self.navigationController pushViewController:functionVC animated:YES];
             }
                 break;
             default:

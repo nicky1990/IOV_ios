@@ -10,6 +10,39 @@
 
 @implementation ToolRequest
 
+
+-(void)startRequestPostWith:(id)vc withParameters:(NSDictionary *)paraDic withTag:(NSInteger)tag{
+    MBProgressHUD *hud = [[MBProgressHUD alloc]initWithWindow:[[UIApplication sharedApplication].delegate window]];
+    [[[UIApplication sharedApplication].delegate window] addSubview:hud];
+    [hud show:YES];
+    [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
+        NSLog(@"%@",responseObject);
+        NSDictionary *dic = responseObject;
+        if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
+            self.delegate = vc;
+            if ([self.delegate respondsToSelector:@selector(requestSucceed:wihtTag:)]) {
+                [self.delegate requestSucceed:dic wihtTag:tag];
+            }
+            
+        }else{
+            NSNumber *errCode = [dic objectForKey:@"error_code"];
+            if ([errCode intValue] == 1004) {
+                [self startRequestPostWith:vc withParameters:paraDic withTag:tag];
+            }else{
+                NSString *failMessage = [dic objectForKey:@"error_msg"];
+                [Tool showAlertMessage:failMessage];
+            }
+            
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+        NSLog(@"失败%@",error);
+        [Tool showAlertMessage:@"网络请求失败，请重试！"];
+    }];
+}
+
+
 +(void)relushAccessToken{
 //    md5(access_token+sid+user_id+appsecret+t)
     NSString *accessStr = [NSString stringWithFormat:@"%@%@%@%@%@",[UserInfo sharedUserInfo].userAccess_token,[UserInfo sharedUserInfo].userS_id,[UserInfo sharedUserInfo].user_id,kSIGNATURE,[Tool getCurrentTimeStamp]];

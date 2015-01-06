@@ -9,7 +9,7 @@
 #import "ResetPsdViewController.h"
 #import "UITextField+LeftImage.h"
 
-@interface ResetPsdViewController ()<UITextFieldDelegate>
+@interface ResetPsdViewController ()<UITextFieldDelegate,ToolRequestDelegate>
 {
     UIButton *_getVerifyCodeBtn;
     UILabel *_timeLabel;
@@ -48,7 +48,7 @@
     _getVerifyCodeBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:10];
     [_getVerifyCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
     [_getVerifyCodeBtn setTintColor:[UIColor blackColor]];
-    [_getVerifyCodeBtn addTarget:self action:@selector(updateTime) forControlEvents:UIControlEventTouchUpInside];
+    [_getVerifyCodeBtn addTarget:self action:@selector(verifyBtnClick) forControlEvents:UIControlEventTouchUpInside];
     _timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 4, 30, 15)];
     _timeLabel.font = [UIFont fontWithName:@"Helvetica" size:10];
     [_getVerifyCodeBtn addSubview:_timeLabel];
@@ -114,6 +114,13 @@
     //    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark Request Succeed
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    [Tool showAlertMessage:@"密码重置成功，请重新登录"];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -128,6 +135,42 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(void)verifyBtnClick{
+    _getVerifyCodeBtn.userInteractionEnabled = NO;
+    NSString *phoneNum = [self.userPhoneNum.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ([Tool checkPhoneNumber:phoneNum]) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        NSDictionary *paraDic = @{@"c":@"public",
+                                  @"a":@"verify",
+                                  @"t":[Tool getCurrentTimeStamp],
+                                  @"app_key":kAPP_KEY,
+                                  @"telephone":phoneNum,
+                                  @"type":[NSNumber numberWithInt:1]
+                                  };
+        [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            NSLog(@"%@",responseObject);
+            NSDictionary *dic = responseObject;
+            if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
+                [Tool showAlertMessage:@"验证码已发出，请查看短信"];
+                statusTime = 60;
+                [self performSelector:@selector(updateTime) withObject:nil afterDelay:1];
+            }else{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                NSString *failMessage = [dic objectForKey:@"error_msg"];
+                [Tool showAlertMessage:failMessage];
+                _getVerifyCodeBtn.userInteractionEnabled = YES;
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            NSLog(@"失败%@",error);
+            [Tool showAlertMessage:@"网络请求失败，请重试！"];
+            _getVerifyCodeBtn.userInteractionEnabled = YES;
+        }];
+    }else{
+        [Tool showAlertMessage:@"请输入正确的手机号！"];
+    }
+}
 
 - (IBAction)comfirmClick:(UIButton *)sender {
     [self.view endEditing:YES];
@@ -145,12 +188,7 @@
             [Tool showAlertMessage:@"请输入验证码！"];
         }else if(![passwordAgain isEqualToString:password]){
             [Tool showAlertMessage:@"密码与验证密码不一致！请重新输入！"];
-        }
-        //        else if(![_netVerifyCode isEqualToString:veifyCode]){
-        //            [Tool showAlertMessage:@"验证码错误！请重新输入！"];
-        //        }
-        else if([passwordAgain isEqualToString:password]){
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        }else if([passwordAgain isEqualToString:password]){
             NSDictionary *paraDic = @{@"c":@"public",
                                       @"a":@"forget",
                                       @"t":[Tool getCurrentTimeStamp],
@@ -160,23 +198,8 @@
                                       @"password":[Tool teaEncryptWithString:password],
                                       @"verify_code":veifyCode
                                       };
-            [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSLog(@"%@",responseObject);
-                NSDictionary *dic = responseObject;
-                if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
-                    [Tool showAlertMessage:@"重置成功"];
-                    
-                }else{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    NSString *failMessage = [dic objectForKey:@"error_msg"];
-                    [Tool showAlertMessage:failMessage];
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSLog(@"失败%@",error);
-                [Tool showAlertMessage:@"网络请求失败，请重试！"];
-            }];
+            ToolRequest *toolRequest = [[ToolRequest alloc]init];
+            [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
         }
     }else{
         [Tool showAlertMessage:@"请输入正确的手机号！"];

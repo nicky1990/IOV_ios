@@ -10,15 +10,20 @@
 #import "CustomView.h"
 #import "CarStatusViewController.h"
 #import "LoginViewController.h"
+#import "HomeData.h"
+#import "UIImageView+AFNetworking.h"
+#import "MessageViewController.h"
+#import "WebViewController.h"
 
 #define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?45:25)
 #define kButtonHeight (([[UIScreen mainScreen] bounds].size.height == 568)?125:81)
 #define kButtonY (([[UIScreen mainScreen] bounds].size.height == 568)?75:50)
 
-@interface HomeViewController ()
+@interface HomeViewController () <ToolRequestDelegate>
 {
     UIImageView *_headImage;
     UILabel *_nameLabel;
+    UILabel *_messageNumLabel;
 }
 @end
 
@@ -26,6 +31,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    [self getHomeData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -35,11 +41,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.view.backgroundColor = [UIColor whiteColor];
+    [self customTab];
     // Do any additional setup after loading the view from its nib.
     [self initUI];
-    
 }
 
 -(void)initUI{
@@ -61,7 +66,7 @@
     _nameLabel =  [[UILabel alloc]initWithFrame:CGRectMake(105, kUserNameY, kW_SreenWidth-110, 21)];
     _nameLabel.backgroundColor = [UIColor clearColor];
     _nameLabel.font = [UIFont fontWithName:@"Arial" size:21];
-    _nameLabel.text = @"张三李四";
+    _nameLabel.text = @"hello";
     [functionView addSubview:_nameLabel];
     
     _headImage = [[UIImageView alloc]initWithFrame:CGRectMake((kW_SreenWidth-120)/2.0, 112.5, 120, 120)];
@@ -84,11 +89,23 @@
     
     UIButton *message = [CustomView buttonViewWithTitle:@"消息" withImageName:@"home_message" withFrame:CGRectMake(160, 50+kButtonHeight+4, kW_SreenWidth/2, kButtonHeight)];
     [message addTarget:self action:@selector(messageShow) forControlEvents:UIControlEventTouchUpInside];
+    
+    _messageNumLabel = [CustomView getLabelWith:CGRectMake(90, 0, 30, 20) andSize:12];
+    _messageNumLabel.layer.cornerRadius = 10;
+    _messageNumLabel.layer.backgroundColor = [[UIColor redColor]CGColor];
+    _messageNumLabel.textColor = [UIColor whiteColor];
+    _messageNumLabel.hidden = YES;
+    [message addSubview:_messageNumLabel];
+    
     [functionView addSubview:message];
 }
 //今日签到
 -(void)todaySignIn{
-    NSLog(@"今日签到");
+    WebViewController *webVC = [[WebViewController alloc]init];
+    webVC.title = @"每日签到";
+    NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=sign&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+    webVC.urlStr = urtStr;
+    [self.navigationController pushViewController:webVC animated:YES];
 }
 
 //爱车车况
@@ -99,14 +116,90 @@
 
 //天天好运
 -(void)todayLuckShow{
-    
+//    http://www.gulucar.cn/api.php?c=html5&a=lotterys&access_token=xxxx
+    WebViewController *webVC = [[WebViewController alloc]init];
+    webVC.title = @"天天好运";
+    NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=lotterys&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+    webVC.urlStr = urtStr;
+    [self.navigationController pushViewController:webVC animated:YES];
 }
 
 //消息
 -(void)messageShow{
-    
+    MessageViewController *messageVC = [[MessageViewController alloc]init];
+    [self.navigationController pushViewController:messageVC animated:YES];
 }
 
+#pragma mark Request
+-(void)getHomeData{
+    NSDictionary *paraDic = @{@"c":@"user",
+                              @"a":@"index",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"signature":kSIGNATURE,
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
+}
+#pragma mark Request Succeed
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    HomeData *homeData = [HomeData objectWithKeyValues:dic];
+    [UserInfo sharedUserInfo].car_id = homeData.car_id;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_headImage setImageWithURL:[NSURL URLWithString:homeData.avatar] placeholderImage:[UIImage imageNamed:@"home_headdefault"]];
+        _nameLabel.text = homeData.nickname;
+        if (homeData.message_new > 0) {
+            _messageNumLabel.hidden = NO;
+            _messageNumLabel.text = [NSString stringWithFormat:@"%d",homeData.message_new];
+        }else{
+            _messageNumLabel.hidden = YES;
+        }
+    });
+    NSLog(@"%@",homeData.result);
+    NSLog(@"%d",homeData.car_id);
+    NSLog(@"%@",homeData.avatar);
+    NSLog(@"%d",homeData.message_new);
+    NSLog(@"%@",homeData.nickname);
+}
+
+#pragma mark Custom Tabbar
+-(void)customTab{
+    for(UIView *view in self.tabBarController.view.subviews){
+        if([view isKindOfClass:[UITabBar class]]){
+            view.hidden = YES;
+            break;
+        }
+    }
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, kH_SreenHeight-49, kW_SreenWidth, 49)];
+//    view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"home_bottomback"]];
+    view.backgroundColor = RGBCOLOR(79, 92, 98);
+    UIButton *showDLineBtn = [CustomView getButtonWithFrame:CGRectMake(kW_SreenWidth/2.0-32.5, -15, 56, 56) withImage:@"home_compass" withTitle:nil withTarget:self andAction:@selector(showDLineBtnClick)];
+    showDLineBtn.layer.cornerRadius = 28;
+    showDLineBtn.layer.backgroundColor = [RGBCOLOR(79, 92, 98)CGColor];
+    showDLineBtn.layer.borderWidth = 2;
+    showDLineBtn.layer.borderColor = [RGBCOLOR(79, 92, 98)CGColor];
+    [view addSubview:showDLineBtn];
+    
+    UIButton *homeBtn = [self getButton:@"首页" withImage:@"home_home" withFrame:CGRectMake(0, 0, (kW_SreenWidth-65)/2.0, 49)];
+    [homeBtn addTarget:self action:@selector(homeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:homeBtn];
+    
+    UIButton *personBtn = [self getButton:@"个人中心" withImage:@"home_person" withFrame:CGRectMake((kW_SreenWidth-65)/2.0+65, 0, (kW_SreenWidth-65)/2.0, 49)];
+    [personBtn addTarget:self action:@selector(personBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:personBtn];
+    
+    [self.tabBarController.view addSubview:view];
+}
+-(void)homeBtnClick{
+    self.tabBarController.selectedIndex = 0;
+}
+-(void)showDLineBtnClick{
+    self.tabBarController.selectedIndex = 1;
+}
+-(void)personBtnClick{
+    self.tabBarController.selectedIndex = 2;
+}
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
@@ -124,5 +217,20 @@
     // Pass the selected object to the new view controller.
 }
 */
-
+-(UIButton *)getButton:(NSString *)buttonTitle withImage:(NSString *)imgName withFrame:(CGRect) rect{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = rect;
+    UIImageView *messageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:imgName]];
+    float messageViewY = button.frame.size.height/5;
+    messageView.frame = CGRectMake((rect.size.width-20)/2.0,messageViewY , 20, 20);
+    [button addSubview:messageView];
+    UILabel *messageLable = [[UILabel alloc]initWithFrame:CGRectMake(0, messageViewY+25, rect.size.width, 10)];
+    messageLable.backgroundColor = [UIColor clearColor];
+    messageLable.textAlignment = NSTextAlignmentCenter;
+    messageLable.textColor = [UIColor whiteColor];
+    messageLable.font = [UIFont fontWithName:@"Arial" size:10];
+    messageLable.text = buttonTitle;
+    [button addSubview:messageLable];
+    return button;
+}
 @end

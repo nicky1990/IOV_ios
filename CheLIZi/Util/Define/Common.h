@@ -25,6 +25,7 @@
 #define APP_DELEGATE (AppDelegate *)[UIApplication sharedApplication].delegate
 
 #define REQUESTTIMEOUT 10
+#define REQUESTTAG 400 //通用的默认网络请求标志，用于区分在同一个控制器多个请求的返回结果
 
 
 #pragma mark Request Para

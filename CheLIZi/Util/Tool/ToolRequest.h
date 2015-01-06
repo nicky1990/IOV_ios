@@ -7,12 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ToolRequestDelegate.h"
 
 @interface ToolRequest : NSObject
+
+@property (nonatomic, weak) id<ToolRequestDelegate> delegate;
+
+-(void)startRequestPostWith:(id)vc withParameters:(NSDictionary *)paraDic withTag:(NSInteger)tag;
 
 //刷新access_token
 +(void)relushAccessToken;
 
 +(AFHTTPRequestOperationManager *)getRequestManager;
+
 
 @end

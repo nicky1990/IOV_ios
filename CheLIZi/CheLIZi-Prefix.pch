@@ -20,4 +20,6 @@
     #import "ToolRequest.h"
     #import "Tool.h"
     #import "UserInfo.h"
+    #import "ToolRequestDelegate.h"
+    #import "MJExtension.h"
 #endif

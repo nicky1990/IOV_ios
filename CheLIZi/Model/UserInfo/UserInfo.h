@@ -10,7 +10,9 @@
 
 @interface UserInfo : NSObject
 
+
 @property (strong,nonatomic) NSNumber *user_id;
+@property (assign,nonatomic) int car_id;
 @property (strong,nonatomic) NSString *userS_id;
 @property (strong,nonatomic) NSString *userAccess_token;
 @property (strong,nonatomic) NSString *userNiCheng;

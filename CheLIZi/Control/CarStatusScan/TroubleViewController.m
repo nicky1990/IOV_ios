@@ -19,7 +19,7 @@
     [super viewDidLoad];
     self.title = @"故障码";
     // Do any additional setup after loading the view from its nib.
-    self.troubleArray = @[@"P0123",@"P0123",@"P0123",@"P0123",@"P0123"];
+//    self.troubleArray = @[@"P0123",@"P0123",@"P0123",@"P0123",@"P0123"];
 }
 #pragma mark Tableview
 -(void)initTableView{
@@ -40,8 +40,8 @@
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
-    cell.textLabel.text = self.troubleArray[indexPath.row];
-    
+    NSDictionary *dic = self.troubleArray[indexPath.row];
+    cell.textLabel.text = [dic objectForKey:@"p"];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -66,7 +66,7 @@
     
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 15, 150, 11)];
     label.font = [UIFont fontWithName:@"Heiti SC" size:10];
-    label.text = [NSString stringWithFormat:@"%@",@"本次有8条故障码"];
+    label.text = [NSString stringWithFormat:@"本次有%ld条故障码",self.troubleArray.count];
     label.textColor = RGBCOLOR(102, 102, 102);
     [view addSubview:label];
     

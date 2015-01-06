@@ -9,7 +9,7 @@
 #import "RegistViewController.h"
 #import "UITextField+LeftImage.h"
 
-@interface RegistViewController () <UITextFieldDelegate>
+@interface RegistViewController () <UITextFieldDelegate,ToolRequestDelegate>
 {
     UIButton *_getVerifyCodeBtn;
     UILabel *_timeLabel;
@@ -79,6 +79,18 @@
     }
     
 }
+
+#pragma mark Request Succeed
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    [Tool showAlertMessage:@"注册成功"];
+    NSNumber *userid = [dic objectForKey:@"user_id"];
+    NSString *usersid = [dic objectForKey:@"sid"];
+    NSString *useraccess_token = [dic objectForKey:@"access_token"];
+    [UserInfo sharedUserInfo].user_id = userid;
+    [UserInfo sharedUserInfo].userS_id = usersid;
+    [UserInfo sharedUserInfo].userAccess_token = useraccess_token;
+}
+
 #pragma textField Delete Method
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -139,31 +151,23 @@
     if ([Tool checkPhoneNumber:phoneNum]) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         NSDictionary *paraDic = @{@"c":@"public",
-                                  @"a":@"register",
+                                  @"a":@"verify",
                                   @"t":[Tool getCurrentTimeStamp],
                                   @"app_key":kAPP_KEY,
                                   @"telephone":phoneNum,
-                                  @"signature":kSIGNATURE
-                                  };
-        
-//            “c”:”public”,
-//            “a”:”verify”,
-//            “app_key”:string,   “t”:int,
-//            “telephone”:string,
-//            “type”:int  
-
+                                  @"type":[NSNumber numberWithInt:0]
+                                  };        
         [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSLog(@"%@",responseObject);
             NSDictionary *dic = responseObject;
             if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
                 [Tool showAlertMessage:@"验证码已发出，请查看短信"];
-                _netVerifyCode = [dic objectForKey:@"veriCode"];
                 statusTime = 60;
                 [self performSelector:@selector(updateTime) withObject:nil afterDelay:1];
             }else{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSString *failMessage = [dic objectForKey:@"message"];
+                NSString *failMessage = [dic objectForKey:@"error_msg"];
                 [Tool showAlertMessage:failMessage];
                 _getVerifyCodeBtn.userInteractionEnabled = YES;
             }
@@ -195,12 +199,7 @@
             [Tool showAlertMessage:@"请输入验证码！"];
         }else if(![passwordAgain isEqualToString:password]){
             [Tool showAlertMessage:@"密码与验证密码不一致！请重新输入！"];
-        }
-//        else if(![_netVerifyCode isEqualToString:veifyCode]){
-//            [Tool showAlertMessage:@"验证码错误！请重新输入！"];
-//        }
-        else if([passwordAgain isEqualToString:password]){
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        }else if([passwordAgain isEqualToString:password]){
             NSDictionary *paraDic = @{@"c":@"public",
                                       @"a":@"register",
                                       @"t":[Tool getCurrentTimeStamp],
@@ -212,29 +211,8 @@
                                       @"password":[Tool teaEncryptWithString:password],
                                       @"verify_code":veifyCode
                                       };
-            [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSLog(@"%@",responseObject);
-                NSDictionary *dic = responseObject;
-                if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
-                    NSNumber *userid = [dic objectForKey:@"user_id"];
-                    NSString *usersid = [dic objectForKey:@"sid"];
-                    NSString *useraccess_token = [dic objectForKey:@"access_token"];
-                    [UserInfo sharedUserInfo].user_id = userid;
-                    [UserInfo sharedUserInfo].userS_id = usersid;
-                    [UserInfo sharedUserInfo].userAccess_token = useraccess_token;
-                    [Tool showAlertMessage:@"注册成功"];
-        
-                }else{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    NSString *failMessage = [dic objectForKey:@"error_msg"];
-                    [Tool showAlertMessage:failMessage];
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                NSLog(@"失败%@",error);
-                [Tool showAlertMessage:@"网络请求失败，请重试！"];
-            }];
+            ToolRequest *toolRequest = [[ToolRequest alloc]init];
+            [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG+1];
         }
     }else{
         [Tool showAlertMessage:@"请输入正确的手机号！"];

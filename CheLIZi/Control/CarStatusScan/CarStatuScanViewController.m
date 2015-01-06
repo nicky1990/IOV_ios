@@ -10,8 +10,10 @@
 #import "CustomView.h"
 #import "UAProgressView.h"
 #import "TroubleViewController.h"
+#import "CarScanData.h"
 
-@interface CarStatuScanViewController () <UITableViewDataSource,UITableViewDelegate,NSURLConnectionDelegate>
+
+@interface CarStatuScanViewController () <UITableViewDataSource,UITableViewDelegate,NSURLConnectionDelegate,ToolRequestDelegate>
 {
     UAProgressView *_progressView;
     UILabel *_scoreLabel;
@@ -19,6 +21,7 @@
     UITableView *_tableView;
     NSArray *_typeArray;
     NSArray *_typeFileImage;
+    NSArray *_statusInfo;
     
     //从网络接收到得二进制数据
     NSMutableData *finalData;
@@ -30,6 +33,9 @@
     UILabel *_healthLabel;
     UILabel *_healthNumLabel;
     UILabel *_fenLabel;
+    CarScanData *_carScanData;
+    UIButton *_guzhangBtn;
+    UILabel *_guzhangLabel;
 }
 @end
 
@@ -38,6 +44,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    [self lastScan];
+    _scanBtn.hidden = NO;
+    _scanBtnIcon.hidden = NO;
+    _healthLabel.hidden = YES;
+    _healthNumLabel.hidden = YES;
+    _fenLabel.hidden = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -76,7 +88,7 @@
     _progressView.tintColor = RGBCOLOR(14, 180, 147);
     _progressView.borderWidth = 0;
     _progressView.lineWidth = 2.0;
-    _progressView.progress = 0.5;
+    _progressView.progress = 0.0;
     _progressView.userInteractionEnabled = NO;
     [headBackView addSubview:_progressView];
     
@@ -97,7 +109,7 @@
     UILabel *scoreTemp = [self getLabelWithFrame:CGRectMake(70, 195 , 20,12) withTitle:@"分" withColor:RGBCOLOR(102, 102, 102) andSize:12];
     [headBackView addSubview:scoreTemp];
     
-    _timeLabel = [self getLabelWithFrame:CGRectMake(232, 185, 80, 30) withTitle:@"2014-08-06 10:26" withColor:RGBCOLOR(14, 180, 147) andSize:12];
+    _timeLabel = [self getLabelWithFrame:CGRectMake(232, 185, 80, 30) withTitle:@"一" withColor:RGBCOLOR(14, 180, 147) andSize:12];
     _timeLabel.numberOfLines = 0;
     [headBackView addSubview:_timeLabel];
     
@@ -108,8 +120,8 @@
     _scanBtnIcon = [[UIImageView alloc]initWithFrame:CGRectMake(43, 20, 34, 34)];
     _scanBtnIcon.image = [UIImage imageNamed:@"scan_scanbtnicon"];
     [centerView addSubview:_scanBtnIcon];
-    _scanBtn.hidden = YES;
-    _scanBtnIcon.hidden = YES;
+//    _scanBtn.hidden = YES;
+//    _scanBtnIcon.hidden = YES;
     
     
     _healthLabel = [self getLabelWithFrame:CGRectMake(20, 25, 80, 12) withTitle:@"爱车健康值" withColor:[UIColor whiteColor] andSize:12];
@@ -123,11 +135,16 @@
     
     _fenLabel = [self getLabelWithFrame:CGRectMake(95, 76, 20, 12) withTitle:@"分" withColor:[UIColor whiteColor] andSize:12];
     [centerView addSubview:_fenLabel];
+    
+    _healthLabel.hidden = YES;
+    _fenLabel.hidden = YES;
+    _healthNumLabel.hidden = YES;
 }
 #pragma mark Tableview
 -(void)initTableView{
     _typeArray = @[@"发动机转数",@"进气压力",@"进气温度",@"节气门开度",@"三元催化剂温度"];
     _typeFileImage = @[@"scan_fadongji",@"scan_yali",@"scan_wendu",@"scan_jieqimen",@"scan_cuihuaji"];
+    _statusInfo = @[@"发动机转数正常",@"进气压力正常",@"进气温度正常",@"节气门开度正常",@"三元催化剂温度正常"];
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 230, kW_SreenWidth, kH_SreenHeight-49-230) style:UITableViewStyleGrouped];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
@@ -146,7 +163,6 @@
     }else{
         return _typeArray.count;
     }
-    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -159,25 +175,99 @@
     cell.detailTextLabel.font = [UIFont fontWithName:@"Heiti SC" size:10];
     UIImageView *accessImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 15, 15)];
     cell.accessoryView = accessImage;
-    accessImage.image = [UIImage imageNamed:@"scan_good"];
+    accessImage.image = [UIImage imageNamed:@"scan_normal"];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            accessImage.image = [UIImage imageNamed:@"scan_good"];
             cell.detailTextLabel.text = @"电瓶电压状态良好";
+            if (_carScanData != nil) {
+                if ((_carScanData.battery_voltage == 0)) {
+                    accessImage.image = [UIImage imageNamed:@"scan_good"];
+                }else{
+                    accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                    cell.detailTextLabel.text = @"电瓶电压状态异常";
+                }
+            }
             cell.backgroundColor = [UIColor clearColor];
             cell.textLabel.text = @"电瓶电压";
             cell.imageView.image = [UIImage imageNamed:@"scan_dianping"];
             
         }else{
             cell.textLabel.text = @"水温";
+            cell.detailTextLabel.text = @"水温正常";
             cell.imageView.image = [UIImage imageNamed:@"scan_shuiwen"];
+            if (_carScanData != nil) {
+                if ((_carScanData.coolant_temperature == 0)) {
+                    accessImage.image = [UIImage imageNamed:@"scan_good"];
+                }else{
+                    accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                    cell.detailTextLabel.text = @"水温异常";
+                }
+            }
         }
     }else{
         if (indexPath.row %2 ==0) {
             cell.backgroundColor = [UIColor clearColor];
         }
         cell.textLabel.text = _typeArray[indexPath.row];
+        cell.detailTextLabel.text = _statusInfo[indexPath.row];
         cell.imageView.image = [UIImage imageNamed:_typeFileImage[indexPath.row]];
+        if (_carScanData != nil) {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    if ((_carScanData.engine_rpm == 0)) {
+                        accessImage.image = [UIImage imageNamed:@"scan_good"];
+                    }else{
+                        accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                        cell.detailTextLabel.text = @"发动机转数异常";
+                    }
+                }
+                    break;
+                case 1:
+                {
+                    if ((_carScanData.MAP == 0)) {
+                        accessImage.image = [UIImage imageNamed:@"scan_good"];
+                    }else{
+                        accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                        cell.detailTextLabel.text = @"进气压力异常";
+                    }
+                }
+                    break;
+                case 2:
+                {
+                    if ((_carScanData.ACT == 0)) {
+                        accessImage.image = [UIImage imageNamed:@"scan_good"];
+                    }else{
+                        accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                        cell.detailTextLabel.text = @"进气温度异常";
+                    }
+                }
+                    break;
+                case 3:
+                {
+                    if ((_carScanData.TAP == 0)) {
+                        accessImage.image = [UIImage imageNamed:@"scan_good"];
+                    }else{
+                        accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                        cell.detailTextLabel.text = @"节气门开度异常";
+                    }
+                }
+                    break;
+                case 4:
+                {
+                    if ((_carScanData.TWC == 0)) {
+                        accessImage.image = [UIImage imageNamed:@"scan_good"];
+                    }else{
+                        accessImage.image = [UIImage imageNamed:@"scan_warn"];
+                        cell.detailTextLabel.text = @"三元催化剂异常";
+                    }
+                }
+                    break;
+                default:
+                    break;
+            }
+
+        }
     }
     return cell;
 }
@@ -194,8 +284,6 @@
     }else{
         return 40;
     }
-    
-    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 40;
@@ -211,11 +299,23 @@
         UILabel *lable = [self getLabelWithFrame:CGRectMake(30, 13, 80, 14) withTitle:@"故障" withColor:RGBCOLOR(14, 180, 147) andSize:14];
         [view addSubview:lable];
         
-        UIButton *guzhangBtn = [CustomView getButtonWithFrame:CGRectMake(290, 12.5, 15, 15) withImage:@"scan_guzhang" withTitle:nil withTarget:self andAction:@selector(guzhangBtnClick)];
-        [view addSubview:guzhangBtn];
+        _guzhangLabel = [self getLabelWithFrame:CGRectMake(230, 12.5, 60, 15) withTitle:@"存在异常" withColor:[UIColor redColor] andSize:10];
+        _guzhangLabel.font = [UIFont fontWithName:@"Heiti SC" size:10];
+        [view addSubview:_guzhangLabel];
         
+        _guzhangBtn = [CustomView getButtonWithFrame:CGRectMake(290, 12.5, 15, 15) withImage:@"scan_guzhang" withTitle:nil withTarget:self andAction:@selector(guzhangBtnClick)];
+        [view addSubview:_guzhangBtn];
+        _guzhangBtn.hidden = YES;
+        _guzhangLabel.hidden = YES;
+        if (_carScanData != nil) {
+            if ((_carScanData.fault.count == 0)) {
+            }else{
+                _guzhangBtn.hidden = NO;
+                _guzhangLabel.hidden = NO;
+            }
+        }
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(guzhangBtnClick)];
-        [view addGestureRecognizer:tap];
+        [_guzhangLabel addGestureRecognizer:tap];
         return view;
     }else{
         return nil;
@@ -242,6 +342,7 @@
 
 -(void)guzhangBtnClick{
     TroubleViewController *troubleVC = [[TroubleViewController alloc]init];
+    troubleVC.troubleArray = _carScanData.fault;
     [self.navigationController pushViewController:troubleVC animated:YES];
 }
 
@@ -262,11 +363,42 @@
     return label;
 }
 
+#pragma mark lastScan
+-(void)lastScan{
+    NSDictionary *paraDic = @{@"c":@"car",
+                              @"a":@"prevScan",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"car_id":[NSNumber numberWithInt:[UserInfo sharedUserInfo].car_id],
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
+}
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    NSDictionary *dataDic = [dic objectForKey:@"data"];
+    _carScanData = [CarScanData objectWithKeyValues:dataDic];
+    NSLog(@"%@",_carScanData);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _scoreLabel.text = [NSString stringWithFormat:@"%d",_carScanData.score];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:_carScanData.scan_time];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSString *time = [dateFormatter stringFromDate:date];
+        _timeLabel.text = time;
+        [_tableView reloadData];
+    });
+
+}
+#pragma mark current Scan
 -(void)startScanClick{
     NSMutableURLRequest *request=[[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:BASEURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"POST"];
-    
-    
+    NSString *requestStr = [NSString stringWithFormat:@"c=%@&a=%@&access_token=%@&app_key=%@&car_id=%d&t=%@",@"car",@"faultDetect",[UserInfo sharedUserInfo].userAccess_token,kAPP_KEY,[UserInfo sharedUserInfo].car_id,[Tool getCurrentTimeStamp]];
+    NSLog(@"%@",requestStr);
+    NSData *data = [[requestStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
     [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
@@ -293,6 +425,21 @@
 }
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:finalData options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"%@",dic);
+    if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
+        NSDictionary *dataDic = [dic objectForKey:@"data"];
+    _carScanData = [CarScanData objectWithKeyValues:dataDic];
+        NSLog(@"%@",_carScanData);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _scanBtn.hidden = YES;
+            _scanBtnIcon.hidden = YES;
+            _healthLabel.hidden = NO;
+            _healthNumLabel.hidden = NO;
+            _fenLabel.hidden = NO;
+            _healthNumLabel.text = [NSString stringWithFormat:@"%d",_carScanData.score];
+            [_tableView reloadData];
+        });
+    }
 }
 
 /*
