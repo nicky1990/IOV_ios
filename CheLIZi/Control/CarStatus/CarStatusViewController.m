@@ -67,6 +67,9 @@
     _unitDigistImage.image = [UIImage imageNamed:@"oil_0"];
     [self.view addSubview:_unitDigistImage];
     
+    UILabel *LLable = [self getLabelWithFrame:CGRectMake(260, 145, 40, 12) withTitle:@"（ L ）" withColor:RGBCOLOR(102, 102, 102) andSize:12];
+    [self.view addSubview:LLable];
+    
     UIImageView *winIcon = [[UIImageView alloc]initWithFrame:CGRectMake(50, 175, 34, 34)];
     winIcon.image = [UIImage imageNamed:@"carstatus_win"];
     [self.view addSubview:winIcon];

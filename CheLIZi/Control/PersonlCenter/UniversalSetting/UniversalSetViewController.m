@@ -79,6 +79,7 @@
     if (buttonIndex == 1) {
         NSLog(@"清除");
         [ToolClearCaches clearCaches];
+        [self.universalTableView reloadData];
     }
 }
 

@@ -11,6 +11,7 @@
 #import "UniversalSetViewController.h"
 #import "AboutUsViewController.h"
 #import "WebViewController.h"
+#import "CarManageViewController.h"
 
 @interface PersonCenterViewController ()<UIAlertViewDelegate,ToolRequestDelegate>
 {
@@ -121,7 +122,8 @@
         switch (indexPath.row) {
             case 0:
             {
-                
+                CarManageViewController *carnManageVC = [[CarManageViewController alloc]init];
+                [self.navigationController pushViewController:carnManageVC animated:YES];
             }
                 break;
             case 1:
@@ -134,10 +136,6 @@
                 break;
         }
     }
-    
-//c=html5&a=userInfo&access_token=xxxx
-//c=html5&a=integral&access_token=xxxx
-//c=html5&a=prize&access_token=xxxx
     if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0:
@@ -196,6 +194,7 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
+        [self.tabBarController.navigationController popViewControllerAnimated:YES];
         NSDictionary *paraDic = @{@"c":@"user",
                                   @"a":@"logout",
                                   @"t":[Tool getCurrentTimeStamp],
@@ -209,7 +208,7 @@
 
 #pragma mark Request Succeed
 -(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
-    [self.tabBarController.navigationController popViewControllerAnimated:YES];
+//    [self.tabBarController.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

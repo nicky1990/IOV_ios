@@ -10,7 +10,7 @@
 #import "BMapKit.h"
 #import "CustomView.h"
 
-@interface CarTrackViewController ()<BMKMapViewDelegate>
+@interface CarTrackViewController ()<BMKMapViewDelegate,ToolRequestDelegate>
 {
     BMKMapView *_mapView;
     UILabel *_dateLabel;
@@ -40,6 +40,9 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.titleView = [self customTitleView];
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, kH_SreenHeight-64-49 )];
+    _mapView.mapType = BMKMapTypeStandard;
+    _mapView.centerCoordinate = CLLocationCoordinate2DMake(24.2646, 118.0404);
+
     [self.view addSubview:_mapView];
     [self dateSelectView];
 }
@@ -131,6 +134,82 @@
     NSLog(@"%@",[_format stringFromDate:_currentDate]);
     NSString *selectDate = [nextDateStr substringToIndex:10];
     _dateLabel.text = selectDate;
+}
+#pragma mark  获取轨迹数据
+-(void)getPositions:(NSString *)selectDate{
+//    “c”:”car”,
+//    “a”:”track”,
+//    “access_token “:string,
+//    “app_key”:string,   “t”:int,
+//    “car_id”:int,   “start_time”: int,
+//    “end_time”: int
+    
+    
+    
+    if ((int)_mapView.overlays.count > 0) {
+        [_mapView removeOverlays:_mapView.overlays];
+    }
+    if ((int)_mapView.annotations.count > 0) {
+        NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
+        [_mapView removeAnnotations:array];
+    }
+}
+
+-(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+    
+}
+
+-(void)refreshData{
+    if ((int)_mapView.overlays.count > 0) {
+        [_mapView removeOverlays:_mapView.overlays];
+    }
+    if ((int)_mapView.annotations.count > 0) {
+        NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
+        [_mapView removeAnnotations:array];
+    }
+//    NSMutableArray *pointArray = [Positions positionWithArray:self.carDriveInfo.positions];
+//    if (pointArray.count > 0) {
+//        [self getCarDriveLine:pointArray];
+//    }
+//    NSLog(@"point:%ld",(unsigned long)pointArray.count);
+}
+
+#pragma mark 行车路线
+-(void)getCarDriveLine:(NSMutableArray *)pointsArray{
+//    CLLocationCoordinate2D *array=(CLLocationCoordinate2D*)calloc(pointsArray.count,sizeof(CLLocationCoordinate2D));
+//    for (int i = 0; i < pointsArray.count; i++) {
+//        PointPositions *point = pointsArray[i];
+//        CLLocationCoordinate2D temp = CLLocationCoordinate2DMake([point.latitude doubleValue], [point.longitude doubleValue]);
+//        array[i] = [self transformToBaidu:temp];
+//    }
+//    BMKCoordinateSpan span = BMKCoordinateSpanMake(0.05, 0.05);//显示大小精度
+//    BMKCoordinateRegion region = BMKCoordinateRegionMake(array[pointsArray.count/2], span);
+//    [_mapView setRegion:region animated:YES];
+//    [self addPointAnnotation:array[0] withTitle:@"起点" withTag:304];
+//    [self addPointAnnotation:array[pointsArray.count - 1] withTitle:@"终点" withTag:305];
+//    
+//    BMKPolyline *polyLine = [BMKPolyline polylineWithCoordinates:array count:pointsArray.count];
+//    [_mapView addOverlay:polyLine]; // 添加路线overlay
+//    
+//    free(array);//释放数组
+}
+//装换成百度坐标
+-(CLLocationCoordinate2D)transformToBaidu:(CLLocationCoordinate2D)temp{
+    
+    NSDictionary* testdic = BMKConvertBaiduCoorFrom(temp,BMK_COORDTYPE_GPS);
+    CLLocationCoordinate2D clloca = BMKCoorDictionaryDecode(testdic);
+    return clloca;
+}
+- (BMKOverlayView *)mapView:(BMKMapView *)mapView viewForOverlay:(id<BMKOverlay>)overlay
+{
+    if ([overlay isKindOfClass:[BMKPolyline class]])
+    {
+        BMKPolylineView* polylineView = [[BMKPolylineView alloc] initWithOverlay:overlay];
+        polylineView.strokeColor = [UIColor blueColor];
+        polylineView.lineWidth = 3.0;
+        return polylineView;
+    }
+    return nil;
 }
 
 - (void)didReceiveMemoryWarning {

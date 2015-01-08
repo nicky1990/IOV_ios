@@ -35,7 +35,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>sina.53843dba56240bc4661b1867</string>
+				<string>sina.54aa9a0afd98c5b0bd000352</string>
 			</array>
 		</dict>
 	</array>
@@ -57,5 +57,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>view controller -base status bar</key>
+	<false/>
 </dict>
 </plist>

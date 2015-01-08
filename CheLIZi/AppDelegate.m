@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "HomeViewController.h"
 #import "PersonCenterViewController.h"
-#import "ShowDLineViewController.h"
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialSinaHandler.h"
@@ -58,7 +57,7 @@
 -(void)UMShareUse{
     [UMSocialData setAppKey:@"54aa9a0afd98c5b0bd000352"];
     [UMSocialWechatHandler setWXAppId:@"wx27cb5fecf4cd56aa" appSecret:@"390e8490941ba262651d77bf0b9df993" url:nil];
-    [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+    [UMSocialSinaHandler openSSOWithRedirectURL:nil];
 //    [UMSocialData openLog:YES];
 }
 

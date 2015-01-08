@@ -25,8 +25,8 @@
     
     //从网络接收到得二进制数据
     NSMutableData *finalData;
-    //文件的大小（总字节数）
-    float totalSize;
+    //大小（总字节数）
+    long long totalSize;
     
     UIImageView *_scanBtnIcon;
     UIButton *_scanBtn;
@@ -68,12 +68,12 @@
     UIView *headBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, 230)];
     headBackView.backgroundColor = RGBCOLOR(37, 48, 68);
     [self.view addSubview:headBackView];
-    UILabel *titleLabel = [CustomView getLabelWith:CGRectMake(60, 27.5 , (kW_SreenWidth-120),20) andSize:18];
+    UILabel *titleLabel = [CustomView getLabelWith:CGRectMake(60, 30 , (kW_SreenWidth-120),20) andSize:18];
     titleLabel.text = @"车况扫描";
     titleLabel.textColor = [UIColor whiteColor];
     [headBackView addSubview:titleLabel];
     
-    UIButton *backBtn = [CustomView getButtonWithFrame:CGRectMake(10, 25, 25, 25) withImage:@"nav_back_button" withTitle:nil withTarget:self andAction:@selector(leftButtonClick)];
+    UIButton *backBtn = [CustomView getButtonWithFrame:CGRectMake(10, 25, 30, 30) withImage:@"nav_back_button" withTitle:nil withTarget:self andAction:@selector(leftButtonClick)];
     [headBackView addSubview:backBtn];
     
     UAProgressView *progressViewBack = [[UAProgressView alloc]initWithFrame:CGRectMake(headBackView.center.x-70, 60, 140, 140)];
@@ -407,7 +407,7 @@
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
     finalData = [[NSMutableData alloc] init];
     totalSize=[response expectedContentLength];
-    NSLog(@"totalSize=%f",totalSize);
+    NSLog(@"totalSize=%lld",[response expectedContentLength]);
 }
 
 //连接接收下载  (会被多次执行，因为数据不能一次就下载完成，一段一段下载)
@@ -415,7 +415,7 @@
     NSLog(@"接收数据");
     //反复追加数据到final对象
     [finalData appendData:data];
-    float temp = finalData.length/totalSize;
+    float temp = finalData.length*1.0/totalSize;
     _progressView.progress = temp;
 }
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
@@ -430,6 +430,14 @@
         NSDictionary *dataDic = [dic objectForKey:@"data"];
     _carScanData = [CarScanData objectWithKeyValues:dataDic];
         NSLog(@"%@",_carScanData);
+        [self performSelector:@selector(timerAdvanced) withObject:nil afterDelay:0.01];
+    }else{
+        NSString *failMessage = [dic objectForKey:@"error_msg"];
+        [Tool showAlertMessage:failMessage];
+    }
+}
+-(void)timerAdvanced{
+    if (_progressView.progress == 1.0) {
         dispatch_async(dispatch_get_main_queue(), ^{
             _scanBtn.hidden = YES;
             _scanBtnIcon.hidden = YES;
@@ -439,9 +447,13 @@
             _healthNumLabel.text = [NSString stringWithFormat:@"%d",_carScanData.score];
             [_tableView reloadData];
         });
-    }
-}
 
+    }else{
+        _progressView.progress+=0.05;
+        [self performSelector:@selector(timerAdvanced) withObject:nil afterDelay:0.5];
+    }
+    
+}
 /*
 #pragma mark - Navigation
 

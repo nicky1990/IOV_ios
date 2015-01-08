@@ -8,6 +8,9 @@
 
 #import "RegistViewController.h"
 #import "UITextField+LeftImage.h"
+#import "HomeViewController.h"
+#import "PersonCenterViewController.h"
+#import "ShareDLineViewController.h"
 
 @interface RegistViewController () <UITextFieldDelegate,ToolRequestDelegate>
 {
@@ -68,6 +71,7 @@
     statusTime--;
     _getVerifyCodeBtn.userInteractionEnabled = NO;
     if (statusTime == 0 ) {
+        _getVerifyCodeBtn.userInteractionEnabled = YES;
         [NSRunLoop cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateTime) object:nil];
         _timeLabel.text = @"";
         statusTime = 60;
@@ -82,13 +86,28 @@
 
 #pragma mark Request Succeed
 -(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
-    [Tool showAlertMessage:@"注册成功"];
     NSNumber *userid = [dic objectForKey:@"user_id"];
     NSString *usersid = [dic objectForKey:@"sid"];
     NSString *useraccess_token = [dic objectForKey:@"access_token"];
     [UserInfo sharedUserInfo].user_id = userid;
     [UserInfo sharedUserInfo].userS_id = usersid;
     [UserInfo sharedUserInfo].userAccess_token = useraccess_token;
+    
+    HomeViewController *homeVC = [[HomeViewController alloc]init];
+    UINavigationController *homeNav = [[UINavigationController alloc]initWithRootViewController:homeVC];
+    [homeNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+    
+    PersonCenterViewController *personCenterVC = [[PersonCenterViewController alloc]init];
+    UINavigationController *personCenterNav = [[UINavigationController alloc]initWithRootViewController:personCenterVC];
+    [personCenterNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+    
+    
+    ShareDLineViewController *shareDLineViewController = [[ShareDLineViewController alloc]init];
+    UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:shareDLineViewController];
+    [showDLineNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
+     UITabBarController *tabBarC = [[UITabBarController alloc]init];
+    [tabBarC setViewControllers:[NSArray arrayWithObjects:homeNav,showDLineNav,personCenterNav, nil]];
+    [self.navigationController pushViewController:tabBarC animated:YES];
 }
 
 #pragma textField Delete Method

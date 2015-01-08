@@ -126,6 +126,8 @@
 		6A57E24E1A5BE44C0030CA21 /* icon-small-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A57E24B1A5BE44C0030CA21 /* icon-small-40@2x.png */; };
 		6A57E24F1A5BE44C0030CA21 /* icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A57E24C1A5BE44C0030CA21 /* icon-60@2x.png */; };
 		6A57E2531A5C0D810030CA21 /* libUMessage_Sdk_1.1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A57E2511A5C0D810030CA21 /* libUMessage_Sdk_1.1.0.a */; };
+		6A57E2B91A5C21000030CA21 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A57E2B81A5C21000030CA21 /* CoreMedia.framework */; };
+		6A57E2BB1A5C342A0030CA21 /* home_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A57E2BA1A5C342A0030CA21 /* home_share@2x.png */; };
 		6A62F38F1A425F1400D3AAA6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A62F38E1A425F1400D3AAA6 /* Foundation.framework */; };
 		6A62F3911A425F1400D3AAA6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A62F3901A425F1400D3AAA6 /* CoreGraphics.framework */; };
 		6A62F3931A425F1400D3AAA6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A62F3921A425F1400D3AAA6 /* UIKit.framework */; };
@@ -215,8 +217,19 @@
 		6A7BF6741A4C040C00500A95 /* home_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6641A4C040C00500A95 /* home_message@2x.png */; };
 		6A7BF6751A4C040C00500A95 /* home_compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6651A4C040C00500A95 /* home_compass@2x.png */; };
 		6A7BF6761A4C040C00500A95 /* home_compass1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6661A4C040C00500A95 /* home_compass1@2x.png */; };
-		6ABFA07A1A4D6AC600DA1354 /* ShowDLineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABFA0781A4D6AC600DA1354 /* ShowDLineViewController.m */; };
-		6ABFA07B1A4D6AC600DA1354 /* ShowDLineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ABFA0791A4D6AC600DA1354 /* ShowDLineViewController.xib */; };
+		6AEE219C1A5D177700D4D714 /* CarSetWarnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE219B1A5D177700D4D714 /* CarSetWarnData.m */; };
+		6AEE21A11A5D206700D4D714 /* CarManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE219F1A5D206700D4D714 /* CarManageViewController.m */; };
+		6AEE21A21A5D206700D4D714 /* CarManageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AEE21A01A5D206700D4D714 /* CarManageViewController.xib */; };
+		6AEE21A91A5D2F8900D4D714 /* car_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AEE21A81A5D2F8900D4D714 /* car_add@2x.png */; };
+		6AEE21AD1A5D658100D4D714 /* CarInfoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21AC1A5D658100D4D714 /* CarInfoData.m */; };
+		6AEE21BF1A5D6EAD00D4D714 /* CustomUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21B01A5D6EAD00D4D714 /* CustomUITabBarController.m */; };
+		6AEE21C01A5D6EAD00D4D714 /* OBDTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21B21A5D6EAD00D4D714 /* OBDTableView.m */; };
+		6AEE21C11A5D6EAD00D4D714 /* OBDTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21B41A5D6EAD00D4D714 /* OBDTableViewCell.m */; };
+		6AEE21C21A5D6EAD00D4D714 /* ScreenCaptureImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21B61A5D6EAD00D4D714 /* ScreenCaptureImage.m */; };
+		6AEE21C31A5D6EAD00D4D714 /* ShareDLineTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21B81A5D6EAD00D4D714 /* ShareDLineTitleView.m */; };
+		6AEE21C41A5D6EAD00D4D714 /* ShareDLineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21BA1A5D6EAD00D4D714 /* ShareDLineViewController.m */; };
+		6AEE21C51A5D6EAD00D4D714 /* ShareImage.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AEE21BB1A5D6EAD00D4D714 /* ShareImage.xcassets */; };
+		6AEE21C61A5D6EAD00D4D714 /* SphereMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE21BE1A5D6EAD00D4D714 /* SphereMenu.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -459,6 +472,8 @@
 		6A57E24C1A5BE44C0030CA21 /* icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60@2x.png"; sourceTree = "<group>"; };
 		6A57E2511A5C0D810030CA21 /* libUMessage_Sdk_1.1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk_1.1.0.a; sourceTree = "<group>"; };
 		6A57E2521A5C0D810030CA21 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
+		6A57E2B81A5C21000030CA21 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		6A57E2BA1A5C342A0030CA21 /* home_share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_share@2x.png"; sourceTree = "<group>"; };
 		6A62F38B1A425F1400D3AAA6 /* CheLIZi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CheLIZi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A62F38E1A425F1400D3AAA6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6A62F3901A425F1400D3AAA6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -594,9 +609,29 @@
 		6A7BF6641A4C040C00500A95 /* home_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_message@2x.png"; sourceTree = "<group>"; };
 		6A7BF6651A4C040C00500A95 /* home_compass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_compass@2x.png"; sourceTree = "<group>"; };
 		6A7BF6661A4C040C00500A95 /* home_compass1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_compass1@2x.png"; sourceTree = "<group>"; };
-		6ABFA0771A4D6AC600DA1354 /* ShowDLineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowDLineViewController.h; sourceTree = "<group>"; };
-		6ABFA0781A4D6AC600DA1354 /* ShowDLineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowDLineViewController.m; sourceTree = "<group>"; };
-		6ABFA0791A4D6AC600DA1354 /* ShowDLineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowDLineViewController.xib; sourceTree = "<group>"; };
+		6AEE219A1A5D177700D4D714 /* CarSetWarnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarSetWarnData.h; sourceTree = "<group>"; };
+		6AEE219B1A5D177700D4D714 /* CarSetWarnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarSetWarnData.m; sourceTree = "<group>"; };
+		6AEE219E1A5D206700D4D714 /* CarManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarManageViewController.h; sourceTree = "<group>"; };
+		6AEE219F1A5D206700D4D714 /* CarManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarManageViewController.m; sourceTree = "<group>"; };
+		6AEE21A01A5D206700D4D714 /* CarManageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CarManageViewController.xib; sourceTree = "<group>"; };
+		6AEE21A81A5D2F8900D4D714 /* car_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "car_add@2x.png"; sourceTree = "<group>"; };
+		6AEE21AB1A5D658100D4D714 /* CarInfoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarInfoData.h; sourceTree = "<group>"; };
+		6AEE21AC1A5D658100D4D714 /* CarInfoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarInfoData.m; sourceTree = "<group>"; };
+		6AEE21AF1A5D6EAD00D4D714 /* CustomUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUITabBarController.h; sourceTree = "<group>"; };
+		6AEE21B01A5D6EAD00D4D714 /* CustomUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomUITabBarController.m; sourceTree = "<group>"; };
+		6AEE21B11A5D6EAD00D4D714 /* OBDTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBDTableView.h; sourceTree = "<group>"; };
+		6AEE21B21A5D6EAD00D4D714 /* OBDTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBDTableView.m; sourceTree = "<group>"; };
+		6AEE21B31A5D6EAD00D4D714 /* OBDTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBDTableViewCell.h; sourceTree = "<group>"; };
+		6AEE21B41A5D6EAD00D4D714 /* OBDTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBDTableViewCell.m; sourceTree = "<group>"; };
+		6AEE21B51A5D6EAD00D4D714 /* ScreenCaptureImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenCaptureImage.h; sourceTree = "<group>"; };
+		6AEE21B61A5D6EAD00D4D714 /* ScreenCaptureImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenCaptureImage.m; sourceTree = "<group>"; };
+		6AEE21B71A5D6EAD00D4D714 /* ShareDLineTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDLineTitleView.h; sourceTree = "<group>"; };
+		6AEE21B81A5D6EAD00D4D714 /* ShareDLineTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDLineTitleView.m; sourceTree = "<group>"; };
+		6AEE21B91A5D6EAD00D4D714 /* ShareDLineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDLineViewController.h; sourceTree = "<group>"; };
+		6AEE21BA1A5D6EAD00D4D714 /* ShareDLineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDLineViewController.m; sourceTree = "<group>"; };
+		6AEE21BB1A5D6EAD00D4D714 /* ShareImage.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ShareImage.xcassets; sourceTree = "<group>"; };
+		6AEE21BD1A5D6EAD00D4D714 /* SphereMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphereMenu.h; sourceTree = "<group>"; };
+		6AEE21BE1A5D6EAD00D4D714 /* SphereMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SphereMenu.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,6 +639,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A57E2B91A5C21000030CA21 /* CoreMedia.framework in Frameworks */,
 				6A47FE6C1A5A840100A07651 /* MediaPlayer.framework in Frameworks */,
 				6A49F9C21A5645A90003E4D7 /* OpenGLES.framework in Frameworks */,
 				6A49F9C01A5645950003E4D7 /* CoreLocation.framework in Frameworks */,
@@ -976,6 +1012,7 @@
 		6A570CD01A523F0C00F6AC34 /* PersonCenter */ = {
 			isa = PBXGroup;
 			children = (
+				6AEE21A81A5D2F8900D4D714 /* car_add@2x.png */,
 				6A21C42E1A55391A0063ADC6 /* person_aboutus@2x.png */,
 				6A5710791A52504C00F6AC34 /* person_universal@2x.png */,
 				6A5710661A523F5000F6AC34 /* person_warnsetting@2x.png */,
@@ -1105,6 +1142,7 @@
 		6A62F38D1A425F1400D3AAA6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6A57E2B81A5C21000030CA21 /* CoreMedia.framework */,
 				6A47FE6B1A5A840100A07651 /* MediaPlayer.framework */,
 				6A49F9C11A5645A90003E4D7 /* OpenGLES.framework */,
 				6A49F9BF1A5645950003E4D7 /* CoreLocation.framework */,
@@ -1203,6 +1241,7 @@
 		6A768C981A4C2B5800A3C0A8 /* PersonlCenter */ = {
 			isa = PBXGroup;
 			children = (
+				6AEE219D1A5D203E00D4D714 /* MyCar */,
 				6A21C4211A5524720063ADC6 /* CarWarnSet */,
 				6A21C41F1A55239B0063ADC6 /* About */,
 				6A21C4201A55239B0063ADC6 /* UniversalSetting */,
@@ -1355,6 +1394,7 @@
 			isa = PBXGroup;
 			children = (
 				6A50C85B1A51012A00005CE4 /* home_circle@2x.png */,
+				6A57E2BA1A5C342A0030CA21 /* home_share@2x.png */,
 				6A7BF6571A4C040C00500A95 /* home_car@2x.png */,
 				6A7BF6581A4C040C00500A95 /* home_backgroud@2x.png */,
 				6A7BF65A1A4C040C00500A95 /* home_bottomback@2x.png */,
@@ -1473,6 +1513,8 @@
 		6A8CBAEB1A47FFEA0078AADC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6AEE21AA1A5D656E00D4D714 /* CarInfo */,
+				6AEE21991A5D175900D4D714 /* CarsetWarn */,
 				6A57E23E1A5B91D80030CA21 /* CarScanData */,
 				6A47FE6D1A5A8F1B00A07651 /* CarStatus */,
 				6A47FE4B1A5A374900A07651 /* HomeData */,
@@ -1519,11 +1561,67 @@
 		6ABFA0761A4D6A9000DA1354 /* ShowDLine */ = {
 			isa = PBXGroup;
 			children = (
-				6ABFA0771A4D6AC600DA1354 /* ShowDLineViewController.h */,
-				6ABFA0781A4D6AC600DA1354 /* ShowDLineViewController.m */,
-				6ABFA0791A4D6AC600DA1354 /* ShowDLineViewController.xib */,
+				6AEE21AE1A5D6EAD00D4D714 /* ShareDModel */,
 			);
 			path = ShowDLine;
+			sourceTree = "<group>";
+		};
+		6AEE21991A5D175900D4D714 /* CarsetWarn */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE219A1A5D177700D4D714 /* CarSetWarnData.h */,
+				6AEE219B1A5D177700D4D714 /* CarSetWarnData.m */,
+			);
+			path = CarsetWarn;
+			sourceTree = "<group>";
+		};
+		6AEE219D1A5D203E00D4D714 /* MyCar */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE219E1A5D206700D4D714 /* CarManageViewController.h */,
+				6AEE219F1A5D206700D4D714 /* CarManageViewController.m */,
+				6AEE21A01A5D206700D4D714 /* CarManageViewController.xib */,
+			);
+			path = MyCar;
+			sourceTree = "<group>";
+		};
+		6AEE21AA1A5D656E00D4D714 /* CarInfo */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE21AB1A5D658100D4D714 /* CarInfoData.h */,
+				6AEE21AC1A5D658100D4D714 /* CarInfoData.m */,
+			);
+			path = CarInfo;
+			sourceTree = "<group>";
+		};
+		6AEE21AE1A5D6EAD00D4D714 /* ShareDModel */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE21AF1A5D6EAD00D4D714 /* CustomUITabBarController.h */,
+				6AEE21B01A5D6EAD00D4D714 /* CustomUITabBarController.m */,
+				6AEE21B11A5D6EAD00D4D714 /* OBDTableView.h */,
+				6AEE21B21A5D6EAD00D4D714 /* OBDTableView.m */,
+				6AEE21B31A5D6EAD00D4D714 /* OBDTableViewCell.h */,
+				6AEE21B41A5D6EAD00D4D714 /* OBDTableViewCell.m */,
+				6AEE21B51A5D6EAD00D4D714 /* ScreenCaptureImage.h */,
+				6AEE21B61A5D6EAD00D4D714 /* ScreenCaptureImage.m */,
+				6AEE21B71A5D6EAD00D4D714 /* ShareDLineTitleView.h */,
+				6AEE21B81A5D6EAD00D4D714 /* ShareDLineTitleView.m */,
+				6AEE21B91A5D6EAD00D4D714 /* ShareDLineViewController.h */,
+				6AEE21BA1A5D6EAD00D4D714 /* ShareDLineViewController.m */,
+				6AEE21BB1A5D6EAD00D4D714 /* ShareImage.xcassets */,
+				6AEE21BC1A5D6EAD00D4D714 /* SphereMenu */,
+			);
+			path = ShareDModel;
+			sourceTree = "<group>";
+		};
+		6AEE21BC1A5D6EAD00D4D714 /* SphereMenu */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE21BD1A5D6EAD00D4D714 /* SphereMenu.h */,
+				6AEE21BE1A5D6EAD00D4D714 /* SphereMenu.m */,
+			);
+			path = SphereMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1603,6 +1701,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A21C4381A553E1B0063ADC6 /* AboutUsViewController.xib in Resources */,
+				6AEE21A21A5D206700D4D714 /* CarManageViewController.xib in Resources */,
 				6A5710751A523F5000F6AC34 /* person_integral@2x.png in Resources */,
 				6A21C41E1A54E4D30063ADC6 /* oil_default@2x.png in Resources */,
 				6A57E2491A5BDADC0030CA21 /* WebViewController.xib in Resources */,
@@ -1627,12 +1726,12 @@
 				6A3878C41A57DD5C00758F06 /* mapapi.bundle in Resources */,
 				6A50C85C1A51012A00005CE4 /* home_circle@2x.png in Resources */,
 				6A57E24E1A5BE44C0030CA21 /* icon-small-40@2x.png in Resources */,
+				6A57E2BB1A5C342A0030CA21 /* home_share@2x.png in Resources */,
 				6A7A8D641A4A51BA00EF24A5 /* BaseViewController.xib in Resources */,
 				6A47FE871A5AB0DF00A07651 /* oil_8@2x.png in Resources */,
 				6A7A8DF71A4A669200EF24A5 /* login_head2x.png in Resources */,
 				6A57298C1A567A9F009AEB29 /* 形状-34@2x.png in Resources */,
 				6A7A8DF51A4A64D000EF24A5 /* nav_background@2x.png in Resources */,
-				6ABFA07B1A4D6AC600DA1354 /* ShowDLineViewController.xib in Resources */,
 				6A7A8DE31A4A5E9A00EF24A5 /* LoginViewController.xib in Resources */,
 				6A303B891A54423800A62524 /* carstatus_summile@2x.png in Resources */,
 				6A303B861A54423800A62524 /* carstatus_track@2x.png in Resources */,
@@ -1644,6 +1743,7 @@
 				6A7A8D7F1A4A536B00EF24A5 /* MJRefresh.bundle in Resources */,
 				6A47FE881A5AB0DF00A07651 /* oil_9@2x.png in Resources */,
 				6A47FE811A5AB0DF00A07651 /* oil_2@2x.png in Resources */,
+				6AEE21C51A5D6EAD00D4D714 /* ShareImage.xcassets in Resources */,
 				6A57298B1A567A9F009AEB29 /* scan_fadongji@2x.png in Resources */,
 				6A7BF66D1A4C040C00500A95 /* home_signin@2x.png in Resources */,
 				6A5710781A523F5000F6AC34 /* Shape-337@2x.png in Resources */,
@@ -1655,6 +1755,7 @@
 				6A5710711A523F5000F6AC34 /* person_award@2x.png in Resources */,
 				6A5729791A5676D7009AEB29 /* CarStatuScanViewController.xib in Resources */,
 				6A57298D1A567A9F009AEB29 /* scan_section@2x.png in Resources */,
+				6AEE21A91A5D2F8900D4D714 /* car_add@2x.png in Resources */,
 				6A768C921A4C150700A3C0A8 /* ResetPsdViewController.xib in Resources */,
 				6A47FE891A5AB0DF00A07651 /* oil_point@2x.png in Resources */,
 				6A47FE5F1A5A64D800A07651 /* MessageTableViewCell.xib in Resources */,
@@ -1741,6 +1842,7 @@
 				6A7A8D9D1A4A5BAF00EF24A5 /* AFHTTPRequestOperationManager.m in Sources */,
 				6A47FE461A5A367000A07651 /* MJType.m in Sources */,
 				6A3878C91A580E7300758F06 /* UAProgressView.m in Sources */,
+				6AEE21AD1A5D658100D4D714 /* CarInfoData.m in Sources */,
 				6A7A8D851A4A536B00EF24A5 /* UIScrollView+MJRefresh.m in Sources */,
 				6A47FE471A5A367000A07651 /* MJTypeEncoding.m in Sources */,
 				6A21C4331A553A1F0063ADC6 /* Tool.m in Sources */,
@@ -1749,22 +1851,27 @@
 				6A768C9C1A4C2B7300A3C0A8 /* PersonCenterViewController.m in Sources */,
 				6A49F9C51A5649D10003E4D7 /* ToolClearCaches.m in Sources */,
 				6A768C911A4C150700A3C0A8 /* ResetPsdViewController.m in Sources */,
+				6AEE21C41A5D6EAD00D4D714 /* ShareDLineViewController.m in Sources */,
 				6A47FE401A5A367000A07651 /* MJArgument.m in Sources */,
 				6A7A8D801A4A536B00EF24A5 /* MJRefreshBaseView.m in Sources */,
 				6A62F39F1A425F1400D3AAA6 /* AppDelegate.m in Sources */,
 				6A21C42A1A5531DD0063ADC6 /* UniversalSetViewController.m in Sources */,
 				6A7A8DA21A4A5BAF00EF24A5 /* AFURLRequestSerialization.m in Sources */,
+				6AEE21C21A5D6EAD00D4D714 /* ScreenCaptureImage.m in Sources */,
 				6A57E2481A5BDADC0030CA21 /* WebViewController.m in Sources */,
 				6A49F9711A563EB70003E4D7 /* CarTrackViewController.m in Sources */,
 				6A47FE451A5A367000A07651 /* MJMethod.m in Sources */,
 				6A7A8D631A4A51BA00EF24A5 /* BaseViewController.m in Sources */,
 				6A47FE481A5A367000A07651 /* NSObject+MJCoding.m in Sources */,
+				6AEE21C31A5D6EAD00D4D714 /* ShareDLineTitleView.m in Sources */,
+				6AEE21C11A5D6EAD00D4D714 /* OBDTableViewCell.m in Sources */,
 				6A7A8D9E1A4A5BAF00EF24A5 /* AFHTTPSessionManager.m in Sources */,
 				6A7A8D9C1A4A5BAF00EF24A5 /* AFHTTPRequestOperation.m in Sources */,
 				6A76B62D1A56A1E000CC1C1A /* NSString+XXTEA.m in Sources */,
 				6A47FE441A5A367000A07651 /* MJMember.m in Sources */,
 				6A21C4251A55253B0063ADC6 /* CarWarnSetViewController.m in Sources */,
 				6A7A8D841A4A536B00EF24A5 /* UIScrollView+MJExtension.m in Sources */,
+				6AEE21BF1A5D6EAD00D4D714 /* CustomUITabBarController.m in Sources */,
 				6A47FE631A5A6FCE00A07651 /* DetailViewController.m in Sources */,
 				6A7A8DA01A4A5BAF00EF24A5 /* AFSecurityPolicy.m in Sources */,
 				6A47FE701A5A8F2E00A07651 /* CarStatusData.m in Sources */,
@@ -1775,7 +1882,6 @@
 				6A7BF64E1A4BAF4100500A95 /* UITextField+LeftImage.m in Sources */,
 				6A47FE431A5A367000A07651 /* MJIvar.m in Sources */,
 				6A69BB571A597D57001C91D9 /* ToolUMShare.m in Sources */,
-				6ABFA07A1A4D6AC600DA1354 /* ShowDLineViewController.m in Sources */,
 				6A47FE541A5A3E7700A07651 /* UIWebView+AFNetworking.m in Sources */,
 				6A47FE411A5A367000A07651 /* MJConst.m in Sources */,
 				6A7A8DEC1A4A645100EF24A5 /* RegistViewController.m in Sources */,
@@ -1783,6 +1889,8 @@
 				6A7A8D9F1A4A5BAF00EF24A5 /* AFNetworkReachabilityManager.m in Sources */,
 				6A7A8DA41A4A5BAF00EF24A5 /* AFURLSessionManager.m in Sources */,
 				6A7A8D861A4A536B00EF24A5 /* UIView+MJExtension.m in Sources */,
+				6AEE21C01A5D6EAD00D4D714 /* OBDTableView.m in Sources */,
+				6AEE21C61A5D6EAD00D4D714 /* SphereMenu.m in Sources */,
 				6A7A8D7E1A4A536B00EF24A5 /* MBProgressHUD.m in Sources */,
 				6A69BB451A59303B001C91D9 /* WeiBoViewController.m in Sources */,
 				6A47FE491A5A367000A07651 /* NSObject+MJKeyValue.m in Sources */,
@@ -1794,6 +1902,7 @@
 				6A47FE591A5A443F00A07651 /* MessageViewController.m in Sources */,
 				6A768C961A4C26AB00A3C0A8 /* HomeViewController.m in Sources */,
 				6A47FE4A1A5A367000A07651 /* NSObject+MJMember.m in Sources */,
+				6AEE219C1A5D177700D4D714 /* CarSetWarnData.m in Sources */,
 				6A76B62C1A56A1E000CC1C1A /* GTMBase64.m in Sources */,
 				6A7A8DA31A4A5BAF00EF24A5 /* AFURLResponseSerialization.m in Sources */,
 				6A62F39B1A425F1400D3AAA6 /* main.m in Sources */,
@@ -1802,6 +1911,7 @@
 				6A47FE5E1A5A64D800A07651 /* MessageTableViewCell.m in Sources */,
 				6A57E2411A5B91E60030CA21 /* CarScanData.m in Sources */,
 				6A69BB5A1A598D3C001C91D9 /* BaiDuMapNeed.mm in Sources */,
+				6AEE21A11A5D206700D4D714 /* CarManageViewController.m in Sources */,
 				6A76B6241A569E6D00CC1C1A /* ToolRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

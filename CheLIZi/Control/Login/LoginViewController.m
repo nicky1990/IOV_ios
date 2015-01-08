@@ -12,8 +12,9 @@
 #import "ResetPsdViewController.h"
 #import "HomeViewController.h"
 #import "PersonCenterViewController.h"
-#import "ShowDLineViewController.h"
 #import "CustomView.h"
+#import "ShareDLineViewController.h"
+
 
 @interface LoginViewController ()<UITextFieldDelegate,ToolRequestDelegate>
 {
@@ -38,7 +39,7 @@
     // Do any additional setup after loading the view from its nib.
     [self customNavigationButton];
     [self setUI];
-    [self createTabBar];
+    
 }
 
 #pragma mark 控件属性
@@ -149,27 +150,16 @@
     HomeViewController *homeVC = [[HomeViewController alloc]init];
     UINavigationController *homeNav = [[UINavigationController alloc]initWithRootViewController:homeVC];
     [homeNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-//    homeVC.tabBarItem.title = @"首页";
-//    homeVC.tabBarItem.image = [UIImage imageNamed:@"home_home"];
-//    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_home"];
-    
+
     PersonCenterViewController *personCenterVC = [[PersonCenterViewController alloc]init];
     UINavigationController *personCenterNav = [[UINavigationController alloc]initWithRootViewController:personCenterVC];
     [personCenterNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-//    personCenterVC.tabBarItem.title = @"个人中心";
-//    personCenterVC.tabBarItem.image = [UIImage imageNamed:@"home_person"];
-//    personCenterVC.tabBarItem.selectedImage = [UIImage imageNamed:@"home_person"];
+
     
-    ShowDLineViewController *showDLineVC = [[ShowDLineViewController alloc]init];
-    UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:showDLineVC];
+    ShareDLineViewController *shareDLineViewController = [[ShareDLineViewController alloc]init];
+    UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:shareDLineViewController];
     [showDLineNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
-//    showDLineNav.tabBarItem.image = [UIImage imageNamed:@"home_compass"];
-    
     _tabBarC = [[UITabBarController alloc]init];
-//    _tabBarC.tabBar.backgroundImage = [UIImage imageNamed:@"home_bottomback"];
-//    _tabBarC.tabBar.translucent  = NO;
-//    _tabBarC.tabBar.tintColor = [UIColor greenColor];
-    
     [_tabBarC setViewControllers:[NSArray arrayWithObjects:homeNav,showDLineNav,personCenterNav, nil]];
 }
 
@@ -181,6 +171,7 @@
     [UserInfo sharedUserInfo].user_id = userid;
     [UserInfo sharedUserInfo].userS_id = usersid;
     [UserInfo sharedUserInfo].userAccess_token = useraccess_token;
+    [self createTabBar];
     [self.navigationController pushViewController:_tabBarC animated:YES];
 }
 

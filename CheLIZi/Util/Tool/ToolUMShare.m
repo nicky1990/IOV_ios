@@ -21,5 +21,8 @@
                                      shareImage:image
                                 shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,UMShareToWechatSession,UMShareToWechatTimeline,nil]
                                        delegate:controller];
+    [[UMSocialDataService defaultDataService] requestAddFollow:UMShareToSina followedUsid:@[@"5455246307"] completion:nil];
+//    [UMSocialConfig setFollowWeiboUids:@{UMShareToSina:@"5455246307"}];
+    
 }
 @end

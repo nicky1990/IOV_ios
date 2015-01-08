@@ -9,7 +9,8 @@
 #ifndef CheLIZi_Common_h
 #define CheLIZi_Common_h
 
-#define BASEURL @"http://192.168.8.146/api.php"
+//#define BASEURL @"http://192.168.8.146/api.php"
+#define BASEURL @"http://api.gulucar.cn:8081/api.php"
 
 #define SYSTEM_VERSION8 ([[[UIDevice currentDevice] systemVersion] floatValue]>= 8.0)
 

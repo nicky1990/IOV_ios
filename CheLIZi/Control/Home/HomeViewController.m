@@ -14,6 +14,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "MessageViewController.h"
 #import "WebViewController.h"
+#import "ShareDLineViewController.h"
 
 #define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?45:25)
 #define kButtonHeight (([[UIScreen mainScreen] bounds].size.height == 568)?125:81)
@@ -31,7 +32,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-    [self getHomeData];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -45,6 +46,7 @@
     [self customTab];
     // Do any additional setup after loading the view from its nib.
     [self initUI];
+    [self getHomeData];
 }
 
 -(void)initUI{
@@ -175,6 +177,7 @@
 //    view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"home_bottomback"]];
     view.backgroundColor = RGBCOLOR(79, 92, 98);
     UIButton *showDLineBtn = [CustomView getButtonWithFrame:CGRectMake(kW_SreenWidth/2.0-32.5, -15, 56, 56) withImage:@"home_compass" withTitle:nil withTarget:self andAction:@selector(showDLineBtnClick)];
+    showDLineBtn.tag = 399;
     showDLineBtn.layer.cornerRadius = 28;
     showDLineBtn.layer.backgroundColor = [RGBCOLOR(79, 92, 98)CGColor];
     showDLineBtn.layer.borderWidth = 2;
@@ -192,12 +195,33 @@
     [self.tabBarController.view addSubview:view];
 }
 -(void)homeBtnClick{
+    UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
+    [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
+    [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
     self.tabBarController.selectedIndex = 0;
 }
 -(void)showDLineBtnClick{
-    self.tabBarController.selectedIndex = 1;
+    if (self.tabBarController.selectedIndex == 1) {
+        NSArray *array = self.tabBarController.viewControllers;
+        for (UINavigationController *nav in array) {
+            if ([nav.visibleViewController isMemberOfClass:[ShareDLineViewController class]]) {
+                ShareDLineViewController *share = (ShareDLineViewController *)nav.visibleViewController;
+                [share captureScreen];
+            }
+        }
+        
+    }else{
+        self.tabBarController.selectedIndex = 1;
+        UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
+        [btn setImage:[UIImage imageNamed:@"home_share"] forState:UIControlStateNormal];
+        [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_share"]]];
+    }
+    
 }
 -(void)personBtnClick{
+    UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
+    [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
+    [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
     self.tabBarController.selectedIndex = 2;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{

@@ -64,10 +64,11 @@
     statusTime--;
     _getVerifyCodeBtn.userInteractionEnabled = NO;
     if (statusTime == 0 ) {
+        _getVerifyCodeBtn.userInteractionEnabled = YES;
         [NSRunLoop cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateTime) object:nil];
         _timeLabel.text = @"";
         statusTime = 60;
-        _getVerifyCodeBtn.userInteractionEnabled = YES;
+        
     }else{
         NSString *title = [NSString stringWithFormat:@"(%d)",statusTime];
         _timeLabel.text = title;
