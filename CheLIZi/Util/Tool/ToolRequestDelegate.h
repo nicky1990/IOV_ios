@@ -10,6 +10,7 @@
 
 @protocol ToolRequestDelegate <NSObject>
 
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag;
-
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag;
+@optional
+-(void)requestFailed:(NSDictionary *)dic withTag:(NSInteger)tag;
 @end

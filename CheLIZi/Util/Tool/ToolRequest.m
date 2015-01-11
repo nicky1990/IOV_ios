@@ -19,26 +19,36 @@
         [hud hide:YES];
         NSLog(@"%@",responseObject);
         NSDictionary *dic = responseObject;
+        self.delegate = vc;
         if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
-            self.delegate = vc;
-            if ([self.delegate respondsToSelector:@selector(requestSucceed:wihtTag:)]) {
-                [self.delegate requestSucceed:dic wihtTag:tag];
+            if ([self.delegate respondsToSelector:@selector(requestSucceed:withTag:)]) {
+                [self.delegate requestSucceed:dic withTag:tag];
             }
-            
         }else{
             NSNumber *errCode = [dic objectForKey:@"error_code"];
             if ([errCode intValue] == 1004) {
                 [self startRequestPostWith:vc withParameters:paraDic withTag:tag];
             }else{
                 NSString *failMessage = [dic objectForKey:@"error_msg"];
+                if ([self.delegate respondsToSelector:@selector(requestFailed:withTag:)]) {
+                    [self.delegate requestFailed:dic withTag:tag];
+                }
                 [Tool showAlertMessage:failMessage];
             }
             
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
-        NSLog(@"失败%@",error);
-        [Tool showAlertMessage:@"网络请求失败，请重试！"];
+        NSLog(@"失败代码：%ld",error.code);
+        [Tool showAlertMessage:error.description];
+        
+//        if ((error.code>=400) || (error.code < 500)) {
+//            [Tool showAlertMessage:@"请求错误！"];
+//        }else if (error.code >=500){
+//            [Tool showAlertMessage:@"服务器崩了！"];
+//        }else{
+//            [Tool showAlertMessage:@"网络连接失败，请重试！"];
+//        }
     }];
 }
 
@@ -76,6 +86,7 @@
 +(AFHTTPRequestOperationManager *)getRequestManager{
     AFHTTPRequestOperationManager *operationManager = [AFHTTPRequestOperationManager manager];
     operationManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    
     operationManager.requestSerializer.timeoutInterval = 10;
     return operationManager;
 }

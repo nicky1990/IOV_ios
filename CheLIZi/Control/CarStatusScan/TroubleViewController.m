@@ -66,7 +66,7 @@
     
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 15, 150, 11)];
     label.font = [UIFont fontWithName:@"Heiti SC" size:10];
-    label.text = [NSString stringWithFormat:@"本次有%ld条故障码",self.troubleArray.count];
+    label.text = [NSString stringWithFormat:@"本次有%ld条故障码",(unsigned long)self.troubleArray.count];
     label.textColor = RGBCOLOR(102, 102, 102);
     [view addSubview:label];
     

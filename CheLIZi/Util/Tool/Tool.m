@@ -25,19 +25,29 @@
             result[12], result[13], result[14], result[15]
             ];
 }
-
-//获取时间戳
+/*
+ *获取时间戳
+ */
 +(NSNumber *)getCurrentTimeStamp{
     NSDate *datenow = [NSDate date];
     NSTimeZone *zone = [NSTimeZone systemTimeZone];
     NSInteger interval = [zone secondsFromGMTForDate:datenow];
     NSDate *localeDate = [datenow  dateByAddingTimeInterval: interval];
-    NSLog(@"%@", localeDate);
+//    NSLog(@"%@", localeDate);
     int timeInterval = [localeDate timeIntervalSince1970];
-    NSLog(@"timeSp:%d",timeInterval); //时间戳的值
-    NSDate *a = [NSDate dateWithTimeIntervalSince1970:timeInterval];
-    NSLog(@"%@",a);
-    
+//    NSLog(@"timeSp:%d",timeInterval); //时间戳的值
+//    NSDate *a = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+//    NSLog(@"%@",a);
+    return [NSNumber numberWithInt:timeInterval];
+}
+/*
+ *date转时间戳
+ */
++(NSNumber *)dateTransTimeStamp:(NSDate *)datenow{
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate:datenow];
+    NSDate *localeDate = [datenow  dateByAddingTimeInterval: interval];
+    int timeInterval = [localeDate timeIntervalSince1970];
     return [NSNumber numberWithInt:timeInterval];
 }
 

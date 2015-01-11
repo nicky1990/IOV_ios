@@ -17,7 +17,7 @@
     [UMSocialData defaultData].extConfig.wxMessageType = UMSocialWXMessageTypeImage;
     [UMSocialSnsService presentSnsIconSheetView:controller
                                     appKey:@"54aa9a0afd98c5b0bd000352"
-                                      shareText:@"你要分享的文字"
+                                      shareText:@""
                                      shareImage:image
                                 shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,UMShareToWechatSession,UMShareToWechatTimeline,nil]
                                        delegate:controller];

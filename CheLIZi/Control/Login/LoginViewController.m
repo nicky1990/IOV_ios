@@ -35,10 +35,33 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"isLogin"]) {
+        [self autoLogin];
+    }
+    
     self.title = @"登录";
     // Do any additional setup after loading the view from its nib.
     [self customNavigationButton];
     [self setUI];
+    
+}
+-(void)autoLogin{
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults]objectForKey:@"devicetoken"];
+    NSString *phoneNum = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
+    NSString *password = [[NSUserDefaults standardUserDefaults]objectForKey:@"passwordDefault"];
+    NSDictionary *paraDic = @{@"c":@"public",
+                              @"a":@"login",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"device_system":kDEVICE_SYSTEM,
+                              @"device_token":deviceToken,
+                              @"app_key":kAPP_KEY,
+                              @"user_name":phoneNum,
+                              @"signature":kSIGNATURE,
+                              @"password":[Tool teaEncryptWithString:password]
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
+    
     
 }
 
@@ -46,6 +69,9 @@
 -(void)setUI{
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"] != nil) {
         self.userPhoneNum.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
+    }
+    if ([[NSUserDefaults standardUserDefaults]objectForKey:@"passwordDefault"] != nil) {
+        self.userPassword.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"passwordDefault"];
     }
     self.userHead.layer.cornerRadius = self.userHead.frame.size.width/2.0;
     self.userHead.layer.masksToBounds = YES;
@@ -122,6 +148,8 @@
         }else{
             NSUserDefaults *phoneNumDefault = [NSUserDefaults standardUserDefaults];
             [phoneNumDefault setObject:phoneNum forKey:@"phoneNumberDefault"];
+            [phoneNumDefault setObject:password forKey:@"passwordDefault"];
+            [phoneNumDefault setBool:YES forKey:@"isLogin"];
             [phoneNumDefault synchronize];
             NSDictionary *paraDic = @{@"c":@"public",
                                       @"a":@"login",
@@ -164,7 +192,7 @@
 }
 
 #pragma mark Request Succeed
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
     NSNumber *userid = [dic objectForKey:@"user_id"];
     NSString *usersid = [dic objectForKey:@"sid"];
     NSString *useraccess_token = [dic objectForKey:@"access_token"];

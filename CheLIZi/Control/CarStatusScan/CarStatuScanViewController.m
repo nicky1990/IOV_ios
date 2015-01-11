@@ -375,10 +375,9 @@
     ToolRequest *toolRequest = [[ToolRequest alloc]init];
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
 }
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
     NSDictionary *dataDic = [dic objectForKey:@"data"];
     _carScanData = [CarScanData objectWithKeyValues:dataDic];
-    NSLog(@"%@",_carScanData);
     dispatch_async(dispatch_get_main_queue(), ^{
         _scoreLabel.text = [NSString stringWithFormat:@"%d",_carScanData.score];
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:_carScanData.scan_time];

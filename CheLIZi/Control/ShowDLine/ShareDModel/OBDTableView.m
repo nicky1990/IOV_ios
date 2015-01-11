@@ -10,7 +10,9 @@
 #import "OBDTableViewCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface OBDTableView ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate>
+#define iOS(version) (([[[UIDevice currentDevice] systemVersion] intValue] >= version)?1:0)
+
+@interface OBDTableView ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate,UIActionSheetDelegate>
 {
     int with;
     int height;
@@ -20,6 +22,9 @@
     //文本输入Controller
     __block UIViewController *inputController;
     NSInteger choseRow;
+    
+    //图片选择字典
+    NSDictionary *imageDic;
 }
 @end
 
@@ -103,10 +108,10 @@
         cell = [[OBDTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                            reuseIdentifier:nil];
         cell.accessoryType = UITableViewCellAccessoryNone;
-        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width*(680.0/750.0),
-                                                                  self.frame.size.width*(35.0/750.0),
-                                                                  self.frame.size.width*(48.0/750.0),
-                                                                  self.frame.size.width*(62.0/750.0))];
+        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width*(675.0/750.0),
+                                                                  self.frame.size.width*(25.0/750.0),
+                                                                  self.frame.size.width*(58.0/750.0),
+                                                                  self.frame.size.width*(82.0/750.0))];
         [btn setImage:[UIImage imageNamed:@"Chevron"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(cellPressed:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:btn];
@@ -172,80 +177,113 @@
 
 - (void)cellPressed:(id)sender
 {
-    UITableViewCell * cell = (UITableViewCell *)[sender superview];
+    id cellid = [sender superview];
+    while(![cellid isKindOfClass:[UITableViewCell class]])
+    {
+        cellid = [cellid superview];
+    }
+    UITableViewCell * cell = (UITableViewCell *)cellid;
     NSIndexPath *path = [tableView indexPathForCell:cell];
     pessRow = [path row];
-
-    __block OBDTableView *tmp = self;
-    __block UITableView *block_tableView = tableView;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"上传照片"
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction *action) {
-                                                [tmp openPhotoMenu];
-                                            }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"编辑"
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction *action) {
-                                                inputController = [[UIViewController alloc]init];
-                                                choseRow = path.row;
-                                                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 30, self.frame.size.width, self.frame.size.height)];
-                                                textView.textColor = [UIColor blackColor];
-                                                textView.font = [UIFont fontWithName:@"Arial" size:18.0];
-                                                textView.delegate = self;
-                                                textView.backgroundColor = [UIColor whiteColor];
-                                                [inputController.view addSubview:textView];
-                                                textView.text = ((OBDData*)[_list objectAtIndex:path.row]).content;
-                                                UIViewController *viewController = [self findViewController:self];
-                                                [viewController presentModalViewController:inputController animated:YES];
-                                                [textView becomeFirstResponder];
-                                            }]];
+    choseRow = path.row;
     
-    [alert addAction:[UIAlertAction actionWithTitle:@"删除"
-                                              style:UIAlertActionStyleDestructive
-                                            handler:^(UIAlertAction *action) {
-                                                [_list removeObjectAtIndex:path.row];
-                                                NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
-                                                [block_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
-                                            }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消"
-                                              style:UIAlertActionStyleCancel
-                                            handler:^(UIAlertAction *action) {
-                                                NSLog(@"Action 3 Handler Called");
-                                            }]];
-    UIViewController *viewController = [self findViewController:self];
-    [viewController presentViewController:alert animated:YES completion:nil];
+    if(!iOS(8))
+    {
+        UIActionSheet* mySheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:@"上传照片"
+                                  otherButtonTitles:@"编辑",@"删除", nil];
+        mySheet.tag = 2;
+        [mySheet showInView:self];
+    }
+    else
+    {
+        __block OBDTableView *tmp = self;
+        __block UITableView *block_tableView = tableView;
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:@"上传照片"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    [tmp openPhotoMenu];
+                                                }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"编辑"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    inputController = [[UIViewController alloc]init];
+                                                    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 30, self.frame.size.width, self.frame.size.height)];
+                                                    textView.textColor = [UIColor blackColor];
+                                                    textView.font = [UIFont fontWithName:@"Arial" size:18.0];
+                                                    textView.delegate = self;
+                                                    textView.backgroundColor = [UIColor whiteColor];
+                                                    [inputController.view addSubview:textView];
+                                                    textView.text = ((OBDData*)[_list objectAtIndex:path.row]).content;
+                                                    UIViewController *viewController = [self findViewController:self];
+                                                    [viewController presentModalViewController:inputController animated:YES];
+                                                    [textView becomeFirstResponder];
+                                                }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"删除"
+                                                  style:UIAlertActionStyleDestructive
+                                                handler:^(UIAlertAction *action) {
+                                                    [_list removeObjectAtIndex:choseRow];
+                                                    NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
+                                                    [block_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
+                                                }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction *action) {
+                                                    NSLog(@"Action 3 Handler Called");
+                                                }]];
+        UIViewController *viewController = [self findViewController:self];
+        [viewController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 -(void)pressedCellImage:(NSNotification *)notification
 {
-    __block OBDTableView *tmp = self;
-    __block UITableView *block_tableView = tableView;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"删除"
-                                              style:UIAlertActionStyleDestructive
-                                            handler:^(UIAlertAction *action) {
-                                                NSDictionary *dic = [notification userInfo];
-                                                NSNumber *number = [dic objectForKey:@"number"];
-                                                UITableViewCell *cell = [dic objectForKey:@"cell"];
-                                                NSIndexPath *path = [block_tableView indexPathForCell:cell];
-                                                NSInteger n = [number integerValue];
-                                                OBDData *data = [tmp.list objectAtIndex:path.row];
-                                                [data.imageArray removeObjectAtIndex:n];
-                                                NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
-                                                [block_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
-                                            }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消"
-                                              style:UIAlertActionStyleCancel
-                                            handler:^(UIAlertAction *action) {
-                                                NSLog(@"Action 3 Handler Called");
-                                            }]];
-    UIViewController *viewController = [self findViewController:self];
-    [viewController presentViewController:alert animated:YES completion:nil];
+    imageDic = [notification userInfo];
+    if(!iOS(8))
+    {
+        UIActionSheet* mySheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:@"删除"
+                                  otherButtonTitles: nil];
+        mySheet.tag = 3;
+        [mySheet showInView:self];
+    }
+    else
+    {
+        __block OBDTableView *tmp = self;
+        __block UITableView *block_tableView = tableView;
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:@"删除"
+                                                  style:UIAlertActionStyleDestructive
+                                                handler:^(UIAlertAction *action) {
+                                                    NSNumber *number = [imageDic objectForKey:@"number"];
+                                                    UITableViewCell *cell = [imageDic objectForKey:@"cell"];
+                                                    NSIndexPath *path = [block_tableView indexPathForCell:cell];
+                                                    NSInteger n = [number integerValue];
+                                                    OBDData *data = [tmp.list objectAtIndex:path.row];
+                                                    [data.imageArray removeObjectAtIndex:n];
+                                                    NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
+                                                    [block_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
+                                                }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction *action) {
+                                                    NSLog(@"Action 3 Handler Called");
+                                                }]];
+        UIViewController *viewController = [self findViewController:self];
+        [viewController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (UIViewController *)findViewController:(UIView *)sourceView
@@ -266,28 +304,41 @@
 #pragma mark UIImagePickerController Methods
 -(void)openPhotoMenu
 {
-    __block OBDTableView *tmp = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"打开照相机"
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction *action) {
-                                                [tmp takePhoto];
-                                            }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"从手机相册获取"
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction *action) {
-                                                [tmp LocalPhoto];
-                                            }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消"
-                                              style:UIAlertActionStyleCancel
-                                            handler:^(UIAlertAction *action) {
-                                                NSLog(@"Action 3 Handler Called");
-                                            }]];
-    UIViewController *viewController = [self findViewController:self];
-    [viewController presentViewController:alert animated:YES completion:nil];
-    
+    if(!iOS(8))
+    {
+        UIActionSheet* mySheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  destructiveButtonTitle:@"打开照相机"
+                                  otherButtonTitles:@"从手机相册获取", nil];
+        mySheet.tag = 1;
+        [mySheet showInView:self];
+    }
+    else
+    {
+        __block OBDTableView *tmp = self;
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:@"打开照相机"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    [tmp takePhoto];
+                                                }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"从手机相册获取"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    [tmp LocalPhoto];
+                                                }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction *action) {
+                                                    NSLog(@"Action 3 Handler Called");
+                                                }]];
+        UIViewController *viewController = [self findViewController:self];
+        [viewController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 //打开相机开始拍照
@@ -322,9 +373,7 @@
 
 //选中相片回调
 -(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-
 {
-    
     NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
     if ([type isEqualToString:@"public.image"])
     {
@@ -336,6 +385,72 @@
     [picker dismissModalViewControllerAnimated:YES];
 }
 
+
+#pragma mark UIActionSheet Methods
+- (void)actionSheetCancel:(UIActionSheet *)actionSheet{
+    //
+}
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSLog(@"%ld,%ld",(long)actionSheet.tag,(long)buttonIndex);
+    if(actionSheet.tag == 2)
+    {
+        if(buttonIndex == 0)
+        {
+            [self openPhotoMenu];
+        }
+        else if (buttonIndex == 1)
+        {
+            inputController = [[UIViewController alloc]init];
+            UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 30, self.frame.size.width, self.frame.size.height)];
+            textView.textColor = [UIColor blackColor];
+            textView.font = [UIFont fontWithName:@"Arial" size:18.0];
+            textView.delegate = self;
+            textView.backgroundColor = [UIColor whiteColor];
+            [inputController.view addSubview:textView];
+            textView.text = ((OBDData*)[_list objectAtIndex:choseRow]).content;
+            UIViewController *viewController = [self findViewController:self];
+            [viewController presentModalViewController:inputController animated:YES];
+            [textView becomeFirstResponder];
+        }
+        else if (buttonIndex == 2)
+        {
+            [_list removeObjectAtIndex:choseRow];
+            NSIndexPath *te=[NSIndexPath indexPathForRow:choseRow inSection:0];
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }
+    else if(actionSheet.tag == 1)
+    {
+        if(buttonIndex == 0)
+        {
+            [self takePhoto];
+        }
+        else if(buttonIndex == 1)
+        {
+            [self LocalPhoto];
+        }
+    }
+    else if(actionSheet.tag == 3)
+    {
+        if(buttonIndex == 0)
+        {
+            NSNumber *number = [imageDic objectForKey:@"number"];
+            UITableViewCell *cell = [imageDic objectForKey:@"cell"];
+            NSIndexPath *path = [tableView indexPathForCell:cell];
+            NSInteger n = [number integerValue];
+            OBDData *data = [self.list objectAtIndex:path.row];
+            [data.imageArray removeObjectAtIndex:n];
+            NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    //
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex{
+    //
+}
 
 @end
 

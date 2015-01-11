@@ -9,10 +9,12 @@
 #import "CarManageViewController.h"
 #import "WebViewController.h"
 #import "CarInfoData.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface CarManageViewController ()<ToolRequestDelegate>
 {
     NSMutableArray *_carsArray;
+    NSInteger currentIndex;
 }
 @end
 
@@ -25,6 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    currentIndex = -1;
     self.title = @"我的爱车";
     _carsArray = [[NSMutableArray alloc]init];
     
@@ -50,11 +53,14 @@
         carCell.imageView.image = [UIImage imageNamed:@"car_add"];
     }else{
         CarInfoData *carInfo = (CarInfoData*)_carsArray[indexPath.row];
+        if (carInfo.default_car == 1) {
+            currentIndex = indexPath.row;
+            [UserInfo sharedUserInfo].car_id = carInfo.car_id;
+        }
         carCell.textLabel.text = [NSString stringWithFormat:@"%@(%@)",carInfo.car_no,carInfo.brand_name];
-        carCell.imageView.image = [UIImage imageNamed:@"person_carlogo"];
+        [carCell.imageView setImageWithURL:[NSURL URLWithString:carInfo.brand_logo] placeholderImage:[UIImage imageNamed:@"person_carlogo"]];
+//        carCell.imageView.image = [UIImage imageNamed:@"person_carlogo"];
     }
-    
-    
     return carCell;
 }
 
@@ -63,7 +69,7 @@
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return @"删除";
+    return @"解绑";
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -82,17 +88,34 @@
         NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=addCar&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
         webVC.urlStr = urtStr;
         [self.navigationController pushViewController:webVC animated:YES];
+    }else{
+        if(indexPath.row == currentIndex){
+            return;
+        }
+        NSIndexPath *oldIndexPath = [NSIndexPath indexPathForRow:currentIndex inSection:0];
+        UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
+        if (newCell.accessoryType == UITableViewCellAccessoryNone) {
+            newCell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        
+        UITableViewCell *oldCell = [tableView cellForRowAtIndexPath:oldIndexPath];
+        if (oldCell.accessoryType == UITableViewCellAccessoryCheckmark) {
+            oldCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        currentIndex=indexPath.row;
+        [self setDafaultCar:(CarInfoData *)_carsArray[indexPath.row]];
     }
    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.1;
 }
-
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"点击了删除");
+    [Tool showAlertMessage:@"您不能解绑"];
+//    [self deleteCar:(CarInfoData *)_carsArray[indexPath.row]];
 }
 
+#pragma  mark Get Car List
 -(void)getCarsData{
     NSDictionary *paraDic = @{@"c":@"car",
                               @"a":@"lists",
@@ -104,18 +127,57 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
     
 }
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
-    NSDictionary *dataDic = [dic objectForKey:@"data"];
-    [_carsArray removeAllObjects];
-    for (NSDictionary *temp in dataDic) {
-        CarInfoData *carInfoData = [CarInfoData objectWithKeyValues:temp];
-        [_carsArray addObject:carInfoData];
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.carTableView reloadData];
-    });
-
+-(void)setDafaultCar:(CarInfoData *)carInfo{
+    NSDictionary *paraDic = @{@"c":@"car",
+                              @"a":@"select",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"car_id":[NSNumber numberWithInt:carInfo.car_id]
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG+1];
 }
+#pragma mark Delet Car
+-(void)deleteCar:(CarInfoData *)carInfo{
+    NSDictionary *paraDic = @{@"c":@"car",
+                              @"a":@"obdRelease",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"car_id":[NSNumber numberWithInt:carInfo.car_id]
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG+1];
+}
+
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
+     if(tag == (REQUESTTAG + 1)) {
+        [self getCarsData];
+    }else{
+        NSDictionary *dataDic = [dic objectForKey:@"data"];
+        [_carsArray removeAllObjects];
+        for (NSDictionary *temp in dataDic) {
+            CarInfoData *carInfoData = [CarInfoData objectWithKeyValues:temp];
+            [_carsArray addObject:carInfoData];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.carTableView reloadData];
+        });
+    }
+}
+
+- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == currentIndex){
+        return UITableViewCellAccessoryCheckmark;
+    }
+    else{
+        return UITableViewCellAccessoryNone;
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -29,7 +29,14 @@
     NSString * libPath = [array2 objectAtIndex:0]; //Library目录
     
     NSString *cachePath = [NSString stringWithFormat:@"%@/Caches",libPath];
-    [[NSFileManager defaultManager]removeItemAtPath:cachePath error:nil];
+    
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSArray *contents = [fileManager contentsOfDirectoryAtPath:cachePath error:NULL];
+    NSEnumerator *e = [contents objectEnumerator];
+    NSString *filename;
+    while ((filename = [e nextObject])) {
+        [fileManager removeItemAtPath:[cachePath stringByAppendingPathComponent:filename] error:NULL];
+    }
 }
 
 //单个文件的大小

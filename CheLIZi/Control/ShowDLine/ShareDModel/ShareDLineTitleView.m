@@ -9,8 +9,10 @@
 #import "ShareDLineTitleView.h"
 #import "AppDelegate.h"
 
+#define iOS(version) (([[[UIDevice currentDevice] systemVersion] intValue] >= version)?1:0)
+
 //标准高度为116/667 宽度自适应
-@interface ShareDLineTitleView ()
+@interface ShareDLineTitleView ()<UIActionSheetDelegate>
 {
     int with;
     int height;
@@ -30,6 +32,7 @@
     //日期
     __block NSDate *date;
     UILabel *dateLabel;
+    UIDatePicker* datePicker;
 }
 @end
 
@@ -178,26 +181,61 @@
     else
     {
 
-        UIAlertController* alertVc=[UIAlertController alertControllerWithTitle:@"\n\n\n\n\n\n\n\n\n\n\n" message:nil preferredStyle:(UIAlertControllerStyleActionSheet)];
-        UIDatePicker* datePicker=[[UIDatePicker alloc]init];
-        datePicker.date = date;
+        if(!iOS(8))
+        {
+            UIActionSheet* alertVc = [[UIActionSheet alloc]initWithTitle:@"\n\n\n\n\n\n\n\n\n\n\n" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确认" otherButtonTitles:nil];
+            if(datePicker == nil)datePicker=[[UIDatePicker alloc]init];
+            datePicker.date = date;
+            datePicker.datePickerMode = UIDatePickerModeDate;
+            [alertVc showInView:self];
+            [alertVc addSubview:datePicker];
+            return;
+        }
+        else
+        {
+            UIAlertController* alertVc=[UIAlertController alertControllerWithTitle:@"\n\n\n\n\n\n\n\n\n\n\n" message:nil preferredStyle:(UIAlertControllerStyleActionSheet)];
+            if(datePicker == nil)datePicker=[[UIDatePicker alloc]init];
+            datePicker.date = date;
 
-        __block UILabel *block_dateLabel = dateLabel;
-        datePicker.datePickerMode = UIDatePickerModeDate;
-        UIAlertAction* ok=[UIAlertAction actionWithTitle:@"确认" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction *action) {
-            date=[datePicker date];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
-            NSString *dateAndTime = [dateFormatter stringFromDate:date];
-            [block_dateLabel setText:dateAndTime];
-        }];
-        UIAlertAction* no=[UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleDefault) handler:nil];
-        [alertVc.view addSubview:datePicker];
-        [alertVc addAction:ok];
-        [alertVc addAction:no];
-        UIViewController *viewController = [self findViewController:self.superview];
-        [viewController presentViewController:alertVc animated:YES completion:nil];
+            __block UILabel *block_dateLabel = dateLabel;
+            datePicker.datePickerMode = UIDatePickerModeDate;
+            UIAlertAction* ok=[UIAlertAction actionWithTitle:@"确认" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction *action) {
+                date=[datePicker date];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
+                NSString *dateAndTime = [dateFormatter stringFromDate:date];
+                [block_dateLabel setText:dateAndTime];
+            }];
+            UIAlertAction* no=[UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleDefault) handler:nil];
+            [alertVc.view addSubview:datePicker];
+            [alertVc addAction:ok];
+            [alertVc addAction:no];
+            UIViewController *viewController = [self findViewController:self.superview];
+            [viewController presentViewController:alertVc animated:YES completion:nil];
+        }
     }
+}
+
+
+#pragma mark UIActionSheet Methods
+- (void)actionSheetCancel:(UIActionSheet *)actionSheet{
+    //
+}
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 0)
+    {
+        date=[datePicker date];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
+        NSString *dateAndTime = [dateFormatter stringFromDate:date];
+        [dateLabel setText:dateAndTime];
+    }
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    //
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex{
+    //
 }
 
                                             

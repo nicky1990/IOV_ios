@@ -29,62 +29,13 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self creatTitleView];
 }
-- (void)captureScreen
-{
-    CGRect frame = self.view.frame;
-    
-    float addLong = 0;
-    
-    for(OBDData *data in obdTableView.list)
-    {
-        UIFont *font = [UIFont systemFontOfSize:13];
-        CGSize size = CGSizeMake(self.view.frame.size.width*(490.0/750.0),2000);
-        CGRect labelRect = [data.title boundingRectWithSize:size
-                                                    options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                                 attributes:[NSDictionary dictionaryWithObject:font
-                                                                                        forKey:NSFontAttributeName] context:nil];
-        font = [UIFont systemFontOfSize:12];
-        CGRect labelRect2 = [data.content boundingRectWithSize:size
-                                                       options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                                    attributes:[NSDictionary dictionaryWithObject:font
-                                                                                           forKey:NSFontAttributeName] context:nil];
-        double imageHeight = self.view.frame.size.width*(40.0/750.0);
-        for(UIImage *im in data.imageArray)
-        {
-            imageHeight = imageHeight + im.size.height*(self.view.frame.size.width*1.0/im.size.width);
-        }
-        if(imageHeight == self.view.frame.size.width*(40.0/750.0))imageHeight = 0;
-        addLong = addLong + self.view.frame.size.width*(65.0/750.0) + labelRect.size.height + labelRect2.size.height + imageHeight;
-    }
-    
-    addLong = addLong + self.view.frame.size.width*(116.0/375.0);
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, addLong)];
-        [obdTableView setFrame:CGRectMake(0,
-                                          self.view.frame.size.width*(116.0/375.0),
-                                          self.view.frame.size.width,
-                                          self.view.frame.size.height - self.view.frame.size.width*(116.0/375.0))];
-    });
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [[ScreenCaptureImage shareInstance] CaptureView:self.view];
-        UIImage *resutltImage =  [[ScreenCaptureImage shareInstance] CaptureView:self.view];
-        [self shareImage:resutltImage];
-        [self.view setFrame:frame];
-        [obdTableView setFrame:CGRectMake(0,
-                                          self.view.frame.size.width*(116.0/375.0),
-                                          self.view.frame.size.width,
-                                          self.view.frame.size.height - self.view.frame.size.width*((116.0 + 49)/375.0))];
-    });
-}
-/*
-- (void)captureScreen
+
+- (UIImage *)captureScreen
 {
         CGRect frame = self.view.frame;
-    
+        
         float addLong = 0;
-    
+        
         for(OBDData *data in obdTableView.list)
         {
             UIFont *font = [UIFont systemFontOfSize:13];
@@ -98,12 +49,12 @@
                                                            options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                         attributes:[NSDictionary dictionaryWithObject:font
                                                                                                forKey:NSFontAttributeName] context:nil];
-                        float imageHeight = self.view.frame.size.width*(40.0/750.0);
+            double imageHeight = self.view.frame.size.width*(40.0/750.0);
             for(UIImage *im in data.imageArray)
             {
                 imageHeight = imageHeight + im.size.height*(self.view.frame.size.width*1.0/im.size.width);
             }
-            
+            if(imageHeight == self.view.frame.size.width*(40.0/750.0))imageHeight = 0;
             addLong = addLong + self.view.frame.size.width*(65.0/750.0) + labelRect.size.height + labelRect2.size.height + imageHeight;
         }
         
@@ -128,8 +79,9 @@
                                               self.view.frame.size.height - self.view.frame.size.width*((116.0 + 49)/375.0))];
         });
     
+    return nil;
 }
-*/
+
 //创建顶栏
 - (void)creatTitleView
 {
@@ -145,6 +97,11 @@
     [obdTableView createTableView];
     [self.view addSubview:obdTableView];
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 -(UIStatusBarStyle)preferredStatusBarStyle{
     
     return UIStatusBarStyleLightContent;
@@ -157,11 +114,6 @@
     [ToolUMShare shareWithTarget:self withImage:image];
     
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 /*
 #pragma mark - Navigation
 

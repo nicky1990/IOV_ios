@@ -85,7 +85,15 @@
 }
 
 #pragma mark Request Succeed
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
+    NSString *phoneNum = [self.userPhoneNum.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *password = [self.userPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSUserDefaults *phoneNumDefault = [NSUserDefaults standardUserDefaults];
+    [phoneNumDefault setObject:phoneNum forKey:@"phoneNumberDefault"];
+    [phoneNumDefault setObject:password forKey:@"passwordDefault"];
+    [phoneNumDefault setBool:YES forKey:@"isLogin"];
+    [phoneNumDefault synchronize];
+    
     NSNumber *userid = [dic objectForKey:@"user_id"];
     NSString *usersid = [dic objectForKey:@"sid"];
     NSString *useraccess_token = [dic objectForKey:@"access_token"];

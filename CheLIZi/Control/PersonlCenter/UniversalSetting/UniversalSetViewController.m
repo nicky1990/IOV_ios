@@ -77,9 +77,9 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
-        NSLog(@"清除");
         [ToolClearCaches clearCaches];
         [self.universalTableView reloadData];
+        [Tool showAlertMessage:@"清除成功"];
     }
 }
 

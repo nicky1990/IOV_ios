@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx27cb5fecf4cd56aa</string>
+				<string>wxa4c5165010a288ba</string>
 			</array>
 		</dict>
 		<dict>
@@ -44,9 +44,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>yes</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>yes</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

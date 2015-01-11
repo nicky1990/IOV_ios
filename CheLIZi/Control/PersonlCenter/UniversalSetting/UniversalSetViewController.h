@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 
 @interface UniversalSetViewController : BaseViewController
+
 @property (weak, nonatomic) IBOutlet UITableView *universalTableView;
 
 @end

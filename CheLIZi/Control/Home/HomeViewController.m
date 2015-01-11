@@ -15,6 +15,7 @@
 #import "MessageViewController.h"
 #import "WebViewController.h"
 #import "ShareDLineViewController.h"
+#import "PersonCenterViewController.h"
 
 #define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?45:25)
 #define kButtonHeight (([[UIScreen mainScreen] bounds].size.height == 568)?125:81)
@@ -145,7 +146,7 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
 }
 #pragma mark Request Succeed
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
     HomeData *homeData = [HomeData objectWithKeyValues:dic];
     [UserInfo sharedUserInfo].car_id = homeData.car_id;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -158,11 +159,6 @@
             _messageNumLabel.hidden = YES;
         }
     });
-    NSLog(@"%@",homeData.result);
-    NSLog(@"%d",homeData.car_id);
-    NSLog(@"%@",homeData.avatar);
-    NSLog(@"%d",homeData.message_new);
-    NSLog(@"%@",homeData.nickname);
 }
 
 #pragma mark Custom Tabbar
@@ -195,6 +191,7 @@
     [self.tabBarController.view addSubview:view];
 }
 -(void)homeBtnClick{
+    [self.navigationController popToRootViewControllerAnimated:YES];
     UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
     [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
     [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
@@ -216,9 +213,12 @@
         [btn setImage:[UIImage imageNamed:@"home_share"] forState:UIControlStateNormal];
         [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_share"]]];
     }
-    
 }
 -(void)personBtnClick{
+    NSArray *array = self.tabBarController.viewControllers;
+    UINavigationController *nav = (UINavigationController *)array[2];
+    [nav popToRootViewControllerAnimated:YES];
+
     UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
     [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
     [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];

@@ -105,7 +105,7 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
     
 }
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
     if(tag == (REQUESTTAG + 1)){
         [self getWarnSetData];
     }else{

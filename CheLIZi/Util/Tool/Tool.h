@@ -15,6 +15,7 @@
 +(NSString *)md5:(NSString *)str;
 //获取时间戳
 +(NSNumber *)getCurrentTimeStamp;
++(NSNumber *)dateTransTimeStamp:(NSDate *)datenow;
 +(NSString *)teaEncryptWithString:(NSString *)encryptString;
 + (BOOL)checkPhoneNumber:(NSString *)phoneNumber;
 + (void)showAlertMessage:(NSString *)msg;

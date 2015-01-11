@@ -56,7 +56,7 @@
 #pragma mark UMShare
 -(void)UMShareUse{
     [UMSocialData setAppKey:@"54aa9a0afd98c5b0bd000352"];
-    [UMSocialWechatHandler setWXAppId:@"wx27cb5fecf4cd56aa" appSecret:@"390e8490941ba262651d77bf0b9df993" url:nil];
+    [UMSocialWechatHandler setWXAppId:@"wxa4c5165010a288ba" appSecret:@"871f9f5ff4a5ba90487401cf2df0229a" url:nil];
     [UMSocialSinaHandler openSSOWithRedirectURL:nil];
 //    [UMSocialData openLog:YES];
 }

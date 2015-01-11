@@ -21,6 +21,7 @@
 {
     UIImageView *_tenDigistImage;
     UIImageView *_unitDigistImage;
+    UIImageView *_pointImage;
     UILabel *_oilPercent;
     UILabel *_sumMileNum;
     UILabel *_avgSpeedNum;
@@ -53,21 +54,23 @@
     avgoilLabel.textColor = RGBCOLOR(113, 216, 195);
     [self.view addSubview:avgoilLabel];
     
-    UIImageView *firstOil = [[UIImageView alloc]initWithFrame:CGRectMake(55, 57, 45, 100)];
-    firstOil.image = [UIImage imageNamed:@"oil_default"];
-    [self.view addSubview:firstOil];
-    
-    _tenDigistImage = [[UIImageView alloc]initWithFrame:CGRectMake(110, 57, 45, 100)];
+    _tenDigistImage = [[UIImageView alloc]initWithFrame:CGRectMake(55, 57, 45, 100)];
     _tenDigistImage.image = [UIImage imageNamed:@"oil_0"];
     [self.view addSubview:_tenDigistImage];
-    UIImageView *thirdOil = [[UIImageView alloc]initWithFrame:CGRectMake(165, 57, 45, 100)];
-    thirdOil.image = [UIImage imageNamed:@"oil_point"];
-    [self.view addSubview:thirdOil];
-    _unitDigistImage = [[UIImageView alloc]initWithFrame:CGRectMake(220, 57, 45, 100)];
+    
+    _unitDigistImage = [[UIImageView alloc]initWithFrame:CGRectMake(110, 57, 45, 100)];
     _unitDigistImage.image = [UIImage imageNamed:@"oil_0"];
     [self.view addSubview:_unitDigistImage];
     
-    UILabel *LLable = [self getLabelWithFrame:CGRectMake(260, 145, 40, 12) withTitle:@"（ L ）" withColor:RGBCOLOR(102, 102, 102) andSize:12];
+    UIImageView *thirdOil = [[UIImageView alloc]initWithFrame:CGRectMake(165, 57, 45, 100)];
+    thirdOil.image = [UIImage imageNamed:@"oil_point"];
+    [self.view addSubview:thirdOil];
+    
+    _pointImage = [[UIImageView alloc]initWithFrame:CGRectMake(220, 57, 45, 100)];
+    _pointImage.image = [UIImage imageNamed:@"oil_0"];
+    [self.view addSubview:_pointImage];
+    
+    UILabel *LLable = [self getLabelWithFrame:CGRectMake(260, 145, 55, 12) withTitle:@"（L/100km）" withColor:RGBCOLOR(102, 102, 102) andSize:9];
     [self.view addSubview:LLable];
     
     UIImageView *winIcon = [[UIImageView alloc]initWithFrame:CGRectMake(50, 175, 34, 34)];
@@ -89,7 +92,7 @@
     
 }
 -(void)initUIFoot{
-    UILabel *sumMile = [self getLabelWithFrame:CGRectMake(0, 230, kW_SreenWidth/3.0, 21) withTitle:@"总里程" withColor:[UIColor blackColor] andSize:15];
+    UILabel *sumMile = [self getLabelWithFrame:CGRectMake(0, 230, kW_SreenWidth/3.0, 21) withTitle:@"本次里程" withColor:[UIColor blackColor] andSize:15];
     sumMile.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:sumMile];
     UIImageView *sumMileIcon = [[UIImageView alloc]initWithFrame:CGRectMake(16, 252, 18, 20)];
@@ -108,7 +111,7 @@
     _avgSpeedNum = [self getLabelWithFrame:CGRectMake(151, 238, 67, 51) withTitle:@"0.00km/h" withColor:RGBCOLOR(102, 102, 102) andSize:12];
     [self.view addSubview:_avgSpeedNum];
     
-    UILabel *currentOil = [self getLabelWithFrame:CGRectMake(kW_SreenWidth/3.0*2, 230, kW_SreenWidth/3.0, 21) withTitle:@"当前油量" withColor:[UIColor blackColor] andSize:15];
+    UILabel *currentOil = [self getLabelWithFrame:CGRectMake(kW_SreenWidth/3.0*2, 230, kW_SreenWidth/3.0, 21) withTitle:@"本次油耗" withColor:[UIColor blackColor] andSize:15];
     currentOil.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:currentOil];
     UIImageView *currentOilIcon = [[UIImageView alloc]initWithFrame:CGRectMake(242, 252, 10, 20)];
@@ -164,6 +167,7 @@
 
 #pragma mark Request
 -(void)getCarStausData{
+    
     NSDictionary *paraDic = @{@"c":@"car",
                               @"a":@"index",
                               @"t":[Tool getCurrentTimeStamp],
@@ -174,18 +178,22 @@
     ToolRequest *toolRequest = [[ToolRequest alloc]init];
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
 }
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
-    NSDictionary *dataDic = [dic objectForKeyedSubscript:@"data"];
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
+    NSDictionary *dataDic = [dic objectForKey:@"data"];
     CarStatusData *carStatusData = [CarStatusData objectWithKeyValues:dataDic];
     dispatch_async(dispatch_get_main_queue(), ^{
-        int ten = (int)carStatusData.avg_gas_mileage/1;
-        int ge = (int)(carStatusData.avg_gas_mileage *10)%10;
+        int ten = (int)carStatusData.avg_gas_mileage/10;
+        int ge  = (int)carStatusData.avg_gas_mileage%10;
+        int point = (int)(carStatusData.avg_gas_mileage *10)%10;
+        
         _tenDigistImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"oil_%d",ten]];
-        _unitDigistImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"oil_%d",ge]];;
+        _unitDigistImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"oil_%d",ge]];
+        _pointImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"oil_%d",point]];;
+        
         _oilPercent.text = [NSString stringWithFormat:@"%0.0f%@",carStatusData.defeat_percent,@"%"];
-        _sumMileNum.text = [NSString stringWithFormat:@"%0.2fkm",carStatusData.total_mileage];
+        _sumMileNum.text = [NSString stringWithFormat:@"%0.2fkm",carStatusData.once_mileage];
         _avgSpeedNum.text = [NSString stringWithFormat:@"%0.2fkm/h",carStatusData.avg_speed];
-        _currentOilNum.text = [NSString stringWithFormat:@"%0.2fL",carStatusData.total_gas_mileage];
+        _currentOilNum.text = [NSString stringWithFormat:@"%0.2fL",carStatusData.once_gas_mileage];
     });
 }
 

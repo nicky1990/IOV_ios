@@ -194,6 +194,8 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
+        [[NSUserDefaults standardUserDefaults]setBool:NO forKey:@"isLogin"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
         [self.tabBarController.navigationController popViewControllerAnimated:YES];
         NSDictionary *paraDic = @{@"c":@"user",
                                   @"a":@"logout",
@@ -207,7 +209,7 @@
 }
 
 #pragma mark Request Succeed
--(void)requestSucceed:(NSDictionary *)dic wihtTag:(NSInteger)tag{
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
 //    [self.tabBarController.navigationController popViewControllerAnimated:YES];
 }
 
