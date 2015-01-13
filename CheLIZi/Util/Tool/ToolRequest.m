@@ -17,8 +17,8 @@
     [hud show:YES];
     [[ToolRequest getRequestManager] POST:BASEURL parameters:paraDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        NSLog(@"%@",responseObject);
         NSDictionary *dic = responseObject;
+        NSLog(@"%@",responseObject);
         self.delegate = vc;
         if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
             if ([self.delegate respondsToSelector:@selector(requestSucceed:withTag:)]) {

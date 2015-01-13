@@ -34,6 +34,18 @@
 		6A3878CD1A58346600758F06 /* scan_guzhang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A3878CA1A58346600758F06 /* scan_guzhang@2x.png */; };
 		6A3878CE1A58346600758F06 /* scan_good@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A3878CB1A58346600758F06 /* scan_good@2x.png */; };
 		6A3878CF1A58346600758F06 /* scan_shuiwen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A3878CC1A58346600758F06 /* scan_shuiwen@2x.png */; };
+		6A479C471A63617000DF9F7C /* add_chexi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C3C1A63617000DF9F7C /* add_chexi@2x.png */; };
+		6A479C481A63617000DF9F7C /* add_chejiahao@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C3D1A63617000DF9F7C /* add_chejiahao@2x.png */; };
+		6A479C4C1A63617000DF9F7C /* add_chepai@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C411A63617000DF9F7C /* add_chepai@2x.png */; };
+		6A479C4D1A63617000DF9F7C /* Shape-280@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C421A63617000DF9F7C /* Shape-280@2x.png */; };
+		6A479C4E1A63617000DF9F7C /* add_obdid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C431A63617000DF9F7C /* add_obdid@2x.png */; };
+		6A479C4F1A63617000DF9F7C /* add_pinpai@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C441A63617000DF9F7C /* add_pinpai@2x.png */; };
+		6A479C501A63617000DF9F7C /* add_chexing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C451A63617000DF9F7C /* add_chexing@2x.png */; };
+		6A479C541A63618900DF9F7C /* AddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A479C521A63618900DF9F7C /* AddViewController.m */; };
+		6A479C551A63618900DF9F7C /* AddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C531A63618900DF9F7C /* AddViewController.xib */; };
+		6A479C581A63649C00DF9F7C /* AddCarUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A479C571A63649C00DF9F7C /* AddCarUI.m */; };
+		6A479C5E1A63ABB300DF9F7C /* add_xiala@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A479C5D1A63ABB300DF9F7C /* add_xiala@2x.png */; };
+		6A479C611A63C48100DF9F7C /* CarType.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A479C601A63C48100DF9F7C /* CarType.m */; };
 		6A47FE401A5A367000A07651 /* MJArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A47FE2A1A5A367000A07651 /* MJArgument.m */; };
 		6A47FE411A5A367000A07651 /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A47FE2C1A5A367000A07651 /* MJConst.m */; };
 		6A47FE421A5A367000A07651 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A47FE2F1A5A367000A07651 /* MJFoundation.m */; };
@@ -349,6 +361,21 @@
 		6A3878CA1A58346600758F06 /* scan_guzhang@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_guzhang@2x.png"; sourceTree = "<group>"; };
 		6A3878CB1A58346600758F06 /* scan_good@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_good@2x.png"; sourceTree = "<group>"; };
 		6A3878CC1A58346600758F06 /* scan_shuiwen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_shuiwen@2x.png"; sourceTree = "<group>"; };
+		6A479C3C1A63617000DF9F7C /* add_chexi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_chexi@2x.png"; sourceTree = "<group>"; };
+		6A479C3D1A63617000DF9F7C /* add_chejiahao@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_chejiahao@2x.png"; sourceTree = "<group>"; };
+		6A479C411A63617000DF9F7C /* add_chepai@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_chepai@2x.png"; sourceTree = "<group>"; };
+		6A479C421A63617000DF9F7C /* Shape-280@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Shape-280@2x.png"; sourceTree = "<group>"; };
+		6A479C431A63617000DF9F7C /* add_obdid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_obdid@2x.png"; sourceTree = "<group>"; };
+		6A479C441A63617000DF9F7C /* add_pinpai@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_pinpai@2x.png"; sourceTree = "<group>"; };
+		6A479C451A63617000DF9F7C /* add_chexing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_chexing@2x.png"; sourceTree = "<group>"; };
+		6A479C511A63618900DF9F7C /* AddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddViewController.h; sourceTree = "<group>"; };
+		6A479C521A63618900DF9F7C /* AddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddViewController.m; sourceTree = "<group>"; };
+		6A479C531A63618900DF9F7C /* AddViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddViewController.xib; sourceTree = "<group>"; };
+		6A479C561A63649C00DF9F7C /* AddCarUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCarUI.h; sourceTree = "<group>"; };
+		6A479C571A63649C00DF9F7C /* AddCarUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCarUI.m; sourceTree = "<group>"; };
+		6A479C5D1A63ABB300DF9F7C /* add_xiala@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add_xiala@2x.png"; sourceTree = "<group>"; };
+		6A479C5F1A63C48100DF9F7C /* CarType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarType.h; sourceTree = "<group>"; };
+		6A479C601A63C48100DF9F7C /* CarType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarType.m; sourceTree = "<group>"; };
 		6A47FE291A5A367000A07651 /* MJArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJArgument.h; sourceTree = "<group>"; };
 		6A47FE2A1A5A367000A07651 /* MJArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJArgument.m; sourceTree = "<group>"; };
 		6A47FE2B1A5A367000A07651 /* MJConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJConst.h; sourceTree = "<group>"; };
@@ -894,6 +921,21 @@
 			path = inc;
 			sourceTree = "<group>";
 		};
+		6A479C3A1A63610B00DF9F7C /* AddCar */ = {
+			isa = PBXGroup;
+			children = (
+				6A479C5D1A63ABB300DF9F7C /* add_xiala@2x.png */,
+				6A479C3C1A63617000DF9F7C /* add_chexi@2x.png */,
+				6A479C3D1A63617000DF9F7C /* add_chejiahao@2x.png */,
+				6A479C411A63617000DF9F7C /* add_chepai@2x.png */,
+				6A479C421A63617000DF9F7C /* Shape-280@2x.png */,
+				6A479C431A63617000DF9F7C /* add_obdid@2x.png */,
+				6A479C441A63617000DF9F7C /* add_pinpai@2x.png */,
+				6A479C451A63617000DF9F7C /* add_chexing@2x.png */,
+			);
+			path = AddCar;
+			sourceTree = "<group>";
+		};
 		6A47FE281A5A367000A07651 /* MJExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1092,6 +1134,13 @@
 				6A4AB20C1A5EBAB6005B08D4 /* SphereMenu.m */,
 			);
 			path = SphereMenu;
+			sourceTree = "<group>";
+		};
+		6A5391F61A62ACF6004F35F6 /* PersonInfo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PersonInfo;
 			sourceTree = "<group>";
 		};
 		6A570CD01A523F0C00F6AC34 /* PersonCenter */ = {
@@ -1317,6 +1366,7 @@
 		6A768C981A4C2B5800A3C0A8 /* PersonlCenter */ = {
 			isa = PBXGroup;
 			children = (
+				6A5391F61A62ACF6004F35F6 /* PersonInfo */,
 				6AEE219D1A5D203E00D4D714 /* MyCar */,
 				6A21C4211A5524720063ADC6 /* CarWarnSet */,
 				6A21C41F1A55239B0063ADC6 /* About */,
@@ -1572,6 +1622,7 @@
 		6A8CBAEA1A47FFEA0078AADC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6A479C3A1A63610B00DF9F7C /* AddCar */,
 				6A4AB1F71A5EB60F005B08D4 /* TrackIcon */,
 				6A57297A1A5679EF009AEB29 /* CarStatusScan */,
 				6A303B7C1A54420B00A62524 /* CarStatus */,
@@ -1658,6 +1709,11 @@
 				6AEE219E1A5D206700D4D714 /* CarManageViewController.h */,
 				6AEE219F1A5D206700D4D714 /* CarManageViewController.m */,
 				6AEE21A01A5D206700D4D714 /* CarManageViewController.xib */,
+				6A479C511A63618900DF9F7C /* AddViewController.h */,
+				6A479C521A63618900DF9F7C /* AddViewController.m */,
+				6A479C531A63618900DF9F7C /* AddViewController.xib */,
+				6A479C561A63649C00DF9F7C /* AddCarUI.h */,
+				6A479C571A63649C00DF9F7C /* AddCarUI.m */,
 			);
 			path = MyCar;
 			sourceTree = "<group>";
@@ -1667,6 +1723,8 @@
 			children = (
 				6AEE21AB1A5D658100D4D714 /* CarInfoData.h */,
 				6AEE21AC1A5D658100D4D714 /* CarInfoData.m */,
+				6A479C5F1A63C48100DF9F7C /* CarType.h */,
+				6A479C601A63C48100DF9F7C /* CarType.m */,
 			);
 			path = CarInfo;
 			sourceTree = "<group>";
@@ -1750,12 +1808,15 @@
 				6A21C4381A553E1B0063ADC6 /* AboutUsViewController.xib in Resources */,
 				6AEE21A21A5D206700D4D714 /* CarManageViewController.xib in Resources */,
 				6A5710751A523F5000F6AC34 /* person_integral@2x.png in Resources */,
+				6A479C4E1A63617000DF9F7C /* add_obdid@2x.png in Resources */,
 				6A21C41E1A54E4D30063ADC6 /* oil_default@2x.png in Resources */,
+				6A479C4F1A63617000DF9F7C /* add_pinpai@2x.png in Resources */,
 				6A57E2491A5BDADC0030CA21 /* WebViewController.xib in Resources */,
 				6A47FE5A1A5A443F00A07651 /* MessageViewController.xib in Resources */,
 				6A47FE641A5A6FCE00A07651 /* DetailViewController.xib in Resources */,
 				6A49F9551A562C670003E4D7 /* UMSocialSDKResourcesNew.bundle in Resources */,
 				6A4AB2241A5EBC35005B08D4 /* track_oil@2x.png in Resources */,
+				6A479C551A63618900DF9F7C /* AddViewController.xib in Resources */,
 				6A7BF6671A4C040C00500A95 /* home_car@2x.png in Resources */,
 				6A4AB1FB1A5EB618005B08D4 /* date_up@2x.png in Resources */,
 				6A49F9721A563EB70003E4D7 /* CarTrackViewController.xib in Resources */,
@@ -1770,6 +1831,7 @@
 				6A69BB461A59303B001C91D9 /* WeiBoViewController.xib in Resources */,
 				6A49F9501A562C670003E4D7 /* UMShareEditViewController.xib in Resources */,
 				6A62F3991A425F1400D3AAA6 /* InfoPlist.strings in Resources */,
+				6A479C501A63617000DF9F7C /* add_chexing@2x.png in Resources */,
 				6A4AB2201A5EBC35005B08D4 /* 图层-52-4@2x.png in Resources */,
 				6A69BB4C1A5931C7001C91D9 /* FunctionViewController.xib in Resources */,
 				6A49F94D1A562C670003E4D7 /* UMSCommentDetailController.xib in Resources */,
@@ -1794,6 +1856,7 @@
 				6A47FE881A5AB0DF00A07651 /* oil_9@2x.png in Resources */,
 				6A4AB2131A5EBAB6005B08D4 /* ShareImage.xcassets in Resources */,
 				6A47FE811A5AB0DF00A07651 /* oil_2@2x.png in Resources */,
+				6A479C481A63617000DF9F7C /* add_chejiahao@2x.png in Resources */,
 				6A57298B1A567A9F009AEB29 /* scan_fadongji@2x.png in Resources */,
 				6A7BF66D1A4C040C00500A95 /* home_signin@2x.png in Resources */,
 				6A5710781A523F5000F6AC34 /* Shape-337@2x.png in Resources */,
@@ -1805,10 +1868,12 @@
 				6A5710711A523F5000F6AC34 /* person_award@2x.png in Resources */,
 				6A4AB1FA1A5EB618005B08D4 /* date_next@2x.png in Resources */,
 				6A5729791A5676D7009AEB29 /* CarStatuScanViewController.xib in Resources */,
+				6A479C471A63617000DF9F7C /* add_chexi@2x.png in Resources */,
 				6A57298D1A567A9F009AEB29 /* scan_section@2x.png in Resources */,
 				6AEE21A91A5D2F8900D4D714 /* car_add@2x.png in Resources */,
 				6A768C921A4C150700A3C0A8 /* ResetPsdViewController.xib in Resources */,
 				6A47FE891A5AB0DF00A07651 /* oil_point@2x.png in Resources */,
+				6A479C5E1A63ABB300DF9F7C /* add_xiala@2x.png in Resources */,
 				6A47FE5F1A5A64D800A07651 /* MessageTableViewCell.xib in Resources */,
 				6A7BF6461A4B9C7B00500A95 /* LaunchImage-800-667h@2x.png in Resources */,
 				6A7BF6531A4BF23700500A95 /* regist_lock@2x.png in Resources */,
@@ -1817,6 +1882,7 @@
 				6A5391F11A620B32004F35F6 /* icon-small-40@2x.png in Resources */,
 				6A5729891A567A9F009AEB29 /* scan_dianping@2x.png in Resources */,
 				6A303B8B1A54423800A62524 /* carstatus_warnsetting@2x.png in Resources */,
+				6A479C4C1A63617000DF9F7C /* add_chepai@2x.png in Resources */,
 				6A303B851A54423800A62524 /* carstatus_carstatus@2x.png in Resources */,
 				6A303B881A54423800A62524 /* carstatus_currentoil@2x.png in Resources */,
 				6A4AB21F1A5EBC35005B08D4 /* track_runtime@2x.png in Resources */,
@@ -1859,6 +1925,7 @@
 				6A57E2431A5BC5450030CA21 /* scan_normal@2x.png in Resources */,
 				6A49F94B1A562C670003E4D7 /* UMSocialLocalizable.strings in Resources */,
 				6A47FE801A5AB0DF00A07651 /* oil_1@2x.png in Resources */,
+				6A479C4D1A63617000DF9F7C /* Shape-280@2x.png in Resources */,
 				6A303B8A1A54423800A62524 /* carstatus_averagespeed@2x.png in Resources */,
 				6A7BF6731A4C040C00500A95 /* home@2x.png in Resources */,
 				6A62F3A11A425F1400D3AAA6 /* Images.xcassets in Resources */,
@@ -1917,6 +1984,7 @@
 				6A7A8DA21A4A5BAF00EF24A5 /* AFURLRequestSerialization.m in Sources */,
 				6A57E2481A5BDADC0030CA21 /* WebViewController.m in Sources */,
 				6A49F9711A563EB70003E4D7 /* CarTrackViewController.m in Sources */,
+				6A479C541A63618900DF9F7C /* AddViewController.m in Sources */,
 				6A47FE451A5A367000A07651 /* MJMethod.m in Sources */,
 				6A7A8D631A4A51BA00EF24A5 /* BaseViewController.m in Sources */,
 				6A47FE481A5A367000A07651 /* NSObject+MJCoding.m in Sources */,
@@ -1926,6 +1994,7 @@
 				6A7A8D9C1A4A5BAF00EF24A5 /* AFHTTPRequestOperation.m in Sources */,
 				6A76B62D1A56A1E000CC1C1A /* NSString+XXTEA.m in Sources */,
 				6A47FE441A5A367000A07651 /* MJMember.m in Sources */,
+				6A479C611A63C48100DF9F7C /* CarType.m in Sources */,
 				6A21C4251A55253B0063ADC6 /* CarWarnSetViewController.m in Sources */,
 				6A4AB20D1A5EBAB6005B08D4 /* CustomUITabBarController.m in Sources */,
 				6A7A8D841A4A536B00EF24A5 /* UIScrollView+MJExtension.m in Sources */,
@@ -1968,6 +2037,7 @@
 				6A47FE5E1A5A64D800A07651 /* MessageTableViewCell.m in Sources */,
 				6A57E2411A5B91E60030CA21 /* CarScanData.m in Sources */,
 				6A69BB5A1A598D3C001C91D9 /* BaiDuMapNeed.mm in Sources */,
+				6A479C581A63649C00DF9F7C /* AddCarUI.m in Sources */,
 				6AEE21A11A5D206700D4D714 /* CarManageViewController.m in Sources */,
 				6A4AB1F11A5E89FC005B08D4 /* SectionTrack.m in Sources */,
 				6A76B6241A569E6D00CC1C1A /* ToolRequest.m in Sources */,

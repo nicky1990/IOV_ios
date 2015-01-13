@@ -12,10 +12,9 @@
 #import "TrackPoint.h"
 #import "SectionTrack.h"
 #import "TrackUI.h"
-@interface CarTrackViewController ()<BMKMapViewDelegate,ToolRequestDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate>
+@interface CarTrackViewController ()<BMKMapViewDelegate,ToolRequestDelegate,BMKGeoCodeSearchDelegate>
 {
     BMKMapView *_mapView;
-    BMKLocationService *_locService;
     BMKGeoCodeSearch *_searchGeo;
     UILabel *_dateLabel;
     NSDate *_currentDate;
@@ -51,11 +50,6 @@
     [super viewWillAppear:animated];
     [_mapView viewWillAppear];
     _mapView.delegate = self;
-    [_locService startUserLocationService];
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-    if (kCLAuthorizationStatusDenied == status || kCLAuthorizationStatusRestricted == status) {
-        [Tool showAlertMessage:@"您已关闭定位服务，请到系统设置开启定位服务！"];
-    }
     [self getSectionTrack:_dateLabel.text];
 }
 
@@ -63,7 +57,6 @@
     [super viewWillDisappear:animated];
     [_mapView viewWillDisappear];
     _mapView.delegate = nil; // 不用时，置nil
-    [_locService stopUserLocationService];
 }
 
 - (void)viewDidLoad {
@@ -73,17 +66,7 @@
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, kH_SreenHeight-64-49 )];
     _mapView.mapType = BMKMapTypeStandard;
     _mapView.showMapScaleBar = YES;
-    
-   
-    //指定最小距离更新(米)，默认：kCLDistanceFilterNone
-    [BMKLocationService setLocationDistanceFilter:100.f];
-    //初始化BMKLocationService
-    _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
-    [_locService startUserLocationService];
-    _mapView.userTrackingMode = BMKUserTrackingModeFollow;
-    _mapView.showsUserLocation = YES;
-    
+    _mapView.centerCoordinate = CLLocationCoordinate2DMake(24.2646, 118.0404);
     [self.view addSubview:_mapView];
     [self dateSelectView];
     _pointArrays = [[NSMutableArray alloc]init];
@@ -272,10 +255,6 @@
     if (_sectionTrackArray.count == 0) {
         return;
     }
-//    if (_trackIndex == 0) {
-//        [Tool showAlertMessage:@"这是第一段轨迹了哦！"];
-//        return;
-//    }
     _nextTrack.hidden = NO;
     _trackIndex--;
     if (_trackIndex == 0) {
@@ -289,10 +268,6 @@
     if (_sectionTrackArray.count == 0) {
         return;
     }
-//    if (_trackIndex == (_sectionTrackArray.count-1)) {
-//        [Tool showAlertMessage:@"已经是最后一段轨迹了哦！"];
-//        return;
-//    }
     _upTrack.hidden = NO;
     _trackIndex++;
     if (_trackIndex == (_sectionTrackArray.count-1)) {
@@ -364,7 +339,7 @@
     
     NSArray *annotionArray = @[[self getPointAnnotation:array[0] withTitle:@"起点"],[self getPointAnnotation:array[pointsArray.count - 1] withTitle:@"终点"]];
     [_mapView addAnnotations:annotionArray];
-    
+    [self setCarLocationName:array[pointsArray.count - 1]];
     
     BMKPolyline *polyLine = [BMKPolyline polylineWithCoordinates:array count:pointsArray.count];
     [_mapView addOverlay:polyLine]; // 添加路线overlay
@@ -373,7 +348,6 @@
 }
 //装换成百度坐标
 -(CLLocationCoordinate2D)transformToBaidu:(CLLocationCoordinate2D)temp{
-    
     NSDictionary* testdic = BMKConvertBaiduCoorFrom(temp,BMK_COORDTYPE_GPS);
     CLLocationCoordinate2D clloca = BMKCoorDictionaryDecode(testdic);
     return clloca;
@@ -495,16 +469,7 @@
     [_detailView addSubview:locationInfoView];
     [self.view addSubview:_detailView];
 }
--(void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation{
-    [_mapView updateLocationData:userLocation];
-    BMKCoordinateSpan span = BMKCoordinateSpanMake(0.05, 0.05);//这个显示大小精度自己调整
-    BMKCoordinateRegion region = BMKCoordinateRegionMake(userLocation.location.coordinate, span);
-    [_mapView setRegion:region animated:YES];
-    [self setCarLocationName:userLocation.location.coordinate];
-}
-- (void)didFailToLocateUserWithError:(NSError *)error{
-    NSLog(@"%@",error);
-}
+
 //根据坐标获取车辆具体位置名称
 -(void)setCarLocationName:(CLLocationCoordinate2D)coor{
     //初始化检索对象
@@ -560,6 +525,9 @@
 }
 -(void)requestFailed:(NSDictionary *)dic withTag:(NSInteger)tag{
     dispatch_async(dispatch_get_main_queue(), ^{
+        _nextTrack.hidden = YES;
+        _upTrack.hidden = YES;
+        [_locationInfo setTitle:@"" forState:UIControlStateNormal];
         [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
         [_theAveOil setTitle:@" 0.0L" forState:UIControlStateNormal];
         [_theRunTime setTitle:@" 0min" forState:UIControlStateNormal];

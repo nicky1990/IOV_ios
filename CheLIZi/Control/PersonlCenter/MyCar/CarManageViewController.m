@@ -10,6 +10,8 @@
 #import "WebViewController.h"
 #import "CarInfoData.h"
 #import "UIImageView+AFNetworking.h"
+#import "AddViewController.h"
+
 
 @interface CarManageViewController ()<ToolRequestDelegate>
 {
@@ -83,11 +85,13 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == _carsArray.count ) {
-        WebViewController *webVC = [[WebViewController alloc]init];
-        webVC.title = @"添加我的爱车";
-        NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=addCar&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
-        webVC.urlStr = urtStr;
-        [self.navigationController pushViewController:webVC animated:YES];
+//        WebViewController *webVC = [[WebViewController alloc]init];
+//        webVC.title = @"添加我的爱车";
+//        NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=addCar&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+//        webVC.urlStr = urtStr;
+//        [self.navigationController pushViewController:webVC animated:YES];
+        AddViewController *addVC = [[AddViewController alloc]init];
+        [self.navigationController pushViewController:addVC animated:YES];
     }else{
         if(indexPath.row == currentIndex){
             return;

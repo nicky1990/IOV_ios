@@ -68,7 +68,7 @@
     [functionView addSubview:userHeadIcon];
     _nameLabel =  [[UILabel alloc]initWithFrame:CGRectMake(105, kUserNameY, kW_SreenWidth-110, 21)];
     _nameLabel.backgroundColor = [UIColor clearColor];
-    _nameLabel.font = [UIFont fontWithName:@"Arial" size:21];
+    _nameLabel.font = [UIFont fontWithName:@"Arial" size:19];
     _nameLabel.text = @"hello";
     [functionView addSubview:_nameLabel];
     

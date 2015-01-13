@@ -184,7 +184,6 @@
     }
     if (indexPath.section == 2) {
         if (indexPath.row == 0) {
-            
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"确定退出？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
             [alert show];
             
