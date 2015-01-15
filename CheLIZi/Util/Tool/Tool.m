@@ -54,7 +54,7 @@
 +(NSString *)teaEncryptWithString:(NSString *)encryptString{
     NSString *key = @"91b146928b1c2a87";
     NSString *encryped = [encryptString encryptXXTEA:key];
-    NSLog(@"%@",encryped);
+//    NSLog(@"%@",encryped);
     return encryped;
 }
 
@@ -95,5 +95,39 @@
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
     [alertView show];
 }
+
++(UIImage *)combine:(UIImage*)centerImage {
+    
+    UIImage *imageHead = [UIImage imageNamed:@"CaptureImageHead"];
+    UIImage *imageBottom = [UIImage imageNamed:@"CaptureImageBottom"];
+    
+    
+    CGFloat width = centerImage.size.width;
+    CGFloat height = imageHead.size.height+centerImage.size.height+imageBottom.size.height;
+    CGSize offScreenSize = CGSizeMake(width, height);
+    
+    if(UIGraphicsBeginImageContextWithOptions != NULL)
+    {
+        UIGraphicsBeginImageContextWithOptions(offScreenSize, NO, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(offScreenSize);
+    }
+//    UIGraphicsBeginImageContext(offScreenSize);
+    
+    CGRect rect = CGRectMake(0, 0, width, imageHead.size.height);
+    [imageHead drawInRect:rect];
+    
+    CGRect rect1 = CGRectMake(0, imageHead.size.height, width, centerImage.size.height);
+    [centerImage drawInRect:rect1];
+    
+    CGRect rect2 = CGRectMake(0, imageHead.size.height+centerImage.size.height, width, imageBottom.size.height);
+    [imageBottom drawInRect:rect2];
+    
+    UIImage* imagez = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return imagez;
+}
+
+
 
 @end

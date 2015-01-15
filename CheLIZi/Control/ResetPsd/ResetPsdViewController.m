@@ -20,12 +20,10 @@
 @implementation ResetPsdViewController
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBarHidden = YES;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -118,7 +116,12 @@
 #pragma mark Request Succeed
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
     [Tool showAlertMessage:@"密码重置成功，请重新登录"];
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (self.tabBarController != nil) {
+        [self.tabBarController.navigationController popViewControllerAnimated:YES];
+    }else{
+         [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 

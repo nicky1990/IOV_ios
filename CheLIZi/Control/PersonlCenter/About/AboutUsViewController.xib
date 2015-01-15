@@ -9,6 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AboutUsViewController">
             <connections>
                 <outlet property="aboutTableView" destination="2Mj-9a-Tx8" id="peb-qm-MLh"/>
+                <outlet property="iconImageView" destination="Lgq-r9-FDW" id="GJM-gB-B6r"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,21 +18,21 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lgq-r9-FDW">
-                    <rect key="frame" x="110" y="18" width="100" height="100"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-60.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lgq-r9-FDW">
+                    <rect key="frame" x="130" y="18" width="60" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="7U3-SW-QfM"/>
-                        <constraint firstAttribute="width" constant="100" id="OOK-ou-wB9"/>
+                        <constraint firstAttribute="height" constant="60" id="7U3-SW-QfM"/>
+                        <constraint firstAttribute="width" constant="60" id="OOK-ou-wB9"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="车咕噜 1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cm-Pb-nHW">
-                    <rect key="frame" x="120" y="126" width="80" height="21"/>
+                    <rect key="frame" x="120" y="86" width="80" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="2Mj-9a-Tx8">
-                    <rect key="frame" x="0.0" y="157" width="320" height="403"/>
+                    <rect key="frame" x="0.0" y="117" width="320" height="394"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="nEF-mx-iKV"/>
@@ -41,7 +42,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="2Mj-9a-Tx8" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottomMargin" id="4gm-FP-v51"/>
+                <constraint firstItem="2Mj-9a-Tx8" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottomMargin" constant="-49" id="4gm-FP-v51"/>
                 <constraint firstItem="4cm-Pb-nHW" firstAttribute="centerX" secondItem="2Mj-9a-Tx8" secondAttribute="centerX" id="B0U-GB-D8Z"/>
                 <constraint firstItem="Lgq-r9-FDW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="18" id="BAz-u3-NxT"/>
                 <constraint firstItem="Lgq-r9-FDW" firstAttribute="centerX" secondItem="4cm-Pb-nHW" secondAttribute="centerX" id="KmG-AV-MZm"/>
@@ -54,6 +55,6 @@
         </view>
     </objects>
     <resources>
-        <image name="home.png" width="120" height="120"/>
+        <image name="icon-60.png" width="60" height="60"/>
     </resources>
 </document>

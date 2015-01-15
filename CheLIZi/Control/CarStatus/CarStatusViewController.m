@@ -117,7 +117,7 @@
     UIImageView *currentOilIcon = [[UIImageView alloc]initWithFrame:CGRectMake(242, 252, 10, 20)];
     currentOilIcon.image = [UIImage imageNamed:@"carstatus_currentoil"];
     [self.view addSubview:currentOilIcon];
-    _currentOilNum = [self getLabelWithFrame:CGRectMake(259, 238, 67, 51) withTitle:@"0.00" withColor:RGBCOLOR(102, 102, 102) andSize:12];
+    _currentOilNum = [self getLabelWithFrame:CGRectMake(259, 238, 67, 51) withTitle:@"0.00L" withColor:RGBCOLOR(102, 102, 102) andSize:12];
     [self.view addSubview:_currentOilNum];
     UIButton *warnSetBtn = [self getButton:@"预警设置" withImage:@"carstatus_warnsetting" withFrame:CGRectMake(0, 282, kW_SreenWidth/3.0, kButtonHeight)];
     [warnSetBtn addTarget:self action:@selector(warnSettingClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -156,9 +156,7 @@
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-//     UIImage *image = [[UMSocialScreenShoterDefault screenShoter] getScreenShot];
-//    [ToolUMShare shareWithTarget:self withImage:[UIImage imageNamed:@"home_car"]];
-    [ToolUMShare shareWithTarget:self withImage:screenshot];
+    [ToolUMShare shareWithTarget:self withImage:[Tool combine:screenshot]];
 }
 
 -(void)leftButtonClick{
@@ -183,7 +181,7 @@
     NSDictionary *dataDic = [dic objectForKey:@"data"];
     CarStatusData *carStatusData = [CarStatusData objectWithKeyValues:dataDic];
     dispatch_async(dispatch_get_main_queue(), ^{
-        int ten = (int)carStatusData.avg_gas_mileage/10;
+        int ten = (int)carStatusData.avg_gas_mileage/10%10;
         int ge  = (int)carStatusData.avg_gas_mileage%10;
         int point = (int)(carStatusData.avg_gas_mileage *10)%10;
         

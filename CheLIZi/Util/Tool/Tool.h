@@ -19,5 +19,5 @@
 +(NSString *)teaEncryptWithString:(NSString *)encryptString;
 + (BOOL)checkPhoneNumber:(NSString *)phoneNumber;
 + (void)showAlertMessage:(NSString *)msg;
-
++(UIImage *)combine:(UIImage*)centerImage;
 @end

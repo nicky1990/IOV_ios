@@ -40,7 +40,7 @@
 }
 
 //确定列表cell属性
-- (void)createOBDTitle:(NSString *)str time:(NSString *)time content:(NSString*)content image:(NSMutableArray *)imageArray
+- (void)createOBDTitle:(NSString *)str time:(NSDate *)time content:(NSString*)content image:(NSMutableArray *)imageArray
 {
     width = self.frame.size.width;
     self.contentView.backgroundColor = [UIColor clearColor];
@@ -69,7 +69,10 @@
     
     [timeLabel setFrame:CGRectMake(width*(25.0/750.0), width*(25.0/750.0), width*(84.0/750.0), width*(31.0/750.0))];
     timeLabel.numberOfLines = 1;
-    timeLabel.text = time;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *dateAndTime = [dateFormatter stringFromDate:time];
+    timeLabel.text = dateAndTime;
     timeLabel.font = [UIFont systemFontOfSize:13];
     [backgroundView addSubview: timeLabel];
     

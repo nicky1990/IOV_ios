@@ -48,7 +48,7 @@
 
 -(void)initUI{
     _pickData = [[NSMutableArray alloc]init];
-    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, self.view.frame.size.height-64)];
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, kH_SreenHeight-64)];
     _scrollView.contentSize = CGSizeMake(kW_SreenWidth, kScrollViewContentHeight);
     [self.view addSubview:_scrollView];
     
@@ -86,19 +86,19 @@
     _selectModelField.rightViewMode = UITextFieldViewModeAlways;
     [_scrollView addSubview:_selectModelField];
     
-    _inputPlateField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*3+10*4, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chepai" withStringHolder:@"请输入车牌号"];
+    _inputPlateField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*3+10*4, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chepai" withStringHolder:@"请输入车牌号(必填)"];
     _inputPlateField.delegate = self;
     [_scrollView addSubview:_inputPlateField];
     
-    _inputObdidField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*4+10*5, kTextFieldWidth, kTextFieldHight) withImageName:@"add_obdid" withStringHolder:@"请输入OBD设备号"];
+    _inputObdidField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*4+10*5, kTextFieldWidth, kTextFieldHight) withImageName:@"add_obdid" withStringHolder:@"请输入OBD设备号(必填)"];
     _inputObdidField.delegate = self;
     [_scrollView addSubview:_inputObdidField];
     
-    _inputFrameField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*5+10*6, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chejiahao" withStringHolder:@"请输入车架号"];
+    _inputFrameField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*5+10*6, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chejiahao" withStringHolder:@"请输入车架号(选填)"];
     _inputFrameField.delegate = self;
     [_scrollView addSubview:_inputFrameField];
     
-    _inputEngineField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*6+10*7, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chepai" withStringHolder:@"请输入发动机号"];
+    _inputEngineField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*6+10*7, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chepai" withStringHolder:@"请输入发动机号(选填)"];
     _inputEngineField.delegate = self;
     [_scrollView addSubview:_inputEngineField];
     
@@ -113,7 +113,7 @@
     [saveButton addTarget:self action:@selector(saveClick) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:saveButton];
     
-    _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-64-49-216-44, kW_SreenWidth, 216+44)];
+    _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, kH_SreenHeight-64-49-216-44, kW_SreenWidth, 216+44)];
     UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, 44)];
     UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelClick)];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStyleBordered target:self action:@selector(comfirmClick)];

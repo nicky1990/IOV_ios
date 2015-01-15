@@ -212,6 +212,9 @@
 - (IBAction)registRequet:(UIButton *)sender {
     [self.view endEditing:YES];
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults]objectForKey:@"devicetoken"];
+    if (!deviceToken) {
+        deviceToken = @"";
+    }
     NSString *phoneNum = [self.userPhoneNum.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *password = [self.userPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *passwordAgain = [self.userPasswordAgain.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

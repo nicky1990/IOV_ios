@@ -31,7 +31,7 @@
     UIView *_detailView;
     UIButton *_locationInfo;
     UIButton *_theRunMile;
-    UIButton *_theAveOil;
+    UIButton *_theRunOil;
     UIButton *_theRunTime;
     UILabel *_timeLabel;
     UILabel *_accelerateLabel;
@@ -425,7 +425,7 @@
     [_detailView addSubview:theMile];
     
     UILabel *avgOil = [CustomView getLabelWith:CGRectMake(150, 30, 50, 15) andSize:12];
-    avgOil.text = @"平均油耗";
+    avgOil.text = @"本次油耗";
     [_detailView addSubview:avgOil];
     
     UILabel *driveTime = [CustomView getLabelWith:CGRectMake(245, 30, 50, 15) andSize:12];;
@@ -436,9 +436,9 @@
     _theRunMile = [TrackUI getBtnFrame:CGRectMake(45, 48, 70, 18) withImageName:@"track_runmile" withColor:[UIColor grayColor] withFontSize:13];
     [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
     [_detailView addSubview:_theRunMile];
-    _theAveOil = [TrackUI getBtnFrame:CGRectMake(145, 48, 65, 18) withImageName:@"track_oil" withColor:[UIColor grayColor] withFontSize:13];
-     [_theAveOil setTitle:@" 0.0L" forState:UIControlStateNormal];
-    [_detailView addSubview:_theAveOil];
+    _theRunOil = [TrackUI getBtnFrame:CGRectMake(145, 48, 65, 18) withImageName:@"track_oil" withColor:[UIColor grayColor] withFontSize:13];
+     [_theRunOil setTitle:@" 0.0L" forState:UIControlStateNormal];
+    [_detailView addSubview:_theRunOil];
     _theRunTime = [TrackUI getBtnFrame:CGRectMake(240, 48, 70, 18) withImageName:@"track_runtime" withColor:[UIColor grayColor] withFontSize:13];
     [_theRunTime setTitle:@" 0.0min" forState:UIControlStateNormal];
     [_detailView addSubview:_theRunTime];
@@ -499,7 +499,7 @@
 -(void)updateUI:(SectionTrack*)sectionTrack{
     dispatch_async(dispatch_get_main_queue(), ^{
         [_theRunMile setTitle:[NSString stringWithFormat:@"%0.1fkm",sectionTrack.mileage] forState:UIControlStateNormal];
-        [_theAveOil setTitle:[NSString stringWithFormat:@"%0.1fL",sectionTrack.avg_gas] forState:UIControlStateNormal];
+        [_theRunOil setTitle:[NSString stringWithFormat:@"%0.1fL",sectionTrack.gas] forState:UIControlStateNormal];
         [_theRunTime setTitle:[NSString stringWithFormat:@"%dmin",(sectionTrack.end_time-sectionTrack.start_time)/60] forState:UIControlStateNormal];
         _timeLabel.text = [NSString stringWithFormat:@"%@-%@",sectionTrack.stime,sectionTrack.etime];
         
@@ -529,7 +529,7 @@
         _upTrack.hidden = YES;
         [_locationInfo setTitle:@"" forState:UIControlStateNormal];
         [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
-        [_theAveOil setTitle:@" 0.0L" forState:UIControlStateNormal];
+        [_theRunOil setTitle:@" 0.0L" forState:UIControlStateNormal];
         [_theRunTime setTitle:@" 0min" forState:UIControlStateNormal];
         _timeLabel.text = @"00:00-00:00";
         

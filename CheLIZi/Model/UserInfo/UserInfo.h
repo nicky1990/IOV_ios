@@ -15,12 +15,7 @@
 @property (assign,nonatomic) int car_id;
 @property (strong,nonatomic) NSString *userS_id;
 @property (strong,nonatomic) NSString *userAccess_token;
-@property (strong,nonatomic) NSString *userNiCheng;
-@property (strong,nonatomic) NSString *userAge;
-@property (strong,nonatomic) NSString *userAddress;
-@property (strong,nonatomic) NSString *userPhone;
-@property (strong,nonatomic) NSString *userSex;
-@property (strong,nonatomic) NSString *userBirthday;
+
 
 
 

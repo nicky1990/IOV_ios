@@ -129,6 +129,7 @@
 
 //消息
 -(void)messageShow{
+    _messageNumLabel.hidden = YES;
     MessageViewController *messageVC = [[MessageViewController alloc]init];
     [self.navigationController pushViewController:messageVC animated:YES];
 }

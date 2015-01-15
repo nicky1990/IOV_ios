@@ -47,6 +47,9 @@
 }
 -(void)autoLogin{
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults]objectForKey:@"devicetoken"];
+    if (!deviceToken) {
+        deviceToken = @"";
+    }
     NSString *phoneNum = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
     NSString *password = [[NSUserDefaults standardUserDefaults]objectForKey:@"passwordDefault"];
     NSDictionary *paraDic = @{@"c":@"public",
@@ -140,6 +143,9 @@
 
     [self.view endEditing:YES];
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults]objectForKey:@"devicetoken"];
+    if (!deviceToken) {
+        deviceToken = @"";
+    }
     NSString *phoneNum = [self.userPhoneNum.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *password = [self.userPassword.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([Tool checkPhoneNumber:phoneNum]) {

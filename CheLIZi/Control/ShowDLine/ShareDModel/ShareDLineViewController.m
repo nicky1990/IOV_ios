@@ -13,7 +13,7 @@
 
 #import "ScreenCaptureImage.h"
 
-@interface ShareDLineViewController ()
+@interface ShareDLineViewController ()<ShareDLineTitleViewDelegate>
 {
     ShareDLineTitleView *shareDLineTitleView;
     OBDTableView *obdTableView;
@@ -28,11 +28,13 @@
     self.view.backgroundColor = [UIColor grayColor];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self creatTitleView];
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (UIImage *)captureScreen
 {
         CGRect frame = self.view.frame;
+    self.view.clipsToBounds = YES;
         
         float addLong = 0;
         
@@ -72,6 +74,7 @@
 //            [[ScreenCaptureImage shareInstance] CaptureView:self.view];
             UIImage *resutltImage =  [[ScreenCaptureImage shareInstance] CaptureView:self.view];
             [self shareImage:resutltImage];
+            
             [self.view setFrame:frame];
             [obdTableView setFrame:CGRectMake(0,
                                               self.view.frame.size.width*(116.0/375.0),
@@ -85,35 +88,40 @@
 //创建顶栏
 - (void)creatTitleView
 {
-    shareDLineTitleView = [[ShareDLineTitleView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*(116.0/375.0))];
-    [shareDLineTitleView setBackgroundColor:[UIColor blackColor]];
-    [self.view addSubview:shareDLineTitleView];
-    [shareDLineTitleView setUserName:@"naturephoto" userIcon:nil];
-    
     obdTableView = [[OBDTableView alloc]initWithFrame:CGRectMake(0,
                                                                  self.view.frame.size.width*(116.0/375.0),
                                                                  self.view.frame.size.width,
                                                                  self.view.frame.size.height - self.view.frame.size.width*((116.0 + 49)/375.0))];
     [obdTableView createTableView];
     [self.view addSubview:obdTableView];
+    
+    shareDLineTitleView = [[ShareDLineTitleView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*(116.0/375.0))];
+    [shareDLineTitleView setBackgroundColor:[UIColor blackColor]];
+    [self.view addSubview:shareDLineTitleView];
+    [shareDLineTitleView setUserName:@"naturephoto" userIcon:[UIImage imageNamed:@"titleHead"] delegate:self];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+//数据更新获取范例(异步网络请求请参考此过程)
+- (void)titleChoseDate:(NSDate *)date
+{
+    [obdTableView choseDataForDate:date];
 }
+
 -(UIStatusBarStyle)preferredStatusBarStyle{
-    
     return UIStatusBarStyleLightContent;
-    
 }
-
 
 -(void)shareImage:(UIImage *)image{
     
     [ToolUMShare shareWithTarget:self withImage:image];
     
 }
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 /*
 #pragma mark - Navigation
 

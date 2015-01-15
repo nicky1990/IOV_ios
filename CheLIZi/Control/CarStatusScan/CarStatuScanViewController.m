@@ -296,7 +296,7 @@
         image.image = [UIImage imageNamed:@"scan_section"];
         [view addSubview:image];
         
-        UILabel *lable = [self getLabelWithFrame:CGRectMake(30, 13, 80, 14) withTitle:@"故障" withColor:RGBCOLOR(14, 180, 147) andSize:14];
+        UILabel *lable = [self getLabelWithFrame:CGRectMake(30, 13, 80, 14) withTitle:@"故障码" withColor:RGBCOLOR(14, 180, 147) andSize:14];
         [view addSubview:lable];
         
         _guzhangLabel = [self getLabelWithFrame:CGRectMake(230, 12.5, 60, 15) withTitle:@"存在异常" withColor:[UIColor redColor] andSize:10];

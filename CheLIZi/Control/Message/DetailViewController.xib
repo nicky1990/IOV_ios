@@ -3,13 +3,15 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailViewController">
             <connections>
-                <outlet property="contentLable" destination="bcR-TO-eoE" id="4u3-9v-KyS"/>
                 <outlet property="dateLable" destination="M4d-ex-rqj" id="MwO-wE-uMN"/>
+                <outlet property="textView" destination="WGd-iB-yCS" id="PDP-U4-Ya7"/>
                 <outlet property="timeLabel" destination="RHZ-Pa-t27" id="XfS-Ax-yvY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -19,41 +21,46 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014年12月20日" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4d-ex-rqj">
-                    <rect key="frame" x="8" y="13" width="138" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4d-ex-rqj">
+                    <rect key="frame" x="8" y="13" width="149" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:08" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHZ-Pa-t27">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHZ-Pa-t27">
                     <rect key="frame" x="236" y="13" width="59" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="59" id="7VG-5c-9at"/>
+                        <constraint firstAttribute="width" constant="59" id="hxc-GT-CS5"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当2015年第一缕阳光洒向中华大地，古老而又充满活力的中华民族又迎来了崭新一年。站在岁首回望，刚刚过去的2014年无疑是波澜壮阔、高潮迭起的，" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcR-TO-eoE">
-                    <rect key="frame" x="8" y="46" width="287" height="79"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WGd-iB-yCS">
+                    <rect key="frame" x="8" y="42" width="304" height="265"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="79" id="QJ4-7g-max"/>
+                        <constraint firstAttribute="height" constant="265" id="LgH-hF-2nG"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="6xW-BJ-TYI"/>
+                    </connections>
+                </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="M4d-ex-rqj" firstAttribute="baseline" secondItem="RHZ-Pa-t27" secondAttribute="baseline" id="Hip-WO-BiS"/>
-                <constraint firstItem="RHZ-Pa-t27" firstAttribute="leading" secondItem="M4d-ex-rqj" secondAttribute="trailing" constant="90" id="QLq-LK-hVV"/>
-                <constraint firstItem="M4d-ex-rqj" firstAttribute="leading" secondItem="bcR-TO-eoE" secondAttribute="leading" id="WP7-2a-TZS"/>
-                <constraint firstAttribute="trailing" secondItem="RHZ-Pa-t27" secondAttribute="trailing" constant="25" id="aKX-U9-hLw"/>
-                <constraint firstItem="RHZ-Pa-t27" firstAttribute="trailing" secondItem="bcR-TO-eoE" secondAttribute="trailing" id="hLn-o1-6mZ"/>
-                <constraint firstItem="M4d-ex-rqj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="wzQ-ZC-dRe"/>
-                <constraint firstItem="bcR-TO-eoE" firstAttribute="top" secondItem="M4d-ex-rqj" secondAttribute="bottom" constant="12" id="xlk-GH-PAp"/>
-                <constraint firstItem="M4d-ex-rqj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="13" id="yOv-Nb-Ahw"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="13" id="9uN-cI-Xef"/>
+                <constraint firstItem="WGd-iB-yCS" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="JCl-Lj-TUD"/>
+                <constraint firstItem="WGd-iB-yCS" firstAttribute="top" secondItem="M4d-ex-rqj" secondAttribute="bottom" constant="8" symbolic="YES" id="SU8-xB-sIr"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="leading" secondItem="WGd-iB-yCS" secondAttribute="leading" id="hgJ-PT-OGT"/>
+                <constraint firstItem="RHZ-Pa-t27" firstAttribute="leading" secondItem="M4d-ex-rqj" secondAttribute="trailing" constant="79" id="hjj-Fu-2EI"/>
+                <constraint firstItem="RHZ-Pa-t27" firstAttribute="baseline" secondItem="M4d-ex-rqj" secondAttribute="firstBaseline" id="jOa-Fa-xl0"/>
+                <constraint firstAttribute="trailing" secondItem="RHZ-Pa-t27" secondAttribute="trailing" constant="25" id="ktk-6z-p5Q"/>
+                <constraint firstItem="WGd-iB-yCS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="sYC-aC-Dv6"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="baseline" secondItem="RHZ-Pa-t27" secondAttribute="firstBaseline" id="vSF-Jx-uUA"/>
+                <constraint firstItem="M4d-ex-rqj" firstAttribute="baseline" secondItem="RHZ-Pa-t27" secondAttribute="baseline" id="vZh-WC-8l2"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

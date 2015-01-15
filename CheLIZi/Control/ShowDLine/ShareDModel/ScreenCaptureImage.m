@@ -53,7 +53,7 @@ static ScreenCaptureImage	*screenCaptureImage = nil;	//单例对象
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     CGImageRef imageRef = viewImage.CGImage;
-    CGRect rect =CGRectMake(0, 0, view.frame.size.width*2, view.frame.size.height*2);
+    CGRect rect =CGRectMake(0, 0, view.frame.size.width*2.0, view.frame.size.height*2.0);
     CGImageRef imageRefRect =CGImageCreateWithImageInRect(imageRef, rect);
     UIImage *sendImage = [[UIImage alloc] initWithCGImage:imageRefRect];
     UIImageWriteToSavedPhotosAlbum( sendImage, nil, nil , nil ) ;
@@ -63,7 +63,36 @@ static ScreenCaptureImage	*screenCaptureImage = nil;	//单例对象
     NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:@"result"];
     [imageViewData writeToFile:savedImagePath atomically:YES];
     CGImageRelease(imageRefRect);
-    return sendImage;
+    
+    UIImage *imageHead = [UIImage imageNamed:@"CaptureImageHead"];
+    UIImage *imageBottom = [UIImage imageNamed:@"CaptureImageBottom"];
+
+    CGSize size = CGSizeMake(sendImage.size.width, sendImage.size.height + 350.0*(sendImage.size.width/750.0));
+//    UIGraphicsBeginImageContext(size);
+    //////////////
+    if(UIGraphicsBeginImageContextWithOptions != NULL)
+    {
+        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(size);
+    }
+    //////////////////////
+    
+    [sendImage drawInRect:CGRectMake(0, 150.0*(sendImage.size.width/750.0), sendImage.size.width, sendImage.size.height)];
+    
+    [imageHead drawInRect:CGRectMake(0, 0, sendImage.size.width,
+                                       150.0*(sendImage.size.width/750.0))];
+    
+    [imageBottom drawInRect:CGRectMake(0, 150.0*(sendImage.size.width/750.0) + sendImage.size.height - 19.0*(sendImage.size.width/750.0),
+                                     sendImage.size.width, 219.0*(sendImage.size.width/750.0))];
+    
+    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    UIImageWriteToSavedPhotosAlbum(resultingImage, nil, nil , nil) ;
+    
+    return resultingImage;
 }
 
 

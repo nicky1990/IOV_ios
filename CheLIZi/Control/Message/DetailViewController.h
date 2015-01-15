@@ -7,10 +7,13 @@
 //
 
 #import "BaseViewController.h"
+#import "PushMessage.h"
 
 @interface DetailViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLable;
-@property (weak, nonatomic) IBOutlet UILabel *contentLable;
 
+@property (strong,nonatomic) PushMessage *pushMesage;
+
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 @end

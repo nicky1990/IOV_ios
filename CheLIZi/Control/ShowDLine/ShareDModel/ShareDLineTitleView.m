@@ -33,6 +33,7 @@
     __block NSDate *date;
     UILabel *dateLabel;
     UIDatePicker* datePicker;
+    id<ShareDLineTitleViewDelegate> deleage;
 }
 @end
 
@@ -86,11 +87,13 @@
 
 
 
-- (void)setUserName:(NSString *)name userIcon:(UIImage *)icon
+- (void)setUserName:(NSString *)name userIcon:(UIImage *)icon delegate:(id)DateDelegate
 {
+    NSLog(@"%@",icon);
+    userIcon = icon;
+    deleage = DateDelegate;
     [self controlsFrame];
     userName = [NSString stringWithString:name];
-    userIcon = icon;
     
     [userNameLabel setText:userName];
     [self createDate];
@@ -126,7 +129,7 @@
 //    [[iconView layer] setBorderColor:[UIColor greenColor].CGColor];//颜色
     [[iconView layer]setCornerRadius:with*(72.6/750.0)];//圆角
     [iconView.layer setMasksToBounds:YES];
-    [iconView setImage:[UIImage imageNamed:@"head"]];
+    [iconView setImage:userIcon];
     
     [userNameLabel setFrame:CGRectMake(with*(108.0/375.0), height*(45.0/116.0), with*(268.0/375.0), height*(20.0/116.0))];
     userNameLabel.text = @"label1";
@@ -154,6 +157,8 @@
     [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
     NSString *dateAndTime = [dateFormatter stringFromDate:date];
     [dateLabel setText:dateAndTime];
+    
+    [deleage titleChoseDate:date];
 }
 
 
@@ -164,19 +169,13 @@
     {
         NSTimeInterval secondsPerDay = 24*60*60;
         date = [date addTimeInterval:-secondsPerDay];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
-        NSString *dateAndTime = [dateFormatter stringFromDate:date];
-        [dateLabel setText:dateAndTime];
+        [self createDate];
     }
     else if(btn.tag == 11)
     {
         NSTimeInterval secondsPerDay = 24*60*60;
         date = [date addTimeInterval:secondsPerDay];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
-        NSString *dateAndTime = [dateFormatter stringFromDate:date];
-        [dateLabel setText:dateAndTime];
+        [self createDate];
     }
     else
     {
@@ -197,14 +196,11 @@
             if(datePicker == nil)datePicker=[[UIDatePicker alloc]init];
             datePicker.date = date;
 
-            __block UILabel *block_dateLabel = dateLabel;
+            __block ShareDLineTitleView *tmp = self;
             datePicker.datePickerMode = UIDatePickerModeDate;
             UIAlertAction* ok=[UIAlertAction actionWithTitle:@"确认" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction *action) {
                 date=[datePicker date];
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
-                NSString *dateAndTime = [dateFormatter stringFromDate:date];
-                [block_dateLabel setText:dateAndTime];
+                [tmp createDate];
             }];
             UIAlertAction* no=[UIAlertAction actionWithTitle:@"取消" style:(UIAlertActionStyleDefault) handler:nil];
             [alertVc.view addSubview:datePicker];
@@ -225,10 +221,7 @@
     if(buttonIndex == 0)
     {
         date=[datePicker date];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
-        NSString *dateAndTime = [dateFormatter stringFromDate:date];
-        [dateLabel setText:dateAndTime];
+        [self createDate];
     }
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{

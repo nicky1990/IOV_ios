@@ -12,6 +12,7 @@
 #import "AboutUsViewController.h"
 #import "WebViewController.h"
 #import "CarManageViewController.h"
+#import "PersonInfoViewController.h"
 
 @interface PersonCenterViewController ()<UIAlertViewDelegate,ToolRequestDelegate>
 {
@@ -35,9 +36,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"个人中心";
+    self.navigationItem.leftBarButtonItem = nil;
     // Do any additional setup after loading the view from its nib.
-
-    
     [self initDataAndUI];
 }
 
@@ -140,11 +140,14 @@
         switch (indexPath.row) {
             case 0:
             {
-                WebViewController *webVC = [[WebViewController alloc]init];
-                webVC.title = @"个人资料";
-                NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=userInfo&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
-                webVC.urlStr = urtStr;
-                [self.navigationController pushViewController:webVC animated:YES];
+//                WebViewController *webVC = [[WebViewController alloc]init];
+//                webVC.title = @"个人资料";
+//                NSString *urtStr = [NSString stringWithFormat:@"%@?c=html5&a=userInfo&access_token=%@",BASEURL,[UserInfo sharedUserInfo].userAccess_token];
+//                webVC.urlStr = urtStr;
+//                [self.navigationController pushViewController:webVC animated:YES];
+                PersonInfoViewController *personInfoVC = [[PersonInfoViewController alloc]init];
+                [self.navigationController pushViewController:personInfoVC animated:YES];
+                
             }
                 break;
             case 1:

@@ -10,9 +10,16 @@
 #import "OBDTableViewCell.h"
 #import <QuartzCore/QuartzCore.h>
 
+#import <AssetsLibrary/ALAsset.h>
+#import <AssetsLibrary/ALAssetsLibrary.h>
+#import <AssetsLibrary/ALAssetsGroup.h>
+#import <AssetsLibrary/ALAssetRepresentation.h>
+
+#import "ShareDatabate.h"
+
 #define iOS(version) (([[[UIDevice currentDevice] systemVersion] intValue] >= version)?1:0)
 
-@interface OBDTableView ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate,UIActionSheetDelegate>
+@interface OBDTableView ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate,UIActionSheetDelegate,ToolRequestDelegate>
 {
     int with;
     int height;
@@ -25,10 +32,14 @@
     
     //图片选择字典
     NSDictionary *imageDic;
+    
+    //当前数据时间点
+    NSDate *dateOfdata;
 }
 @end
 
 @implementation OBDTableView
+
 
 
 - (void)createTableView
@@ -36,23 +47,15 @@
     with = self.frame.size.width;
     height = self.frame.size.height;
     // 初始化tableView的数据
-    OBDData *data1 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试" time:@"15:30" content:@"测试测试测试测试跳舞特哥不测试测" image:nil];
-    OBDData *data2 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试测试测试测试测试" time:@"15:30" content:@"测试测试" image:nil];
-    OBDData *data3 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试" time:@"15:30" content:@"222" image:nil];
-    OBDData *data4 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试" time:@"15:30" content:@"测试测试测试测试测试测试测试试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试试测试测试测试测测测试测试测试" image:nil];
-    OBDData *data5 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试" time:@"15:30" content:@"222" image:nil];
-    OBDData *data6 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试" time:@"15:30" content:@"测试测试测试测试试测试测测试测试测试测试测试测试测试测试" image:nil];
-    OBDData *data7 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试" time:@"15:30" content:@"" image:nil];
-    OBDData *data8 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试" time:@"15:30" content:@"" image:nil];
-    OBDData *data9 = [[OBDData alloc]initWithTitle:@"测试测试测试测试测试测试测试" time:@"15:30" content:@"" image:nil];
     pessRow = 0;
     
-    _list = [@[data1,data2,data3,data4,data5,data6,data7,data8,data9]mutableCopy];
+    _list = [@[]mutableCopy];
     tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) style:UITableViewStylePlain];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.backgroundColor = [UIColor clearColor];
+    
     self.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     [self addSubview:tableView];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pressedCellImage:) name:@"pressedCellImage" object:nil];
@@ -80,6 +83,59 @@
     CGContextStrokePath(context);
     CGColorSpaceRelease(colorspace);
     CGColorRelease(color);
+}
+
+#pragma mark -
+#pragma mark Data Save and read Methods
+- (void)choseDataForDate:(NSDate*)date
+{
+    dateOfdata = date;
+    NSTimeInterval timeInterval = [date timeIntervalSince1970];
+    NSDictionary *paraDic = @{@"c":@"driving",
+                              @"a":@"lists",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"car_id":[NSNumber numberWithInt:[UserInfo sharedUserInfo].car_id],
+                              @"date":[NSNumber numberWithInt:timeInterval]
+                              };
+    
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
+    
+    //获取当天的数据字典,以下为模拟一个数据类
+//    NSDictionary *d1 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421029000],@"address":@"福建省泉州市金门县1" };
+//    NSDictionary *d2 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421028000],@"address":@"福建省泉州市金门县2" };
+//    NSDictionary *d3 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421027000],@"address":@"福建省泉州市金门县3" };
+//    NSArray *a = @[d1,d2,d3];
+    
+    //将本地数据填入字典组装为使用数据并回传给列表
+//    [_list addObjectsFromArray:[[ShareDatabate ServiceInstance] readTheArrayForeDate:dateOfdata FromNetworkDataArray:a]];
+//    [tableView reloadData];
+}
+
+-(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
+    [_list removeAllObjects];
+    NSDictionary *dataDic = [dic objectForKey:@"data"];
+    NSMutableArray *a = [[NSMutableArray alloc]init];
+    for (NSDictionary *temp in dataDic) {
+        NSNumber *traceTime = [temp objectForKey:@"trace_time"];
+        NSString *strAddress = [temp objectForKey:@"address"];
+         NSDictionary *d = @{ @"trace_time" : traceTime,@"address":strAddress };
+        [a addObject:d];
+    }
+    //将本地数据填入字典组装为使用数据并回传给列表
+    [_list addObjectsFromArray:[[ShareDatabate ServiceInstance] readTheArrayForeDate:dateOfdata FromNetworkDataArray:a]];
+    [tableView reloadData];
+}
+
+-(void)requestFailed:(NSDictionary *)dic withTag:(NSInteger)tag{
+    [_list removeAllObjects];
+    [tableView reloadData];
+}
+- (void)saveDataForDate
+{
+    [[ShareDatabate ServiceInstance] saveTheArray:_list forDate:dateOfdata];
 }
 
 #pragma mark -
@@ -117,7 +173,7 @@
         [cell addSubview:btn];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [cell createOBDTitle:data.title time:data.time content:data.content image:data.imageArray];
+        [cell createOBDTitle:data.title time:data.date content:data.content image:data.imageArray];
     });
     return cell;
 }
@@ -173,6 +229,7 @@
     [inputController dismissModalViewControllerAnimated:YES];
     ((OBDData*)[_list objectAtIndex:choseRow]).content = textView.text;
     [tableView reloadData];
+    [self saveDataForDate];
 }
 
 - (void)cellPressed:(id)sender
@@ -232,6 +289,7 @@
                                                     [_list removeObjectAtIndex:choseRow];
                                                     NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
                                                     [block_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
+                                                    [self saveDataForDate];
                                                 }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"取消"
                                                   style:UIAlertActionStyleCancel
@@ -275,6 +333,7 @@
                                                     [data.imageArray removeObjectAtIndex:n];
                                                     NSIndexPath *te=[NSIndexPath indexPathForRow:path.row inSection:0];
                                                     [block_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
+                                                    [self saveDataForDate];
                                                 }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"取消"
                                                   style:UIAlertActionStyleCancel
@@ -377,14 +436,27 @@
     NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
     if ([type isEqualToString:@"public.image"])
     {
-        UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        UIImage* imageBig = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        UIImage* image = [self scaleImage:imageBig];
         OBDData *data = [_list objectAtIndex:pessRow];
         [data.imageArray addObject:image];
         [tableView reloadData];
+        [self saveDataForDate];
     }
     [picker dismissModalViewControllerAnimated:YES];
 }
 
+// 压缩图片
+- (UIImage *)scaleImage:(UIImage *)image
+{
+    CGSize itemSize = CGSizeMake(self.frame.size.width * 1.5, image.size.height * 1.5 * (self.frame.size.width / image.size.width));
+    UIGraphicsBeginImageContext(itemSize);
+    CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+    [image drawInRect:imageRect];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
 
 #pragma mark UIActionSheet Methods
 - (void)actionSheetCancel:(UIActionSheet *)actionSheet{
@@ -454,26 +526,3 @@
 
 @end
 
-
-@implementation OBDData
-
-- (id)initWithTitle:(NSString*)title time:(NSString*)time content:(NSString*)content image:(NSMutableArray *)imageArray
-{
-    if (self = [super init])
-    {
-        if(title != nil)_title = [[NSString alloc]initWithString:title];
-        if(content != nil)_content = [[NSString alloc]initWithString:content];
-        if(imageArray != nil)
-        {
-            _imageArray = [[NSMutableArray alloc]initWithArray:imageArray];
-        }
-        else
-        {
-            _imageArray = [[NSMutableArray alloc]init];
-        }
-        if(time != nil)_time = [[NSString alloc]initWithString:time];
-    }
-    return self;
-}
-
-@end

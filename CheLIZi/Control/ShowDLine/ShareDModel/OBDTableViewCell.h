@@ -20,6 +20,6 @@
  * 修改日期			版本号		修改人		修改内容
  * ---------------------------------------------------------------------
  **********************************************************************/
-- (void)createOBDTitle:(NSString *)str time:(NSString *)time content:(NSString*)content image:(NSMutableArray *)imageArray;
+- (void)createOBDTitle:(NSString *)str time:(NSDate *)time content:(NSString*)content image:(NSMutableArray *)imageArray;
 
 @end

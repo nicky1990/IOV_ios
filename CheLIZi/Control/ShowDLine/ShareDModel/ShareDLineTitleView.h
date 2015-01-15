@@ -8,7 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ShareDLineTitleViewDelegate
+-(void)titleChoseDate:(NSDate*)date;
+
+@end
+
 @interface ShareDLineTitleView : UIView
+
+@property(assign,nonatomic)id<ShareDLineTitleViewDelegate> delegate;
 
 /**********************************************************************
  * 函数名称: setUserName:(NSString *)name userIcon:(UIImage *)icon
@@ -20,6 +27,6 @@
  * 修改日期			版本号		修改人		修改内容
  * ---------------------------------------------------------------------
  **********************************************************************/
-- (void)setUserName:(NSString *)name userIcon:(UIImage *)icon;
+- (void)setUserName:(NSString *)name userIcon:(UIImage *)icon delegate:(id)DateDelegate;
 
 @end
