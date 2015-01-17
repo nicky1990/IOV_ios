@@ -147,8 +147,13 @@
 }
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    if ([[NSUserDefaults standardUserDefaults]boolForKey:@"isUMPush"]) {
+         [UMessage didReceiveRemoteNotification:userInfo];
+    }else{
+        [UMessage unregisterForRemoteNotifications];
+    }
 //    如需关闭推送，请使用[UMessage unregisterForRemoteNotifications]
-    [UMessage didReceiveRemoteNotification:userInfo];
+   
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {

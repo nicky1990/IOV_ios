@@ -8,6 +8,7 @@
 
 #import "UniversalSetViewController.h"
 #import "ToolClearCaches.h"
+#import "UMessage.h"
 
 @interface UniversalSetViewController ()<UIAlertViewDelegate>
 {
@@ -48,6 +49,8 @@
     }else{
         UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
         [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
+        BOOL boolIsPush = [[NSUserDefaults standardUserDefaults]boolForKey:@"isUMPush"];
+        [switchview setOn:boolIsPush];
         cell.accessoryView = switchview;
         cell.textLabel.text = _typeArray[indexPath.row];
     }
@@ -56,6 +59,8 @@
 
 -(void)updateSwitchAtIndexPath:(UISwitch *)sender{
     NSLog(@"%d",sender.on);
+    [[NSUserDefaults standardUserDefaults]setBool:sender.on forKey:@"isUMPush"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 
 }
 

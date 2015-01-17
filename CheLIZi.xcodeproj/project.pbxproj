@@ -203,6 +203,10 @@
 		6A69BB4C1A5931C7001C91D9 /* FunctionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A69BB4A1A5931C7001C91D9 /* FunctionViewController.xib */; };
 		6A69BB571A597D57001C91D9 /* ToolUMShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A69BB561A597D57001C91D9 /* ToolUMShare.m */; };
 		6A69BB5A1A598D3C001C91D9 /* BaiDuMapNeed.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A69BB591A598D3C001C91D9 /* BaiDuMapNeed.mm */; };
+		6A6AE0051A69365400152A77 /* home_homeselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6AE0031A69365400152A77 /* home_homeselected@2x.png */; };
+		6A6AE0061A69365400152A77 /* home_personselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6AE0041A69365400152A77 /* home_personselected@2x.png */; };
+		6A6AE0091A693A1F00152A77 /* carstatus_oilbotton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6AE0071A693A1F00152A77 /* carstatus_oilbotton@2x.png */; };
+		6A6AE00A1A693A1F00152A77 /* carstatus_oiltop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A6AE0081A693A1F00152A77 /* carstatus_oiltop@2x.png */; };
 		6A6BA89D1A57C3E10076329B /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6BA89C1A57C3E10076329B /* UserInfo.m */; };
 		6A7183C91A661F700008E443 /* UpdateBirthdayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7183C71A661F700008E443 /* UpdateBirthdayViewController.m */; };
 		6A7183CA1A661F700008E443 /* UpdateBirthdayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A7183C81A661F700008E443 /* UpdateBirthdayViewController.xib */; };
@@ -269,7 +273,8 @@
 		6A7BF6731A4C040C00500A95 /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6631A4C040C00500A95 /* home@2x.png */; };
 		6A7BF6741A4C040C00500A95 /* home_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6641A4C040C00500A95 /* home_message@2x.png */; };
 		6A7BF6751A4C040C00500A95 /* home_compass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6651A4C040C00500A95 /* home_compass@2x.png */; };
-		6A7BF6761A4C040C00500A95 /* home_compass1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7BF6661A4C040C00500A95 /* home_compass1@2x.png */; };
+		6A7E1B881A6A660500E547BA /* ToolImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E1B871A6A660500E547BA /* ToolImage.m */; };
+		6A7E1B8C1A6A66F500E547BA /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E1B8B1A6A66F500E547BA /* VPImageCropperViewController.m */; };
 		6AEE219C1A5D177700D4D714 /* CarSetWarnData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE219B1A5D177700D4D714 /* CarSetWarnData.m */; };
 		6AEE21A11A5D206700D4D714 /* CarManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE219F1A5D206700D4D714 /* CarManageViewController.m */; };
 		6AEE21A21A5D206700D4D714 /* CarManageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AEE21A01A5D206700D4D714 /* CarManageViewController.xib */; };
@@ -627,6 +632,10 @@
 		6A69BB561A597D57001C91D9 /* ToolUMShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolUMShare.m; sourceTree = "<group>"; };
 		6A69BB581A598D3C001C91D9 /* BaiDuMapNeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaiDuMapNeed.h; sourceTree = "<group>"; };
 		6A69BB591A598D3C001C91D9 /* BaiDuMapNeed.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BaiDuMapNeed.mm; sourceTree = "<group>"; };
+		6A6AE0031A69365400152A77 /* home_homeselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_homeselected@2x.png"; sourceTree = "<group>"; };
+		6A6AE0041A69365400152A77 /* home_personselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_personselected@2x.png"; sourceTree = "<group>"; };
+		6A6AE0071A693A1F00152A77 /* carstatus_oilbotton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carstatus_oilbotton@2x.png"; sourceTree = "<group>"; };
+		6A6AE0081A693A1F00152A77 /* carstatus_oiltop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carstatus_oiltop@2x.png"; sourceTree = "<group>"; };
 		6A6BA89B1A57C3E10076329B /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		6A6BA89C1A57C3E10076329B /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		6A7183C61A661F700008E443 /* UpdateBirthdayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateBirthdayViewController.h; sourceTree = "<group>"; };
@@ -729,7 +738,10 @@
 		6A7BF6631A4C040C00500A95 /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@2x.png"; sourceTree = "<group>"; };
 		6A7BF6641A4C040C00500A95 /* home_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_message@2x.png"; sourceTree = "<group>"; };
 		6A7BF6651A4C040C00500A95 /* home_compass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_compass@2x.png"; sourceTree = "<group>"; };
-		6A7BF6661A4C040C00500A95 /* home_compass1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_compass1@2x.png"; sourceTree = "<group>"; };
+		6A7E1B861A6A660500E547BA /* ToolImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolImage.h; sourceTree = "<group>"; };
+		6A7E1B871A6A660500E547BA /* ToolImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolImage.m; sourceTree = "<group>"; };
+		6A7E1B8A1A6A66F500E547BA /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
+		6A7E1B8B1A6A66F500E547BA /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 		6AEE219A1A5D177700D4D714 /* CarSetWarnData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarSetWarnData.h; sourceTree = "<group>"; };
 		6AEE219B1A5D177700D4D714 /* CarSetWarnData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarSetWarnData.m; sourceTree = "<group>"; };
 		6AEE219E1A5D206700D4D714 /* CarManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarManageViewController.h; sourceTree = "<group>"; };
@@ -830,6 +842,8 @@
 				6A69BB511A5959ED001C91D9 /* ToolRequestDelegate.h */,
 				6A69BB551A597D57001C91D9 /* ToolUMShare.h */,
 				6A69BB561A597D57001C91D9 /* ToolUMShare.m */,
+				6A7E1B861A6A660500E547BA /* ToolImage.h */,
+				6A7E1B871A6A660500E547BA /* ToolImage.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1438,6 +1452,15 @@
 			path = Function;
 			sourceTree = "<group>";
 		};
+		6A6AE0021A69337100152A77 /* QrCode */ = {
+			isa = PBXGroup;
+			children = (
+				6A6AE0071A693A1F00152A77 /* carstatus_oilbotton@2x.png */,
+				6A6AE0081A693A1F00152A77 /* carstatus_oiltop@2x.png */,
+			);
+			path = QrCode;
+			sourceTree = "<group>";
+		};
 		6A6BA89A1A57C3CC0076329B /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1615,6 +1638,8 @@
 		6A7A8DEE1A4A64D000EF24A5 /* HomeIcon */ = {
 			isa = PBXGroup;
 			children = (
+				6A6AE0031A69365400152A77 /* home_homeselected@2x.png */,
+				6A6AE0041A69365400152A77 /* home_personselected@2x.png */,
 				6A50C85B1A51012A00005CE4 /* home_circle@2x.png */,
 				6A57E2BA1A5C342A0030CA21 /* home_share@2x.png */,
 				6A7BF6571A4C040C00500A95 /* home_car@2x.png */,
@@ -1629,7 +1654,6 @@
 				6A7BF6631A4C040C00500A95 /* home@2x.png */,
 				6A7BF6641A4C040C00500A95 /* home_message@2x.png */,
 				6A7BF6651A4C040C00500A95 /* home_compass@2x.png */,
-				6A7BF6661A4C040C00500A95 /* home_compass1@2x.png */,
 			);
 			path = HomeIcon;
 			sourceTree = "<group>";
@@ -1703,6 +1727,15 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		6A7E1B891A6A66E100E547BA /* TailoringImage */ = {
+			isa = PBXGroup;
+			children = (
+				6A7E1B8A1A6A66F500E547BA /* VPImageCropperViewController.h */,
+				6A7E1B8B1A6A66F500E547BA /* VPImageCropperViewController.m */,
+			);
+			path = TailoringImage;
+			sourceTree = "<group>";
+		};
 		6A8CBAE91A47FFEA0078AADC /* Control */ = {
 			isa = PBXGroup;
 			children = (
@@ -1724,6 +1757,7 @@
 		6A8CBAEA1A47FFEA0078AADC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6A6AE0021A69337100152A77 /* QrCode */,
 				6A479C3A1A63610B00DF9F7C /* AddCar */,
 				6A4AB1F71A5EB60F005B08D4 /* TrackIcon */,
 				6A57297A1A5679EF009AEB29 /* CarStatusScan */,
@@ -1757,6 +1791,7 @@
 		6A8CBAEC1A47FFEA0078AADC /* ThirdClass */ = {
 			isa = PBXGroup;
 			children = (
+				6A7E1B891A6A66E100E547BA /* TailoringImage */,
 				6A57E2501A5C0D810030CA21 /* UMessage_Sdk_1.1.0 */,
 				6A47FE281A5A367000A07651 /* MJExtension */,
 				6A3878811A57DD4600758F06 /* BaiduMap_IOSSDK_v2.6.0_Lib */,
@@ -1934,6 +1969,7 @@
 				6A7BF6701A4C040C00500A95 /* home_home@2x.png in Resources */,
 				6A49F9521A562C670003E4D7 /* UMSLoginViewController.xib in Resources */,
 				6A4590891A65509900497DBA /* UpdateNiChengViewController.xib in Resources */,
+				6A6AE0061A69365400152A77 /* home_personselected@2x.png in Resources */,
 				6A69BB461A59303B001C91D9 /* WeiBoViewController.xib in Resources */,
 				6A49F9501A562C670003E4D7 /* UMShareEditViewController.xib in Resources */,
 				6A62F3991A425F1400D3AAA6 /* InfoPlist.strings in Resources */,
@@ -2010,14 +2046,15 @@
 				6A21C42F1A55391A0063ADC6 /* person_aboutus@2x.png in Resources */,
 				6A5729811A567A70009AEB29 /* scan_jieqimen@2x.png in Resources */,
 				6A4590761A6504EF00497DBA /* icon-small-40.png in Resources */,
+				6A6AE00A1A693A1F00152A77 /* carstatus_oiltop@2x.png in Resources */,
 				6A21C43A1A555F070063ADC6 /* login_warn@2x.png in Resources */,
 				6A45906E1A6503BB00497DBA /* icon.png in Resources */,
 				6A303B871A54423800A62524 /* carstatus_win@2x.png in Resources */,
-				6A7BF6761A4C040C00500A95 /* home_compass1@2x.png in Resources */,
 				6A21C42B1A5531DD0063ADC6 /* UniversalSetViewController.xib in Resources */,
 				6A45906F1A6503BB00497DBA /* icon-small@2x.png in Resources */,
 				6A7BF66C1A4C040C00500A95 /* home_goodluck@2x.png in Resources */,
 				6A7BF66A1A4C040C00500A95 /* home_bottomback@2x.png in Resources */,
+				6A6AE0051A69365400152A77 /* home_homeselected@2x.png in Resources */,
 				6A4590931A6550ED00497DBA /* UpdateSexViewController.xib in Resources */,
 				6A4590721A6503BB00497DBA /* icon@2x.png in Resources */,
 				6A4AB2281A5EC7F7005B08D4 /* track_next@2x.png in Resources */,
@@ -2041,6 +2078,7 @@
 				6A7BF6731A4C040C00500A95 /* home@2x.png in Resources */,
 				6A62F3A11A425F1400D3AAA6 /* Images.xcassets in Resources */,
 				6A4590701A6503BB00497DBA /* icon-small-40@2x.png in Resources */,
+				6A6AE0091A693A1F00152A77 /* carstatus_oilbotton@2x.png in Resources */,
 				6A57298E1A567A9F009AEB29 /* 形状-38@2x.png in Resources */,
 				6A47FE861A5AB0DF00A07651 /* oil_7@2x.png in Resources */,
 				6A4590781A65062300497DBA /* iTunesArtwork@2x.png in Resources */,
@@ -2127,6 +2165,7 @@
 				6A47FE411A5A367000A07651 /* MJConst.m in Sources */,
 				6A4AB1EC1A5E5B1C005B08D4 /* TrackPoint.m in Sources */,
 				6A7A8DEC1A4A645100EF24A5 /* RegistViewController.m in Sources */,
+				6A7E1B8C1A6A66F500E547BA /* VPImageCropperViewController.m in Sources */,
 				6A7A8D811A4A536B00EF24A5 /* MJRefreshConst.m in Sources */,
 				6A4590831A65408300497DBA /* PushMessage.m in Sources */,
 				6A7A8D9F1A4A5BAF00EF24A5 /* AFNetworkReachabilityManager.m in Sources */,
@@ -2161,6 +2200,7 @@
 				6A69BB5A1A598D3C001C91D9 /* BaiDuMapNeed.mm in Sources */,
 				6A479C581A63649C00DF9F7C /* AddCarUI.m in Sources */,
 				6A4590B71A655F7800497DBA /* SphereMenu.m in Sources */,
+				6A7E1B881A6A660500E547BA /* ToolImage.m in Sources */,
 				6A4590AF1A655F7800497DBA /* OBDTableViewCell.m in Sources */,
 				6AEE21A11A5D206700D4D714 /* CarManageViewController.m in Sources */,
 				6A4AB1F11A5E89FC005B08D4 /* SectionTrack.m in Sources */,

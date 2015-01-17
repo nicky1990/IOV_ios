@@ -16,6 +16,7 @@
 #import "WebViewController.h"
 #import "ShareDLineViewController.h"
 #import "PersonCenterViewController.h"
+#import "ToolImage.h"
 
 #define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?45:25)
 #define kButtonHeight (([[UIScreen mainScreen] bounds].size.height == 568)?125:81)
@@ -48,6 +49,10 @@
     // Do any additional setup after loading the view from its nib.
     [self initUI];
     [self getHomeData];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateHeadImage) name:@"userheadimagechange" object:nil];
+}
+-(void)updateHeadImage{
+    _headImage.image = [ToolImage getHeadImage];
 }
 
 -(void)initUI{
@@ -75,6 +80,8 @@
     _headImage = [[UIImageView alloc]initWithFrame:CGRectMake((kW_SreenWidth-120)/2.0, 112.5, 120, 120)];
     _headImage.layer.cornerRadius = _headImage.frame.size.width/2.0;
     _headImage.layer.masksToBounds = YES;
+    _headImage.layer.borderWidth = 4;
+    _headImage.layer.borderColor = [kMAINCOLOR CGColor];
     _headImage.image = [UIImage imageNamed:@"home_headdefault"];
     [self.view addSubview:_headImage];
     
@@ -151,7 +158,13 @@
     HomeData *homeData = [HomeData objectWithKeyValues:dic];
     [UserInfo sharedUserInfo].car_id = homeData.car_id;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_headImage setImageWithURL:[NSURL URLWithString:homeData.avatar] placeholderImage:[UIImage imageNamed:@"home_headdefault"]];
+        
+        if ([ToolImage getHeadImage]) {
+            _headImage.image = [ToolImage getHeadImage];
+        }else{
+            [_headImage setImageWithURL:[NSURL URLWithString:homeData.avatar] placeholderImage:[UIImage imageNamed:@"home_headdefault"]];
+            [ToolImage saveHeadImage:_headImage.image];
+        }
         _nameLabel.text = homeData.nickname;
         if (homeData.message_new > 0) {
             _messageNumLabel.hidden = NO;
@@ -183,10 +196,13 @@
     
     UIButton *homeBtn = [self getButton:@"首页" withImage:@"home_home" withFrame:CGRectMake(0, 0, (kW_SreenWidth-65)/2.0, 49)];
     [homeBtn addTarget:self action:@selector(homeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    homeBtn.tintColor = RGBCOLOR(14, 180, 147);
+    homeBtn.tag = 397;
     [view addSubview:homeBtn];
     
     UIButton *personBtn = [self getButton:@"个人中心" withImage:@"home_person" withFrame:CGRectMake((kW_SreenWidth-65)/2.0+65, 0, (kW_SreenWidth-65)/2.0, 49)];
     [personBtn addTarget:self action:@selector(personBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    personBtn.tag = 398;
     [view addSubview:personBtn];
     
     [self.tabBarController.view addSubview:view];
@@ -196,6 +212,7 @@
     UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
     [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
     [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
+    
     self.tabBarController.selectedIndex = 0;
 }
 -(void)showDLineBtnClick{
@@ -207,7 +224,6 @@
                 [share captureScreen];
             }
         }
-        
     }else{
         self.tabBarController.selectedIndex = 1;
         UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
@@ -223,6 +239,7 @@
     UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
     [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
     [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
+    
     self.tabBarController.selectedIndex = 2;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
@@ -242,6 +259,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"userheadimagechange" object:nil];
+}
+
 -(UIButton *)getButton:(NSString *)buttonTitle withImage:(NSString *)imgName withFrame:(CGRect) rect{
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = rect;

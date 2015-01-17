@@ -13,8 +13,11 @@
 #import "UpdateNiChengViewController.h"
 #import "UpdateSexViewController.h"
 #import "UpdateBirthdayViewController.h"
+#import "UIImageView+AFNetworking.h"
+#import "VPImageCropperViewController.h"
+#import "ToolImage.h"
 
-@interface PersonInfoViewController ()<UITableViewDataSource,UITableViewDelegate,ToolRequestDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface PersonInfoViewController ()<UITableViewDataSource,UITableViewDelegate,ToolRequestDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,VPImageCropperDelegate>
 {
     UITableView *_infoTableView;
     NSArray *_typeArray;
@@ -34,6 +37,7 @@
     self.title = @"个人资料";
     // Do any additional setup after loading the view from its nib.
     [self initUI];
+    
 }
 
 -(void)initUI{
@@ -44,6 +48,12 @@
     _infoTableView.dataSource = self;
     _infoTableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_infoTableView];
+    
+    _headImage = [[UIImageView alloc]initWithFrame:CGRectMake(kW_SreenWidth-80, 5, 40, 40)];
+    _headImage.layer.cornerRadius = 20;
+    _headImage.layer.masksToBounds = YES;
+    _headImage.layer.borderWidth = 2;
+    _headImage.layer.borderColor = [kMAINCOLOR CGColor];
 }
 
 #pragma makr uitableview method
@@ -77,8 +87,12 @@
         switch (indexPath.row) {
             case 0:
             {
-                _headImage = [[UIImageView alloc]initWithFrame:CGRectMake(kW_SreenWidth-80, 5, 40, 40)];
-                _headImage.image = [UIImage imageNamed:@"person_userhead"];
+                
+                if ([ToolImage getHeadImage]) {
+                    _headImage.image = [ToolImage getHeadImage];
+                }else{
+                    [_headImage setImageWithURL:[NSURL URLWithString:_personInfo.avatar] placeholderImage:[UIImage imageNamed:@"person_userhead"]];
+                }
                 [cell addSubview:_headImage];
             }
                 break;
@@ -135,24 +149,15 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
-        /*
-        if (indexPath.row == 0) {
-            //开启照片库
-            UIImagePickerController *img = [[UIImagePickerController alloc]init];
-            //判断本地图片库是否可以使用
-            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-                img.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                img.delegate = self;
-                //推出图像选择视图
-                [self presentViewController:img animated:YES completion:nil];
-            }
-         }
-         */
-        
         switch (indexPath.row) {
             case 0:
             {
-                
+                UIActionSheet *choiceSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                         delegate:self
+                                                                cancelButtonTitle:@"取消"
+                                                           destructiveButtonTitle:nil
+                                                                otherButtonTitles:@"拍照", @"从相册中选取", nil];
+                [choiceSheet showInView:self.view];
             }
                 break;
             case 1:
@@ -199,6 +204,87 @@
     }
     
 }
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        // 拍照
+        if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
+            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+            controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+            if ([self isFrontCameraAvailable]) {
+                controller.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            }
+            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+            controller.mediaTypes = mediaTypes;
+            controller.delegate = self;
+            [self presentViewController:controller
+                               animated:YES
+                             completion:^(void){
+                                 NSLog(@"Picker View Controller is presented");
+                             }];
+        }
+        
+    } else if (buttonIndex == 1) {
+        // 从相册中选取
+        if ([self isPhotoLibraryAvailable]) {
+            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+            controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+            controller.mediaTypes = mediaTypes;
+            controller.delegate = self;
+            [self presentViewController:controller
+                               animated:YES
+                             completion:^(void){
+                                 NSLog(@"Picker View Controller is presented");
+                             }];
+        }
+    }
+}
+
+#pragma mark camera utility
+- (BOOL) isCameraAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+- (BOOL) isRearCameraAvailable{
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+}
+- (BOOL) isFrontCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+}
+- (BOOL) doesCameraSupportTakingPhotos {
+    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
+}
+- (BOOL) cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType{
+    __block BOOL result = NO;
+    if ([paramMediaType length] == 0) {
+        return NO;
+    }
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
+    [availableMediaTypes enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *mediaType = (NSString *)obj;
+        if ([mediaType isEqualToString:paramMediaType]){
+            result = YES;
+            *stop= YES;
+        }
+    }];
+    return result;
+}
+- (BOOL) isPhotoLibraryAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:
+            UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (BOOL) canUserPickVideosFromPhotoLibrary{
+    return [self
+            cameraSupportsMedia:(__bridge NSString *)kUTTypeMovie sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (BOOL) canUserPickPhotosFromPhotoLibrary{
+    return [self
+            cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+
 #pragma mark getdata
 -(void)getPersonInfoData{
     NSDictionary *paraDic = @{@"c":@"user",
@@ -221,18 +307,68 @@
 #pragma mark select headimage
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString * tmpPath = NSTemporaryDirectory();
-    //目标路径
-    NSString *filePath=[tmpPath stringByAppendingPathComponent:@"head.png"];
-    NSLog(@"file:%@",filePath);
-    UIImage *temp = [info objectForKey:UIImagePickerControllerOriginalImage];
-    NSData *tempData = UIImagePNGRepresentation(temp);
-    [tempData writeToFile:filePath atomically:YES];
-    _headImage.image = temp;
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    
+    [picker dismissViewControllerAnimated:YES completion:^() {
+//        UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        UIImage *portraitImg = [info objectForKey:UIImagePickerControllerOriginalImage];
+        portraitImg = [ToolImage imageByScalingToMaxSize:portraitImg];
+        // 裁剪
+        VPImageCropperViewController *imgEditorVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:1];
+        imgEditorVC.delegate = self;
+        
+        [self presentViewController:imgEditorVC animated:YES completion:^{
+            // TO DO
+        }];
+    }];
 }
 
+#pragma mark upload headImagd
+-(void)uploadHeadImage:(NSString *)filePath{
+    NSDictionary *paraDic = @{@"c":@"user",
+                              @"a":@"infoSave",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"variate_name":@"avatar",
+                              @"variate_value":@"",
+                              };
+//    NSString *phoneNum = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
+    [[ToolRequest getRequestManager]POST:BASEURL parameters:paraDic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        NSError *error;
+        [formData appendPartWithFileURL:[NSURL fileURLWithPath:filePath] name:@"file" error:&error];
+        NSLog(@"error:%@",error);
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dic = responseObject;
+        if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userheadimagechange" object:nil];
+        }
+        NSLog(@"success:%@",dic);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"上传失败%@",error.localizedDescription);
+    }];
+
+}
+#pragma mark VPImageCropperDelegate
+- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
+    
+    NSString * tmpPath = NSTemporaryDirectory();
+    //目标路径
+    NSString *phoneNum = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
+    NSString *filePath=[tmpPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg",phoneNum]];
+    NSLog(@"file:%@",filePath);
+    [ToolImage saveHeadImage:editedImage];
+    [self uploadHeadImage:filePath];
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+        // TO DO
+    }];
+}
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController {
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+    }];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^(){
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

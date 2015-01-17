@@ -13,6 +13,8 @@
 #import "WebViewController.h"
 #import "CarManageViewController.h"
 #import "PersonInfoViewController.h"
+#import "VPImageCropperViewController.h"
+#import "ToolImage.h"
 
 @interface PersonCenterViewController ()<UIAlertViewDelegate,ToolRequestDelegate>
 {
@@ -39,11 +41,25 @@
     self.navigationItem.leftBarButtonItem = nil;
     // Do any additional setup after loading the view from its nib.
     [self initDataAndUI];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateHeadImage) name:@"userheadimagechange" object:nil];
+}
+-(void)updateHeadImage{
+    _userHeadImage.image = [ToolImage getHeadImage];
 }
 
 -(void)initDataAndUI{
-    _userHeadImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"person_userhead"]];
-    _userHeadImage.frame = CGRectMake(10, 2, 40, 40);
+    _userHeadImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, 2, 40, 40)];
+    _userHeadImage.layer.cornerRadius = 20;
+    _userHeadImage.layer.masksToBounds = YES;
+    _userHeadImage.layer.borderWidth = 2;
+    _userHeadImage.layer.borderColor = [kMAINCOLOR CGColor];
+    if ([ToolImage getHeadImage]) {
+        _userHeadImage.image = [ToolImage getHeadImage];
+    }else{
+        _userHeadImage.image =  [UIImage imageNamed:@"person_userhead"];
+    }
+
+    
     [self.navigationController.navigationBar addSubview:_userHeadImage];
     
     _typeArray = @[@"个人资料",@"积分匣子",@"奖品卡券",@"通用设置",@"关于我们"];
@@ -218,6 +234,9 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"userheadimagechange" object:nil];
 }
 
 /*

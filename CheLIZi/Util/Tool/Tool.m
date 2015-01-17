@@ -98,8 +98,8 @@
 
 +(UIImage *)combine:(UIImage*)centerImage {
     
-    UIImage *imageHead = [UIImage imageNamed:@"CaptureImageHead"];
-    UIImage *imageBottom = [UIImage imageNamed:@"CaptureImageBottom"];
+    UIImage *imageHead = [UIImage imageNamed:@"carstatus_oiltop"];
+    UIImage *imageBottom = [UIImage imageNamed:@"carstatus_oilbotton"];
     
     
     CGFloat width = centerImage.size.width;

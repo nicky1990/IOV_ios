@@ -118,7 +118,11 @@
     [_scanBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [centerView addSubview:_scanBtn];
     _scanBtnIcon = [[UIImageView alloc]initWithFrame:CGRectMake(43, 20, 34, 34)];
+    _scanBtnIcon.userInteractionEnabled = YES;
     _scanBtnIcon.image = [UIImage imageNamed:@"scan_scanbtnicon"];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(startScanClick)];
+    [_scanBtnIcon addGestureRecognizer:tap];
+    
     [centerView addSubview:_scanBtnIcon];
 //    _scanBtn.hidden = YES;
 //    _scanBtnIcon.hidden = YES;

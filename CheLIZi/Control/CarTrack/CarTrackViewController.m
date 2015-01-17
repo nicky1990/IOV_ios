@@ -524,28 +524,31 @@
     });
 }
 -(void)requestFailed:(NSDictionary *)dic withTag:(NSInteger)tag{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _nextTrack.hidden = YES;
-        _upTrack.hidden = YES;
-        [_locationInfo setTitle:@"" forState:UIControlStateNormal];
-        [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
-        [_theRunOil setTitle:@" 0.0L" forState:UIControlStateNormal];
-        [_theRunTime setTitle:@" 0min" forState:UIControlStateNormal];
-        _timeLabel.text = @"00:00-00:00";
-        
-        NSMutableAttributedString *attributAccelerate = [[NSMutableAttributedString alloc]initWithString:@"急加速0次"];
-        [attributAccelerate setAttributes:labelColorDic range:NSMakeRange(3, 1)];
-        _accelerateLabel.attributedText = attributAccelerate;
-        
-        NSMutableAttributedString *attributBrake = [[NSMutableAttributedString alloc]initWithString:@"急刹车0次"];
-        [attributBrake setAttributes:labelColorDic range:NSMakeRange(3, 1)];
-        _brakeLabel.attributedText = attributBrake;
-        
-        NSMutableAttributedString *attributHighSpeed = [[NSMutableAttributedString alloc]initWithString:@"急转弯0次"];
-        [attributHighSpeed setAttributes:labelColorDic range:NSMakeRange(3, 1)];
-        _sharpTurnLabel.attributedText = attributHighSpeed;
-    });
-
+    
+    if (tag == REQUESTTAG) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _nextTrack.hidden = YES;
+            _upTrack.hidden = YES;
+            [_locationInfo setTitle:@"" forState:UIControlStateNormal];
+            [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
+            [_theRunOil setTitle:@" 0.0L" forState:UIControlStateNormal];
+            [_theRunTime setTitle:@" 0min" forState:UIControlStateNormal];
+            _timeLabel.text = @"00:00-00:00";
+            
+            NSMutableAttributedString *attributAccelerate = [[NSMutableAttributedString alloc]initWithString:@"急加速0次"];
+            [attributAccelerate setAttributes:labelColorDic range:NSMakeRange(3, 1)];
+            _accelerateLabel.attributedText = attributAccelerate;
+            
+            NSMutableAttributedString *attributBrake = [[NSMutableAttributedString alloc]initWithString:@"急刹车0次"];
+            [attributBrake setAttributes:labelColorDic range:NSMakeRange(3, 1)];
+            _brakeLabel.attributedText = attributBrake;
+            
+            NSMutableAttributedString *attributHighSpeed = [[NSMutableAttributedString alloc]initWithString:@"急转弯0次"];
+            [attributHighSpeed setAttributes:labelColorDic range:NSMakeRange(3, 1)];
+            _sharpTurnLabel.attributedText = attributHighSpeed;
+        });
+    }
+    
 }
 /*
 #pragma mark - Navigation

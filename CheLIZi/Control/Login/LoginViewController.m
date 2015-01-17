@@ -14,6 +14,7 @@
 #import "PersonCenterViewController.h"
 #import "CustomView.h"
 #import "ShareDLineViewController.h"
+#import "ToolImage.h"
 
 
 @interface LoginViewController ()<UITextFieldDelegate,ToolRequestDelegate>
@@ -43,7 +44,10 @@
     // Do any additional setup after loading the view from its nib.
     [self customNavigationButton];
     [self setUI];
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateHeadImage) name:@"userheadimagechange" object:nil];
+}
+-(void)updateHeadImage{
+    self.userHead.image = [ToolImage getHeadImage];
 }
 -(void)autoLogin{
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults]objectForKey:@"devicetoken"];
@@ -70,16 +74,25 @@
 
 #pragma mark 控件属性
 -(void)setUI{
+    self.userHead.layer.cornerRadius = self.userHead.frame.size.width/2.0;
+    self.userHead.layer.masksToBounds = YES;
+    self.userHead.layer.borderWidth = 3;
+    self.userHead.layer.borderColor = [kMAINCOLOR CGColor];
+    [self.userPhoneNum setLeftImageWithImage:@"login_user"];
+    [self.userPassword setLeftImageWithImage:@"login_password"];
+    
+    if ([ToolImage getHeadImage]) {
+        self.userHead.image = [ToolImage getHeadImage];
+    }else{
+        self.userHead.image = [UIImage imageNamed:@"home_headdefault"];
+    }
+    
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"] != nil) {
         self.userPhoneNum.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
     }
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"passwordDefault"] != nil) {
         self.userPassword.text = [[NSUserDefaults standardUserDefaults]objectForKey:@"passwordDefault"];
     }
-    self.userHead.layer.cornerRadius = self.userHead.frame.size.width/2.0;
-    self.userHead.layer.masksToBounds = YES;
-    [self.userPhoneNum setLeftImageWithImage:@"login_user"];
-    [self.userPassword setLeftImageWithImage:@"login_password"];
 }
 
 -(void)customNavigationButton{
@@ -155,7 +168,6 @@
             NSUserDefaults *phoneNumDefault = [NSUserDefaults standardUserDefaults];
             [phoneNumDefault setObject:phoneNum forKey:@"phoneNumberDefault"];
             [phoneNumDefault setObject:password forKey:@"passwordDefault"];
-            [phoneNumDefault setBool:YES forKey:@"isLogin"];
             [phoneNumDefault synchronize];
             NSDictionary *paraDic = @{@"c":@"public",
                                       @"a":@"login",
@@ -199,6 +211,8 @@
 
 #pragma mark Request Succeed
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLogin"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
     NSNumber *userid = [dic objectForKey:@"user_id"];
     NSString *usersid = [dic objectForKey:@"sid"];
     NSString *useraccess_token = [dic objectForKey:@"access_token"];
@@ -213,4 +227,8 @@
     ResetPsdViewController *resetPsdVC = [[ResetPsdViewController alloc]init];
     [self.navigationController pushViewController:resetPsdVC animated:YES];
 }
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"userheadimagechange" object:nil];
+}
+
 @end
