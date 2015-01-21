@@ -67,24 +67,16 @@ static ScreenCaptureImage	*screenCaptureImage = nil;	//单例对象
     UIImage *imageHead = [UIImage imageNamed:@"CaptureImageHead"];
     UIImage *imageBottom = [UIImage imageNamed:@"CaptureImageBottom"];
 
-    CGSize size = CGSizeMake(sendImage.size.width, sendImage.size.height + 350.0*(sendImage.size.width/750.0));
-//    UIGraphicsBeginImageContext(size);
-    //////////////
-    if(UIGraphicsBeginImageContextWithOptions != NULL)
-    {
-        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
-    } else {
-        UIGraphicsBeginImageContext(size);
-    }
-    //////////////////////
+    CGSize size = CGSizeMake(sendImage.size.width, sendImage.size.height + 391.0*(sendImage.size.width/750.0));
+    UIGraphicsBeginImageContext(size);
     
-    [sendImage drawInRect:CGRectMake(0, 150.0*(sendImage.size.width/750.0), sendImage.size.width, sendImage.size.height)];
+    [sendImage drawInRect:CGRectMake(0, 175.0*(sendImage.size.width/750.0), sendImage.size.width, sendImage.size.height)];
     
     [imageHead drawInRect:CGRectMake(0, 0, sendImage.size.width,
-                                       150.0*(sendImage.size.width/750.0))];
+                                       175.0*(sendImage.size.width/750.0))];
     
-    [imageBottom drawInRect:CGRectMake(0, 150.0*(sendImage.size.width/750.0) + sendImage.size.height - 19.0*(sendImage.size.width/750.0),
-                                     sendImage.size.width, 219.0*(sendImage.size.width/750.0))];
+    [imageBottom drawInRect:CGRectMake(0, 175.0*(sendImage.size.width/750.0) + sendImage.size.height - 40.0*(sendImage.size.width/750.0),
+                                     sendImage.size.width, 256.0*(sendImage.size.width/750.0))];
     
     UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
     

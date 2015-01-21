@@ -87,6 +87,7 @@
 
 #pragma mark -
 #pragma mark Data Save and read Methods
+#pragma mark Data Save and read Methods
 - (void)choseDataForDate:(NSDate*)date
 {
     dateOfdata = date;
@@ -104,14 +105,14 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
     
     //获取当天的数据字典,以下为模拟一个数据类
-//    NSDictionary *d1 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421029000],@"address":@"福建省泉州市金门县1" };
-//    NSDictionary *d2 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421028000],@"address":@"福建省泉州市金门县2" };
-//    NSDictionary *d3 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421027000],@"address":@"福建省泉州市金门县3" };
-//    NSArray *a = @[d1,d2,d3];
+    //    NSDictionary *d1 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421029000],@"address":@"福建省泉州市金门县1" };
+    //    NSDictionary *d2 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421028000],@"address":@"福建省泉州市金门县2" };
+    //    NSDictionary *d3 = @{ @"trace_time" : [NSNumber numberWithLongLong:1421027000],@"address":@"福建省泉州市金门县3" };
+    //    NSArray *a = @[d1,d2,d3];
     
     //将本地数据填入字典组装为使用数据并回传给列表
-//    [_list addObjectsFromArray:[[ShareDatabate ServiceInstance] readTheArrayForeDate:dateOfdata FromNetworkDataArray:a]];
-//    [tableView reloadData];
+    //    [_list addObjectsFromArray:[[ShareDatabate ServiceInstance] readTheArrayForeDate:dateOfdata FromNetworkDataArray:a]];
+    //    [tableView reloadData];
 }
 
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
@@ -121,7 +122,7 @@
     for (NSDictionary *temp in dataDic) {
         NSNumber *traceTime = [temp objectForKey:@"trace_time"];
         NSString *strAddress = [temp objectForKey:@"address"];
-         NSDictionary *d = @{ @"trace_time" : traceTime,@"address":strAddress };
+        NSDictionary *d = @{ @"trace_time" : traceTime,@"address":strAddress };
         [a addObject:d];
     }
     //将本地数据填入字典组装为使用数据并回传给列表
@@ -133,6 +134,8 @@
     [_list removeAllObjects];
     [tableView reloadData];
 }
+
+
 - (void)saveDataForDate
 {
     [[ShareDatabate ServiceInstance] saveTheArray:_list forDate:dateOfdata];
@@ -197,7 +200,7 @@
     double imageHeight = with*(40.0/750.0);
     for(UIImage *im in data.imageArray)
     {
-        imageHeight = imageHeight + im.size.height*(with*1.0/im.size.width);
+        imageHeight = imageHeight + im.size.height*(with*1.0*(630.0/750.0)/im.size.width);
     }
     if(imageHeight == with*(40.0/750.0))imageHeight = 0;
     if([data.content isEqualToString:@""])imageHeight = imageHeight - self.frame.size.width*(28.0/750.0);

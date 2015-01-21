@@ -78,7 +78,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     DetailViewController *detailVC = [[DetailViewController alloc]init];
     detailVC.pushMesage = (PushMessage *)_listArray[indexPath.row];
-    
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 

@@ -19,4 +19,19 @@ static UserInfo *shareInstance = nil;
     return shareInstance;
 }
 
++(id)allocWithZone:(NSZone *)zone
+{
+    @synchronized(self)
+    {
+        if (shareInstance == nil)
+        {
+            shareInstance = [super allocWithZone:zone];
+            return shareInstance;
+        }
+    }
+    return nil;
+}
+
+
+
 @end

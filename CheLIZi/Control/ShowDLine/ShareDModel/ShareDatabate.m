@@ -128,7 +128,6 @@ static ShareDatabate *instance = nil;	//单例对象
         for(NSDictionary *readData in readArray)
         {
             NSDate *read_date = [readData objectForKey:@"date"];
-            NSLog(@"dfd %f",[read_date timeIntervalSince1970]);
             if(ABS([obdData.date timeIntervalSince1970] - [read_date timeIntervalSince1970])<60)
             {
                 [obdData reflectDataFromOtherObject:readData];

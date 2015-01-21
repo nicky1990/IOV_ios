@@ -29,7 +29,7 @@
  
     self.iconImageView.layer.cornerRadius = 15;
     self.iconImageView.layer.masksToBounds = YES;
-    _typeArray = @[@"慷慨善良的去评分",@"官方微信",@"官方微博",@"功能介绍",@"版本更新"];
+    _typeArray = @[@"慷慨善良的去评分",@"购买设备",@"官方微信",@"官方微博",@"功能介绍",@"版本更新"];
     self.aboutTableView.tableFooterView = [self getView];
 }
 
@@ -46,7 +46,7 @@
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    if (indexPath.row == 4) {
+    if (indexPath.row == 5) {
         cell.textLabel.text = _typeArray[indexPath.row];
         cell.detailTextLabel.text = @"已是最新版";
     }else{
@@ -89,35 +89,6 @@
 
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section;{
-//    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, 80)];
-//    view.backgroundColor = [UIColor clearColor];
-//    UIButton *protocolBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    protocolBtn.frame = CGRectMake(0, 15, kW_SreenWidth, 20);
-//    protocolBtn.titleLabel.font = [UIFont fontWithName:@"Arial" size:12];
-//    [protocolBtn setTitle:@"车咕噜服务使用协议及隐私条款" forState:UIControlStateNormal];
-//    [protocolBtn setTitleColor:RGBCOLOR(3, 81, 147) forState:UIControlStateNormal];
-//    [protocolBtn addTarget:self action:@selector(protocolBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    [view addSubview:protocolBtn];
-//    
-//    UILabel *versionLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 35, kW_SreenWidth, 15)];
-//    versionLabel.text = @"骐俊通联科技 版权所有";
-//    versionLabel.font = [UIFont fontWithName:@"Arial" size:12];
-//    versionLabel.textAlignment = NSTextAlignmentCenter;
-//    versionLabel.textColor = RGBCOLOR(170, 170, 170);
-//    [view addSubview:versionLabel];
-//    
-//    
-//    UILabel *versionEngLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 50, kW_SreenWidth, 15)];
-//    versionEngLabel.text = @"Copyright© 2015-2018 Cheerzing. All rights reserved.";
-//    versionEngLabel.font = [UIFont fontWithName:@"Arial" size:12];
-//    versionEngLabel.textAlignment = NSTextAlignmentCenter;
-//    versionEngLabel.textColor = RGBCOLOR(170, 170, 170);
-//    [view addSubview:versionEngLabel];
-//    
-//    return view;
-//}
-
 -(void)protocolBtnClick{
     
 }
@@ -125,7 +96,7 @@
 #pragma mark 单元格点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 4) {
+    if (indexPath.row == 5) {
         MBProgressHUD *hud = [[MBProgressHUD alloc]initWithView:self.view];
         [self.view addSubview:hud];
         hud.mode = MBProgressHUDModeCustomView;
@@ -148,17 +119,22 @@
                 break;
             case 1:
             {
+                
+            }
+                break;
+            case 2:
+            {
                 WeiXinViewController *weixinVC = [[WeiXinViewController alloc]init];
                 [self.navigationController pushViewController:weixinVC animated:YES];
             }
                 break;
-            case 2:
+            case 3:
             {
                 WeiBoViewController *weiboVC = [[WeiBoViewController alloc]init];
                 [self.navigationController pushViewController:weiboVC animated:YES];
             }
                 break;
-            case 3:
+            case 4:
             {
                 FunctionViewController *functionVC = [[FunctionViewController alloc]init];
                 [self.navigationController pushViewController:functionVC animated:YES];
@@ -172,7 +148,7 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 1) {
-        NSLog(@"清除");
+        
         
     }
 }

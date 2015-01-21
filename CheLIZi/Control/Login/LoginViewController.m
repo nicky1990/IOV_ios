@@ -201,7 +201,6 @@
     UINavigationController *personCenterNav = [[UINavigationController alloc]initWithRootViewController:personCenterVC];
     [personCenterNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];
 
-    
     ShareDLineViewController *shareDLineViewController = [[ShareDLineViewController alloc]init];
     UINavigationController *showDLineNav = [[UINavigationController alloc]initWithRootViewController:shareDLineViewController];
     [showDLineNav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_background"] forBarMetrics:UIBarMetricsDefault];

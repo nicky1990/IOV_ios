@@ -205,6 +205,7 @@
             _getVerifyCodeBtn.userInteractionEnabled = YES;
         }];
     }else{
+        _getVerifyCodeBtn.userInteractionEnabled = YES;
         [Tool showAlertMessage:@"请输入正确的手机号！"];
     }
 }

@@ -194,13 +194,17 @@
     showDLineBtn.layer.borderColor = [RGBCOLOR(79, 92, 98)CGColor];
     [view addSubview:showDLineBtn];
     
-    UIButton *homeBtn = [self getButton:@"首页" withImage:@"home_home" withFrame:CGRectMake(0, 0, (kW_SreenWidth-65)/2.0, 49)];
+    UIButton *homeBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, (kW_SreenWidth-65)/2.0, 49)];
+    [homeBtn setImage:[UIImage imageNamed:@"home_home_selected"] forState:UIControlStateNormal];
+    
     [homeBtn addTarget:self action:@selector(homeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     homeBtn.tintColor = RGBCOLOR(14, 180, 147);
     homeBtn.tag = 397;
     [view addSubview:homeBtn];
     
-    UIButton *personBtn = [self getButton:@"个人中心" withImage:@"home_person" withFrame:CGRectMake((kW_SreenWidth-65)/2.0+65, 0, (kW_SreenWidth-65)/2.0, 49)];
+    UIButton *personBtn = [[UIButton alloc]initWithFrame:CGRectMake((kW_SreenWidth-65)/2.0+65, 0, (kW_SreenWidth-65)/2.0, 49)];
+    [personBtn setImage:[UIImage imageNamed:@"home_person_default"] forState:UIControlStateNormal];
+    
     [personBtn addTarget:self action:@selector(personBtnClick) forControlEvents:UIControlEventTouchUpInside];
     personBtn.tag = 398;
     [view addSubview:personBtn];
@@ -212,8 +216,14 @@
     UIButton *btn = (UIButton *)[self.tabBarController.view viewWithTag:399];
     [btn setImage:[UIImage imageNamed:@"home_compass"] forState:UIControlStateNormal];
     [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
-    
     self.tabBarController.selectedIndex = 0;
+    
+    UIButton *homebtn = (UIButton *)[self.tabBarController.view viewWithTag:397];
+    [homebtn setImage:[UIImage imageNamed:@"home_home_selected"] forState:UIControlStateNormal];
+    UIButton *personbtn = (UIButton *)[self.tabBarController.view viewWithTag:398];
+    [personbtn setImage:[UIImage imageNamed:@"home_person_default"] forState:UIControlStateNormal];
+    
+    
 }
 -(void)showDLineBtnClick{
     if (self.tabBarController.selectedIndex == 1) {
@@ -230,6 +240,11 @@
         [btn setImage:[UIImage imageNamed:@"home_share"] forState:UIControlStateNormal];
         [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_share"]]];
     }
+    
+    UIButton *homebtn = (UIButton *)[self.tabBarController.view viewWithTag:397];
+    [homebtn setImage:[UIImage imageNamed:@"home_home_default"] forState:UIControlStateNormal];
+    UIButton *personbtn = (UIButton *)[self.tabBarController.view viewWithTag:398];
+    [personbtn setImage:[UIImage imageNamed:@"home_person_default"] forState:UIControlStateNormal];
 }
 -(void)personBtnClick{
     NSArray *array = self.tabBarController.viewControllers;
@@ -241,6 +256,11 @@
     [btn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_compass"]]];
     
     self.tabBarController.selectedIndex = 2;
+    
+    UIButton *homebtn = (UIButton *)[self.tabBarController.view viewWithTag:397];
+    [homebtn setImage:[UIImage imageNamed:@"home_home_default"] forState:UIControlStateNormal];
+    UIButton *personbtn = (UIButton *)[self.tabBarController.view viewWithTag:398];
+    [personbtn setImage:[UIImage imageNamed:@"home_person_selected"] forState:UIControlStateNormal];
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -263,20 +283,4 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"userheadimagechange" object:nil];
 }
 
--(UIButton *)getButton:(NSString *)buttonTitle withImage:(NSString *)imgName withFrame:(CGRect) rect{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = rect;
-    UIImageView *messageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:imgName]];
-    float messageViewY = button.frame.size.height/5;
-    messageView.frame = CGRectMake((rect.size.width-20)/2.0,messageViewY , 20, 20);
-    [button addSubview:messageView];
-    UILabel *messageLable = [[UILabel alloc]initWithFrame:CGRectMake(0, messageViewY+25, rect.size.width, 10)];
-    messageLable.backgroundColor = [UIColor clearColor];
-    messageLable.textAlignment = NSTextAlignmentCenter;
-    messageLable.textColor = [UIColor whiteColor];
-    messageLable.font = [UIFont fontWithName:@"Arial" size:10];
-    messageLable.text = buttonTitle;
-    [button addSubview:messageLable];
-    return button;
-}
 @end

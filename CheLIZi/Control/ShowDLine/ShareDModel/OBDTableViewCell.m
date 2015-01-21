@@ -7,6 +7,7 @@
 //
 
 #import "OBDTableViewCell.h"
+#import <CoreText/CoreText.h>
 
 @interface OBDTableViewCell ()
 {
@@ -16,6 +17,7 @@
     UILabel *titleLabel;
     UILabel *contentLabel;
     UIImageView *iconView;
+    UIImageView *coordinatesIconView;
     float width;
     NSMutableArray *imageViewArray;
 }
@@ -33,6 +35,7 @@
         timeLabel = [[UILabel alloc]init];
         backgroundView = [[UIImageView alloc]init];
         iconView = [[UIImageView alloc]init];
+        coordinatesIconView = [[UIImageView alloc]init];
         imageViewArray = [[NSMutableArray alloc]initWithObjects: nil];
         [self addSubview:backgroundView];
     }
@@ -67,18 +70,12 @@
     titleLabel.font = [UIFont systemFontOfSize:13];
     [backgroundView addSubview: titleLabel];
     
-    [timeLabel setFrame:CGRectMake(width*(25.0/750.0), width*(25.0/750.0), width*(84.0/750.0), width*(31.0/750.0))];
-    timeLabel.numberOfLines = 1;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm"];
-    NSString *dateAndTime = [dateFormatter stringFromDate:time];
-    timeLabel.text = dateAndTime;
-    timeLabel.font = [UIFont systemFontOfSize:13];
-    [backgroundView addSubview: timeLabel];
-    
-    [iconView setFrame:CGRectMake(self.frame.size.width*(136.0/750)+1 - width*(22.5/750.0), width*(20.0/750.0), width*(45.0/750.0), width*(45.0/750.0))];
-    [iconView setImage:[UIImage imageNamed:@"sun"]];
-    [backgroundView addSubview:iconView];
+    [coordinatesIconView setFrame:CGRectMake([self getSeparatedLinesFromLabel:titleLabel] + width*(21.0/750.0),
+                                             titleLabel.frame.size.height - width*(28.0/750.0),
+                                             width*(21.0/750.0),
+                                             width*(28.0/750.0))];
+    [coordinatesIconView setImage:[UIImage imageNamed:@"coordinates"]];
+    [titleLabel addSubview:coordinatesIconView];
     
     font = [UIFont systemFontOfSize:12];
     labelRect = [content boundingRectWithSize:size options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)  attributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName] context:nil];
@@ -101,9 +98,9 @@
     {
         for(UIImage *image in imageArray)
         {
-            UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, imageHeight, width, image.size.height*(width/image.size.width))];
+            UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(width*(60.0/750.0), imageHeight, width*(630.0/750.0), image.size.height*(width*(630.0/750.0)/image.size.width))];
             [imageView setImage:image];
-            imageHeight = imageHeight + image.size.height*(width/image.size.width);
+            imageHeight = imageHeight + image.size.height*(width*(630.0/750.0)/image.size.width);
             [imageViewArray addObject:imageView];
             [self addSubview:imageView];
             
@@ -114,6 +111,35 @@
 
         }
     }
+    
+    float iconViewY = (contentLabel.frame.origin.y + contentLabel.frame.size.height)/2.0 - width*(30/750.0);
+    if(![contentLabel.text isEqualToString:@""])iconViewY = iconViewY + width*(20.0/750.0);
+    [iconView setFrame:CGRectMake(self.frame.size.width*(136.0/750)+1 - width*(22.5/750.0),
+                                  iconViewY,
+                                  width*(45.0/750.0),
+                                  width*(45.0/750.0))];
+    
+    [timeLabel setFrame:CGRectMake(width*(25.0/750.0), iconViewY + width*(5.0/750.0), width*(84.0/750.0), width*(31.0/750.0))];
+    timeLabel.numberOfLines = 1;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *dateAndTime = [dateFormatter stringFromDate:time];
+    timeLabel.text = dateAndTime;
+    timeLabel.font = [UIFont systemFontOfSize:13];
+    [backgroundView addSubview: timeLabel];
+    
+    NSDateFormatter *dateH = [[NSDateFormatter alloc] init];
+    [dateH setDateFormat:@"HH"];
+    NSString *strH = [dateH stringFromDate:time];
+    if([strH intValue] >= 18 || [strH intValue] <= 5)
+    {
+        [iconView setImage:[UIImage imageNamed:@"moon"]];
+    }
+    else
+    {
+       [iconView setImage:[UIImage imageNamed:@"sun"]];
+    }
+    [backgroundView addSubview:iconView];
     
     UIGraphicsBeginImageContext(backgroundView.frame.size);
     [backgroundView.image drawInRect:CGRectMake(0, 0, backgroundView.frame.size.width, backgroundView.frame.size.height)];
@@ -127,6 +153,30 @@
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     backgroundView.image=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+}
+
+
+ -(float)getSeparatedLinesFromLabel:(UILabel *)label
+{
+    NSString *text = [label text];
+    UIFont   *font = [label font];
+    CGRect    rect = [label frame];
+    CTFontRef myFont = CTFontCreateWithName((__bridge CFStringRef)([font fontName]), [font pointSize], NULL);
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:text];
+    [attStr addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)myFont range:NSMakeRange(0, attStr.length)];
+    CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attStr);
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectMake(0,0,rect.size.width,100000));
+    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
+    NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
+    id line = [lines lastObject];
+    CTLineRef lineRef = (__bridge CTLineRef )line;
+    CFRange lineRange = CTLineGetStringRange(lineRef);
+    NSRange range = NSMakeRange(lineRange.location, lineRange.length);
+    NSString *lineString = [text substringWithRange:range];
+    CGSize size = CGSizeMake(self.frame.size.width*(490.0/750.0),2000);
+    CGRect labelRect = [lineString boundingRectWithSize:size options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)  attributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName] context:nil];
+    return labelRect.size.width;
 }
 
 

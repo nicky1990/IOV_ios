@@ -34,7 +34,7 @@
 - (UIImage *)captureScreen
 {
         CGRect frame = self.view.frame;
-    self.view.clipsToBounds = YES;
+        self.view.clipsToBounds = YES;
         
         float addLong = 0;
         
@@ -54,7 +54,7 @@
             double imageHeight = self.view.frame.size.width*(40.0/750.0);
             for(UIImage *im in data.imageArray)
             {
-                imageHeight = imageHeight + im.size.height*(self.view.frame.size.width*1.0/im.size.width);
+                imageHeight = imageHeight + im.size.height*(self.view.frame.size.width*(630.0/750.0)/im.size.width);
             }
             if(imageHeight == self.view.frame.size.width*(40.0/750.0))imageHeight = 0;
             addLong = addLong + self.view.frame.size.width*(65.0/750.0) + labelRect.size.height + labelRect2.size.height + imageHeight;
@@ -74,7 +74,6 @@
 //            [[ScreenCaptureImage shareInstance] CaptureView:self.view];
             UIImage *resutltImage =  [[ScreenCaptureImage shareInstance] CaptureView:self.view];
             [self shareImage:resutltImage];
-            
             [self.view setFrame:frame];
             [obdTableView setFrame:CGRectMake(0,
                                               self.view.frame.size.width*(116.0/375.0),
@@ -107,9 +106,10 @@
 {
     [obdTableView choseDataForDate:date];
 }
-
 -(UIStatusBarStyle)preferredStatusBarStyle{
+    
     return UIStatusBarStyleLightContent;
+    
 }
 
 -(void)shareImage:(UIImage *)image{
@@ -117,6 +117,9 @@
     [ToolUMShare shareWithTarget:self withImage:image];
     
 }
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

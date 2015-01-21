@@ -16,6 +16,7 @@
 #import "VPImageCropperViewController.h"
 #import "ToolImage.h"
 
+
 @interface PersonCenterViewController ()<UIAlertViewDelegate,ToolRequestDelegate>
 {
     NSArray *_typeArray;

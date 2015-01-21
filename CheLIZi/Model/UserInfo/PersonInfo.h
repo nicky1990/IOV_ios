@@ -20,6 +20,10 @@
 @property (strong,nonatomic) NSString *province;//省份
 @property (strong,nonatomic) NSString *city;//城市
 @property (strong,nonatomic) NSString *address;//我的地址
+@property (nonatomic,assign) int country_id;
+@property (nonatomic,assign) int province_id;
+@property (nonatomic,assign) int city_id;
+
 
 
 @end

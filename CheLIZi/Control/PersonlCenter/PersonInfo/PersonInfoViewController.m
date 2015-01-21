@@ -16,13 +16,23 @@
 #import "UIImageView+AFNetworking.h"
 #import "VPImageCropperViewController.h"
 #import "ToolImage.h"
+#import "MyAddressViewController.h"
+#import "ToolSelectArea.h"
+#import "AreaInfo.h"
 
-@interface PersonInfoViewController ()<UITableViewDataSource,UITableViewDelegate,ToolRequestDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,VPImageCropperDelegate>
+
+@interface PersonInfoViewController ()<UITableViewDataSource,UITableViewDelegate,ToolRequestDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,VPImageCropperDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
     UITableView *_infoTableView;
     NSArray *_typeArray;
     PersonInfo *_personInfo;
     UIImageView *_headImage;
+    
+    UIPickerView *_pickView;
+    NSMutableArray *_pickProvinceArray;
+    NSMutableArray *_pickCityArray;
+    UIView *_selectView;
+    int cityId;
 }
 @end
 
@@ -37,6 +47,7 @@
     self.title = @"个人资料";
     // Do any additional setup after loading the view from its nib.
     [self initUI];
+    [self initSelectView];
     
 }
 
@@ -87,7 +98,6 @@
         switch (indexPath.row) {
             case 0:
             {
-                
                 if ([ToolImage getHeadImage]) {
                     _headImage.image = [ToolImage getHeadImage];
                 }else{
@@ -125,8 +135,8 @@
                 break;
             case 5:
             {
-//                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",_personInfo.province,_personInfo.city];
-                cell.detailTextLabel.text = @"";
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",_personInfo.province,_personInfo.city];
+//                cell.detailTextLabel.text = @"";
             }
                 break;
             case 6:
@@ -190,7 +200,17 @@
                 break;
             case 5:
             {
-                
+                if (_selectView.hidden) {
+                    _selectView.hidden = NO;
+                }else{
+                    _selectView.hidden = YES;
+                }
+            }
+                break;
+            case 6:
+            {
+                MyAddressViewController *addressVC = [[MyAddressViewController alloc]init];
+                [self.navigationController pushViewController:addressVC animated:YES];
             }
                 break;
             default:
@@ -284,7 +304,6 @@
             cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 }
 
-
 #pragma mark getdata
 -(void)getPersonInfoData{
     NSDictionary *paraDic = @{@"c":@"user",
@@ -297,12 +316,16 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
 }
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
-    NSDictionary *dataDic = [dic objectForKey:@"data"];
-    _personInfo = [PersonInfo objectWithKeyValues:dataDic];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_infoTableView reloadData];
-    });
-
+    if (tag == REQUESTTAG) {
+        NSDictionary *dataDic = [dic objectForKey:@"data"];
+        _personInfo = [PersonInfo objectWithKeyValues:dataDic];
+        cityId = _personInfo.city_id;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_infoTableView reloadData];
+        });
+    }else if(tag == REQUESTTAG+1){
+        [self getPersonInfoData];
+    }
 }
 #pragma mark select headimage
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -368,6 +391,91 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:^(){
     }];
+}
+#pragma mark city select
+-(void)initSelectView{
+    _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, kH_SreenHeight-64-49-216-44, kW_SreenWidth, 216+44)];
+    UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, 44)];
+    UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelClick)];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStyleBordered target:self action:@selector(comfirmClick)];
+    UIBarButtonItem *center = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [toolBar setItems:@[left,center,right]];
+    
+    [_selectView addSubview:toolBar];
+    
+    
+    _pickView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 44, kW_SreenWidth, 216)];
+    _pickView.backgroundColor = [UIColor whiteColor];
+    _pickView.delegate = self;
+    _pickView.dataSource = self;
+    _pickView.showsSelectionIndicator = YES;
+    [_selectView addSubview:_pickView];
+    _selectView.hidden = YES;
+    [self.view addSubview:_selectView];
+    _pickCityArray = [[NSMutableArray alloc]init];
+    _pickProvinceArray = [ToolSelectArea selectGetAreaWithId:1];
+}
+-(void)cancelClick{
+    _selectView.hidden = YES;
+}
+-(void)comfirmClick{
+    _selectView.hidden = YES;
+    NSDictionary *paraDic = @{@"c":@"user",
+                              @"a":@"infoSave",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"variate_name":@"city",
+                              @"variate_value":[NSNumber numberWithInt:cityId]
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG+1];
+}
+
+#pragma mark Picker Delegate Methods
+//返回显示的列数
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 2;
+}
+//返回当前列显示的行数
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return _pickProvinceArray.count;
+    }else{
+        return _pickCityArray.count;
+    }
+    
+}
+//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    if (component == 0) {
+        AreaInfo *areaInfo = (AreaInfo *)_pickProvinceArray[row];
+        return areaInfo.region_name;
+    }else{
+        AreaInfo *areaInfo = (AreaInfo *)_pickCityArray[row];
+        return areaInfo.region_name;
+    }
+}
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    if (component == 0) {
+        if (_pickProvinceArray.count != 0) {
+            AreaInfo *areaInfo = (AreaInfo *)_pickProvinceArray[row];
+            _pickCityArray = [ToolSelectArea selectGetAreaWithId:areaInfo.region_id];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                AreaInfo *tempInfo = _pickCityArray[0];
+                cityId = tempInfo.region_id;
+                [_pickView reloadComponent:1];
+                [_pickView selectRow:0 inComponent:1 animated:YES];
+            });
+        }
+    }else{
+        if (_pickCityArray != 0) {
+            AreaInfo *areaInfo = (AreaInfo *)_pickCityArray[row];
+            cityId = areaInfo.region_id;
+        }
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
