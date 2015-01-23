@@ -9,5 +9,6 @@
 #import "BaseViewController.h"
 
 @interface WeiXinViewController : BaseViewController
+@property (weak, nonatomic) IBOutlet UIView *contentBackView;
 
 @end

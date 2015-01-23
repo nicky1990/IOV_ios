@@ -27,7 +27,7 @@
         }else{
             NSNumber *errCode = [dic objectForKey:@"error_code"];
             if ([errCode intValue] == 1004) {
-                [self startRequestPostWith:vc withParameters:paraDic withTag:tag];
+                [ToolRequest relushAccessToken];
             }else{
                 NSString *failMessage = [dic objectForKey:@"error_msg"];
                 if ([self.delegate respondsToSelector:@selector(requestFailed:withTag:)]) {
@@ -35,7 +35,6 @@
                 }
                 [Tool showAlertMessage:failMessage];
             }
-            
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];

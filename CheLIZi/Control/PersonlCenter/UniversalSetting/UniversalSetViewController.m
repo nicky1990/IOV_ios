@@ -49,8 +49,12 @@
     }else{
         UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
         [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
-        BOOL boolIsPush = [[NSUserDefaults standardUserDefaults]boolForKey:@"isUMPush"];
-        [switchview setOn:boolIsPush];
+        NSNumber *numberPush = [[NSUserDefaults standardUserDefaults]objectForKey:@"isUMPush"];
+        if (numberPush) {
+            [switchview setOn:[numberPush intValue]];
+        }else{
+            [switchview setOn:YES];
+        }
         cell.accessoryView = switchview;
         cell.textLabel.text = _typeArray[indexPath.row];
     }
@@ -59,7 +63,7 @@
 
 -(void)updateSwitchAtIndexPath:(UISwitch *)sender{
     NSLog(@"%d",sender.on);
-    [[NSUserDefaults standardUserDefaults]setBool:sender.on forKey:@"isUMPush"];
+    [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithInt:sender.on] forKey:@"isUMPush"];
     [[NSUserDefaults standardUserDefaults]synchronize];
 
 }
@@ -68,7 +72,15 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44;
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 15;
+}
 
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, 15)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
 
 #pragma mark 单元格点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

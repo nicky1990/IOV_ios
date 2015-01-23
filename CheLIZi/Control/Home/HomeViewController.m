@@ -157,13 +157,19 @@
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
     HomeData *homeData = [HomeData objectWithKeyValues:dic];
     [UserInfo sharedUserInfo].car_id = homeData.car_id;
+    __weak UIImageView *saftHeadImage = _headImage;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         if ([ToolImage getHeadImage]) {
-            _headImage.image = [ToolImage getHeadImage];
+            saftHeadImage.image = [ToolImage getHeadImage];
         }else{
-            [_headImage setImageWithURL:[NSURL URLWithString:homeData.avatar] placeholderImage:[UIImage imageNamed:@"home_headdefault"]];
-            [ToolImage saveHeadImage:_headImage.image];
+//            [_headImage setImageWithURL:[NSURL URLWithString:homeData.avatar] placeholderImage:[UIImage imageNamed:@"home_headdefault"]];
+            [_headImage setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:homeData.avatar]] placeholderImage:[UIImage imageNamed:@"home_headdefault"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                saftHeadImage.image = image;
+                [ToolImage saveHeadImage:image];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            }];
+            
         }
         _nameLabel.text = homeData.nickname;
         if (homeData.message_new > 0) {
@@ -173,6 +179,7 @@
             _messageNumLabel.hidden = YES;
         }
     });
+    
 }
 
 #pragma mark Custom Tabbar

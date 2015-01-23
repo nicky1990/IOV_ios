@@ -97,15 +97,16 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 5) {
-        MBProgressHUD *hud = [[MBProgressHUD alloc]initWithView:self.view];
-        [self.view addSubview:hud];
-        hud.mode = MBProgressHUDModeCustomView;
-        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login_warn"]];
-        image.frame = CGRectMake(0, 0, 32, 32);
-        hud.customView = image;
-        hud.labelText = @"当前已是最新版本";
-        [hud show:YES];
-        [hud hide:YES afterDelay:2];
+//        MBProgressHUD *hud = [[MBProgressHUD alloc]initWithView:self.view];
+//        [self.view addSubview:hud];
+//        hud.mode = MBProgressHUDModeCustomView;
+//        UIImageView *image = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login_warn"]];
+//        image.frame = CGRectMake(0, 0, 32, 32);
+//        hud.customView = image;
+//        hud.labelText = @"当前已是最新版本";
+//        [hud show:YES];
+//        [hud hide:YES afterDelay:2];
+        [self checkVersions];
         
 //        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"已是最新版" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去更新", nil];
 //        [alert show];
@@ -144,6 +145,18 @@
                 break;
         }
     }
+}
+
+-(void)checkVersions{
+    
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *nowVersion = [infoDict objectForKey:@"CFBundleVersion"];
+    
+    
+//    NSString *urlString = @"itms-services://?action=download-manifest&url=http://68.245.171.115:50352/apps/WirelessApp.plist";
+//    
+//    NSURL *url  = [NSURL URLWithString:urlString];
+//    [[UIApplication sharedApplication] openURL:url];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{

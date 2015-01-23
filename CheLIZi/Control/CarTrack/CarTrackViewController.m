@@ -251,7 +251,6 @@
     
 }
 -(void)upTrack{
-    NSLog(@"shang");
     if (_sectionTrackArray.count == 0) {
         return;
     }
@@ -264,7 +263,6 @@
     [self getPositions:(SectionTrack *)_sectionTrackArray[_trackIndex]];
 }
 -(void)nextTrack{
-    NSLog(@"xia");
     if (_sectionTrackArray.count == 0) {
         return;
     }
@@ -433,14 +431,14 @@
     [_detailView addSubview:driveTime];
     
     
-    _theRunMile = [TrackUI getBtnFrame:CGRectMake(45, 48, 70, 18) withImageName:@"track_runmile" withColor:[UIColor grayColor] withFontSize:13];
-    [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
+    _theRunMile = [TrackUI getBtnFrame:CGRectMake(45, 48, 80, 18) withImageName:@"track_runmile" withColor:[UIColor grayColor] withFontSize:13];
+    [_theRunMile setTitle:@" 0.00km" forState:UIControlStateNormal];
     [_detailView addSubview:_theRunMile];
-    _theRunOil = [TrackUI getBtnFrame:CGRectMake(145, 48, 65, 18) withImageName:@"track_oil" withColor:[UIColor grayColor] withFontSize:13];
-     [_theRunOil setTitle:@" 0.0L" forState:UIControlStateNormal];
+    _theRunOil = [TrackUI getBtnFrame:CGRectMake(145, 48, 80, 18) withImageName:@"track_oil" withColor:[UIColor grayColor] withFontSize:13];
+     [_theRunOil setTitle:@" 0.00L" forState:UIControlStateNormal];
     [_detailView addSubview:_theRunOil];
     _theRunTime = [TrackUI getBtnFrame:CGRectMake(240, 48, 70, 18) withImageName:@"track_runtime" withColor:[UIColor grayColor] withFontSize:13];
-    [_theRunTime setTitle:@" 0.0min" forState:UIControlStateNormal];
+    [_theRunTime setTitle:@" 0min" forState:UIControlStateNormal];
     [_detailView addSubview:_theRunTime];
     
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(55, 70, 250, 1)];
@@ -498,8 +496,8 @@
 #pragma mark update UI
 -(void)updateUI:(SectionTrack*)sectionTrack{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_theRunMile setTitle:[NSString stringWithFormat:@"%0.1fkm",sectionTrack.mileage] forState:UIControlStateNormal];
-        [_theRunOil setTitle:[NSString stringWithFormat:@"%0.1fL",sectionTrack.gas] forState:UIControlStateNormal];
+        [_theRunMile setTitle:[NSString stringWithFormat:@"%0.2fkm",sectionTrack.mileage] forState:UIControlStateNormal];
+        [_theRunOil setTitle:[NSString stringWithFormat:@"% 0.2fL",sectionTrack.gas] forState:UIControlStateNormal];
         [_theRunTime setTitle:[NSString stringWithFormat:@"%dmin",(sectionTrack.end_time-sectionTrack.start_time)/60] forState:UIControlStateNormal];
         _timeLabel.text = [NSString stringWithFormat:@"%@-%@",sectionTrack.stime,sectionTrack.etime];
         
@@ -530,8 +528,8 @@
             _nextTrack.hidden = YES;
             _upTrack.hidden = YES;
             [_locationInfo setTitle:@"" forState:UIControlStateNormal];
-            [_theRunMile setTitle:@" 0.0km" forState:UIControlStateNormal];
-            [_theRunOil setTitle:@" 0.0L" forState:UIControlStateNormal];
+            [_theRunMile setTitle:@" 0.00km" forState:UIControlStateNormal];
+            [_theRunOil setTitle:@" 0.00L" forState:UIControlStateNormal];
             [_theRunTime setTitle:@" 0min" forState:UIControlStateNormal];
             _timeLabel.text = @"00:00-00:00";
             

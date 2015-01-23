@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fbm-ZB-jeu">
-                    <rect key="frame" x="0.0" y="10" width="320" height="558"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Yij-in-lLR"/>
@@ -30,7 +30,7 @@
                 <constraint firstItem="Fbm-ZB-jeu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KXq-d8-o5i"/>
                 <constraint firstAttribute="trailing" secondItem="Fbm-ZB-jeu" secondAttribute="trailing" id="QKh-qU-ro9"/>
                 <constraint firstAttribute="bottom" secondItem="Fbm-ZB-jeu" secondAttribute="bottom" id="cEC-O9-CsB"/>
-                <constraint firstItem="Fbm-ZB-jeu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="gIR-qw-qvV"/>
+                <constraint firstItem="Fbm-ZB-jeu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gIR-qw-qvV"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

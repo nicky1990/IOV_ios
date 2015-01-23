@@ -76,6 +76,7 @@
         _timeLabel.text = @"";
         statusTime = 60;
         _getVerifyCodeBtn.userInteractionEnabled = YES;
+        [_getVerifyCodeBtn setTitle:@"重新获取" forState:UIControlStateNormal];
     }else{
         NSString *title = [NSString stringWithFormat:@"(%d)",statusTime];
         _timeLabel.text = title;
@@ -201,7 +202,7 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSLog(@"失败%@",error);
-            [Tool showAlertMessage:@"网络请求失败，请重试！"];
+            [Tool showAlertMessage:error.localizedDescription];
             _getVerifyCodeBtn.userInteractionEnabled = YES;
         }];
     }else{

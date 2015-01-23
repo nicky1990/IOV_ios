@@ -7,6 +7,7 @@
 //
 
 #import "WeiBoViewController.h"
+#import "ToolUMShare.h"
 
 @interface WeiBoViewController ()
 
@@ -32,7 +33,19 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)rightButtonClick{
-    
+    //截图
+    CGRect rect = CGRectMake(0, 0, self.contentBackView.frame.size.width,self.contentBackView.frame.size.height);
+    //    UIGraphicsBeginImageContext(rect.size);
+    if(UIGraphicsBeginImageContextWithOptions != NULL)
+    {
+        UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(rect.size);
+    }
+    [self.contentBackView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [ToolUMShare shareWithTarget:self withImage:screenshot];
 }
 
 - (void)didReceiveMemoryWarning {

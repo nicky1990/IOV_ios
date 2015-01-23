@@ -83,6 +83,9 @@
     NSString * tmpPath = NSTemporaryDirectory();
     NSString *phoneNum = [[NSUserDefaults standardUserDefaults]objectForKey:@"phoneNumberDefault"];
     NSString *filePath=[tmpPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg",phoneNum]];
+    NSData *tempData = UIImageJPEGRepresentation([UIImage imageWithContentsOfFile:[filePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]], 1);
+    NSLog(@"====%ld",tempData.length);
+    
     return [UIImage imageWithContentsOfFile:[filePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 +(void)saveHeadImage:(UIImage *)image{

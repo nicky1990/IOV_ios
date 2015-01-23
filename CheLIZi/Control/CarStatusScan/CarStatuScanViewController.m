@@ -50,6 +50,7 @@
     _healthLabel.hidden = YES;
     _healthNumLabel.hidden = YES;
     _fenLabel.hidden = YES;
+    _progressView.progress = 0.0;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -309,17 +310,22 @@
         
         _guzhangBtn = [CustomView getButtonWithFrame:CGRectMake(290, 12.5, 15, 15) withImage:@"scan_guzhang" withTitle:nil withTarget:self andAction:@selector(guzhangBtnClick)];
         [view addSubview:_guzhangBtn];
-        _guzhangBtn.hidden = YES;
+//        _guzhangBtn.hidden = YES;
         _guzhangLabel.hidden = YES;
         if (_carScanData != nil) {
             if ((_carScanData.fault.count == 0)) {
+                [_guzhangBtn setImage:[UIImage imageNamed:@"scan_good"] forState:UIControlStateNormal];
+                [_guzhangBtn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"scan_good"]]];
             }else{
-                _guzhangBtn.hidden = NO;
+//                _guzhangBtn.hidden = NO;
+                [_guzhangBtn setImage:[UIImage imageNamed:@"scan_guzhang"] forState:UIControlStateNormal];
+                [_guzhangBtn setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"scan_guzhang"]]];
                 _guzhangLabel.hidden = NO;
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(guzhangBtnClick)];
+                [view addGestureRecognizer:tap];
             }
         }
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(guzhangBtnClick)];
-        [_guzhangLabel addGestureRecognizer:tap];
+        
         return view;
     }else{
         return nil;
@@ -380,65 +386,40 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
 }
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
-    NSDictionary *dataDic = [dic objectForKey:@"data"];
-    _carScanData = [CarScanData objectWithKeyValues:dataDic];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _scoreLabel.text = [NSString stringWithFormat:@"%d",_carScanData.score];
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:_carScanData.scan_time];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-        NSString *time = [dateFormatter stringFromDate:date];
-        _timeLabel.text = time;
-        [_tableView reloadData];
-    });
-
+    if (tag == REQUESTTAG) {
+        NSDictionary *dataDic = [dic objectForKey:@"data"];
+        _carScanData = [CarScanData objectWithKeyValues:dataDic];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _scoreLabel.text = [NSString stringWithFormat:@"%d",_carScanData.score];
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:_carScanData.scan_time];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+            NSString *time = [dateFormatter stringFromDate:date];
+            _timeLabel.text = time;
+            [_tableView reloadData];
+        });
+    }else{
+        NSDictionary *dataDic = [dic objectForKey:@"data"];
+        _carScanData = [CarScanData objectWithKeyValues:dataDic];
+        [self performSelector:@selector(timerAdvanced) withObject:nil afterDelay:0.01];
+    }
+    
+   
 }
 #pragma mark current Scan
 -(void)startScanClick{
-    NSMutableURLRequest *request=[[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:BASEURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    [request setHTTPMethod:@"POST"];
-    NSString *requestStr = [NSString stringWithFormat:@"c=%@&a=%@&access_token=%@&app_key=%@&car_id=%d&t=%@",@"car",@"faultDetect",[UserInfo sharedUserInfo].userAccess_token,kAPP_KEY,[UserInfo sharedUserInfo].car_id,[Tool getCurrentTimeStamp]];
-    NSLog(@"%@",requestStr);
-    NSData *data = [[requestStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
-    [NSURLConnection connectionWithRequest:request delegate:self];
+    NSDictionary *paraDic = @{@"c":@"car",
+                              @"a":@"faultDetect",
+                              @"t":[Tool getCurrentTimeStamp],
+                              @"access_token":[UserInfo sharedUserInfo].userAccess_token,
+                              @"app_key":kAPP_KEY,
+                              @"car_id":[NSNumber numberWithInt:[UserInfo sharedUserInfo].car_id],
+                              };
+    ToolRequest *toolRequest = [[ToolRequest alloc]init];
+    [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG+1];
 }
 
-#pragma mark NSURLConnectionDataDelegate
-//连接开始
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
-    finalData = [[NSMutableData alloc] init];
-    totalSize=[response expectedContentLength];
-    NSLog(@"totalSize=%lld",[response expectedContentLength]);
-}
-
-//连接接收下载  (会被多次执行，因为数据不能一次就下载完成，一段一段下载)
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
-    NSLog(@"接收数据");
-    //反复追加数据到final对象
-    [finalData appendData:data];
-    float temp = finalData.length*1.0/totalSize;
-    _progressView.progress = temp;
-}
--(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
-    NSLog(@"%@",error.description);
-    [Tool showAlertMessage:@"网络请求失败，请重试"];
-    
-}
--(void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:finalData options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"%@",dic);
-    if ([[dic objectForKey:@"result"] isEqualToString:@"SUCCESS"]) {
-        NSDictionary *dataDic = [dic objectForKey:@"data"];
-    _carScanData = [CarScanData objectWithKeyValues:dataDic];
-        NSLog(@"%@",_carScanData);
-        [self performSelector:@selector(timerAdvanced) withObject:nil afterDelay:0.01];
-    }else{
-        NSString *failMessage = [dic objectForKey:@"error_msg"];
-        [Tool showAlertMessage:failMessage];
-    }
-}
 -(void)timerAdvanced{
     if (_progressView.progress == 1.0) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -452,8 +433,8 @@
         });
 
     }else{
-        _progressView.progress+=0.05;
-        [self performSelector:@selector(timerAdvanced) withObject:nil afterDelay:0.5];
+        _progressView.progress+=0.01;
+        [self performSelector:@selector(timerAdvanced) withObject:nil afterDelay:0.1];
     }
     
 }

@@ -54,7 +54,7 @@
 -(void)initUI{
     _typeArray = @[@"头像",@"昵称",@"姓名",@"性别",@"生日",@"所在城市",@"我的地址"];
     NSLog(@"%f",kH_SreenHeight);
-    _infoTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 15, kW_SreenWidth,kH_SreenHeight-64-15) style:UITableViewStyleGrouped];
+    _infoTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth,kH_SreenHeight-64) style:UITableViewStyleGrouped];
     _infoTableView.delegate = self;
     _infoTableView.dataSource = self;
     _infoTableView.backgroundColor = [UIColor clearColor];
@@ -79,9 +79,12 @@
         return _typeArray.count;
     }
 }
-
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 0.1;
+    if (section == 0) {
+        return 15;
+    }else{
+        return 0.1;
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

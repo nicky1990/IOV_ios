@@ -12,6 +12,8 @@
 
 @property (nonatomic,assign) int car_id; //车辆ID
 @property (nonatomic,assign) int default_car;//	是否为默认车辆
+@property (nonatomic,assign) int obd_bind;//	是否绑定obd
+@property (nonatomic,assign) int obd_id;//obd
 @property (nonatomic,strong) NSString *car_no;//车牌;
 @property (nonatomic,strong) NSString *brand_name;	//品牌
 @property (nonatomic,strong) NSString *type_name;//车型
