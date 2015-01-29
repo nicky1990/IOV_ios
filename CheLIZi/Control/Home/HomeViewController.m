@@ -18,15 +18,17 @@
 #import "PersonCenterViewController.h"
 #import "ToolImage.h"
 
-#define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?45:25)
+#define kUserNameY (([[UIScreen mainScreen] bounds].size.height == 568)?40:25)
 #define kButtonHeight (([[UIScreen mainScreen] bounds].size.height == 568)?125:81)
-#define kButtonY (([[UIScreen mainScreen] bounds].size.height == 568)?75:50)
+#define kButtonY (([[UIScreen mainScreen] bounds].size.height == 568)?75:45)
 
 @interface HomeViewController () <ToolRequestDelegate>
 {
     UIImageView *_headImage;
     UILabel *_nameLabel;
     UILabel *_messageNumLabel;
+    UIButton *_nameButton;
+    
 }
 @end
 
@@ -34,12 +36,15 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-
+    UIButton *homebtn = (UIButton *)[self.tabBarController.view viewWithTag:397];
+    [homebtn setImage:[UIImage imageNamed:@"home_home_selected"] forState:UIControlStateNormal];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
+    UIButton *homebtn = (UIButton *)[self.tabBarController.view viewWithTag:397];
+    [homebtn setImage:[UIImage imageNamed:@"home_home_default"] forState:UIControlStateNormal];
 }
 
 - (void)viewDidLoad {
@@ -50,14 +55,19 @@
     [self initUI];
     [self getHomeData];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateHeadImage) name:@"userheadimagechange" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(nichengChange:) name:@"nichengchange" object:nil];
 }
 -(void)updateHeadImage{
     _headImage.image = [ToolImage getHeadImage];
 }
-
+-(void)nichengChange:(NSNotification *)notifiction{
+    NSDictionary *dic = notifiction.userInfo;
+    NSString *nicheng = [dic objectForKey:@"nicheng"];
+     [_nameButton setTitle:[NSString stringWithFormat:@" %@",nicheng] forState:UIControlStateNormal];
+}
 -(void)initUI{
     UIImageView *backGround = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, 210)];
-    backGround.image = [UIImage imageNamed:@"home_backgroud"];
+    backGround.image = [UIImage imageNamed:@"home222"];
     [self.view addSubview:backGround];
     
     UIImageView *backCirle = [[UIImageView alloc]initWithFrame:CGRectMake((kW_SreenWidth-185)/2.0, 80, 185, 185)];
@@ -68,14 +78,16 @@
     functionView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:functionView];
     
-    UIImageView *userHeadIcon = [[UIImageView alloc]initWithFrame:CGRectMake(80, kUserNameY, 13, 21)];
-    userHeadIcon.image = [UIImage imageNamed:@"home_nameicon"];
-    [functionView addSubview:userHeadIcon];
-    _nameLabel =  [[UILabel alloc]initWithFrame:CGRectMake(105, kUserNameY, kW_SreenWidth-110, 21)];
-    _nameLabel.backgroundColor = [UIColor clearColor];
-    _nameLabel.font = [UIFont fontWithName:@"Arial" size:19];
-    _nameLabel.text = @"hello";
-    [functionView addSubview:_nameLabel];
+    _nameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _nameButton.frame = CGRectMake(0, kUserNameY, kW_SreenWidth, 18);
+    [_nameButton setImage:[UIImage imageNamed:@"home_nameicon"] forState:UIControlStateNormal];
+    _nameButton.titleLabel.font = [UIFont fontWithName:@"Arial" size:18];
+    [_nameButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_nameButton setTitle:@" hello" forState:UIControlStateNormal];
+    _nameButton.contentHorizontalAlignment =UIControlContentHorizontalAlignmentCenter;
+    [functionView addSubview:_nameButton];
+    
+    
     
     _headImage = [[UIImageView alloc]initWithFrame:CGRectMake((kW_SreenWidth-120)/2.0, 112.5, 120, 120)];
     _headImage.layer.cornerRadius = _headImage.frame.size.width/2.0;
@@ -85,19 +97,19 @@
     _headImage.image = [UIImage imageNamed:@"home_headdefault"];
     [self.view addSubview:_headImage];
     
-    UIButton *todaySignin = [CustomView buttonViewWithTitle:@"每日签到" withImageName:@"home_signin" withFrame:CGRectMake(0, kButtonY, kW_SreenWidth/2, kButtonHeight)];
+    UIButton *todaySignin = [CustomView buttonViewWithTitle:@"每日签到" withImageName:@"home_signin" withFrame:CGRectMake(40, kButtonY, 120, kButtonHeight)];
     [todaySignin addTarget:self action:@selector(todaySignIn) forControlEvents:UIControlEventTouchUpInside];
     [functionView addSubview:todaySignin];
     
-    UIButton *myCarStatus = [CustomView buttonViewWithTitle:@"爱车车况" withImageName:@"home_car" withFrame:CGRectMake(160, kButtonY, kW_SreenWidth/2, kButtonHeight)];
+    UIButton *myCarStatus = [CustomView buttonViewWithTitle:@"爱车车况" withImageName:@"home_car" withFrame:CGRectMake(160, kButtonY, 120, kButtonHeight)];
     [myCarStatus addTarget:self action:@selector(myCarStatus) forControlEvents:UIControlEventTouchUpInside];
     [functionView addSubview:myCarStatus];
     
-    UIButton *todayLuck = [CustomView buttonViewWithTitle:@"天天好运" withImageName:@"home_goodluck" withFrame:CGRectMake(0, 50+kButtonHeight+4, kW_SreenWidth/2, kButtonHeight)];
+    UIButton *todayLuck = [CustomView buttonViewWithTitle:@"天天好运" withImageName:@"home_goodluck" withFrame:CGRectMake(40, 50+kButtonHeight+4, 120, kButtonHeight)];
     [todayLuck addTarget:self action:@selector(todayLuckShow) forControlEvents:UIControlEventTouchUpInside];
     [functionView addSubview:todayLuck];
     
-    UIButton *message = [CustomView buttonViewWithTitle:@"消息" withImageName:@"home_message" withFrame:CGRectMake(160, 50+kButtonHeight+4, kW_SreenWidth/2, kButtonHeight)];
+    UIButton *message = [CustomView buttonViewWithTitle:@"消息" withImageName:@"home_message" withFrame:CGRectMake(160, 50+kButtonHeight+4, 120, kButtonHeight)];
     [message addTarget:self action:@selector(messageShow) forControlEvents:UIControlEventTouchUpInside];
     
     _messageNumLabel = [CustomView getLabelWith:CGRectMake(90, 0, 30, 20) andSize:12];
@@ -171,7 +183,7 @@
             }];
             
         }
-        _nameLabel.text = homeData.nickname;
+        [_nameButton setTitle:[NSString stringWithFormat:@" %@",homeData.nickname] forState:UIControlStateNormal];
         if (homeData.message_new > 0) {
             _messageNumLabel.hidden = NO;
             _messageNumLabel.text = [NSString stringWithFormat:@"%d",homeData.message_new];
@@ -193,9 +205,9 @@
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, kH_SreenHeight-49, kW_SreenWidth, 49)];
 //    view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"home_bottomback"]];
     view.backgroundColor = RGBCOLOR(79, 92, 98);
-    UIButton *showDLineBtn = [CustomView getButtonWithFrame:CGRectMake(kW_SreenWidth/2.0-32.5, -15, 56, 56) withImage:@"home_compass" withTitle:nil withTarget:self andAction:@selector(showDLineBtnClick)];
+    UIButton *showDLineBtn = [CustomView getButtonWithFrame:CGRectMake(kW_SreenWidth/2.0-29, -10, 58, 58) withImage:@"home_compass" withTitle:nil withTarget:self andAction:@selector(showDLineBtnClick)];
     showDLineBtn.tag = 399;
-    showDLineBtn.layer.cornerRadius = 28;
+    showDLineBtn.layer.cornerRadius = 29;
     showDLineBtn.layer.backgroundColor = [RGBCOLOR(79, 92, 98)CGColor];
     showDLineBtn.layer.borderWidth = 2;
     showDLineBtn.layer.borderColor = [RGBCOLOR(79, 92, 98)CGColor];
@@ -288,6 +300,7 @@
 */
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"userheadimagechange" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"nichengchange" object:nil];
 }
 
 @end

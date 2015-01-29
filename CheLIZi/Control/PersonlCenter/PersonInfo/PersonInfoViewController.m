@@ -104,7 +104,7 @@
                 if ([ToolImage getHeadImage]) {
                     _headImage.image = [ToolImage getHeadImage];
                 }else{
-                    [_headImage setImageWithURL:[NSURL URLWithString:_personInfo.avatar] placeholderImage:[UIImage imageNamed:@"person_userhead"]];
+                    [_headImage setImageWithURL:[NSURL URLWithString:_personInfo.avatar] placeholderImage:[UIImage imageNamed:@"home_headdefault"]];
                 }
                 [cell addSubview:_headImage];
             }

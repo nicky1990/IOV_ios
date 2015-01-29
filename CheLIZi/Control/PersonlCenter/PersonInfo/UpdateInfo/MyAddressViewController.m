@@ -199,6 +199,16 @@
                 cityName = tempInfo.region_name;
                 [_pickView reloadComponent:1];
                 [_pickView selectRow:0 inComponent:1 animated:YES];
+                
+                
+                _pickDistrictArray = [ToolSelectArea selectGetAreaWithId:tempInfo.region_id];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    AreaInfo *tempInfo2 = _pickDistrictArray[0];
+                    districtId = tempInfo2.region_id;
+                    districtName = tempInfo2.region_name;
+                    [_pickView reloadComponent:2];
+                    [_pickView selectRow:0 inComponent:2 animated:YES];
+                });
             });
             
         }
@@ -233,6 +243,7 @@
 }
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField.tag == 603) {
+        [self.view endEditing:YES];
         _selectView.hidden = NO;
         return NO;
     }else{

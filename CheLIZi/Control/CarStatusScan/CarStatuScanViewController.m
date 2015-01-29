@@ -250,7 +250,7 @@
                     break;
                 case 3:
                 {
-                    if ((_carScanData.TAP == 0)) {
+                    if ((_carScanData.STD == 0)) {
                         accessImage.image = [UIImage imageNamed:@"scan_good"];
                     }else{
                         accessImage.image = [UIImage imageNamed:@"scan_warn"];

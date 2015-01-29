@@ -9,7 +9,7 @@
 #ifndef CheLIZi_Common_h
 #define CheLIZi_Common_h
 
-//#define BASEURL @"http://192.168.8.146/api.php"
+//#define BASEURL @"http://192.168.2.188:8083/api.php"
 //#define BASEURL @"http://api.gulucar.cn:8081/api.php"
 #define BASEURL @"http://115.29.209.181:8081/api.php"
 
@@ -26,6 +26,7 @@
 #define kH_StatusBar 20
 #define kH_NavBar 44
 #define kH_TabBar 49
+#define kVersions @"20150128"
 
 #define APP_DELEGATE (AppDelegate *)[UIApplication sharedApplication].delegate
 

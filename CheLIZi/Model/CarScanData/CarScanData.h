@@ -17,7 +17,7 @@
 @property (nonatomic,assign) int engine_rpm;            //发动机转数状况
 @property (nonatomic,assign) int MAP;                   //进气压力状况
 @property (nonatomic,assign) int ACT;                   //进气温度状况
-@property (nonatomic,assign) int TAP;                   //节气门开度状况
+@property (nonatomic,assign) int STD;                   //节气门开度状况
 @property (nonatomic,assign) int TWC;                   //三元催化剂温度状况
 @property (nonatomic,strong) NSArray *fault;           //故障码
 

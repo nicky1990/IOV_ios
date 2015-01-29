@@ -121,7 +121,7 @@
     NSMutableArray *a = [[NSMutableArray alloc]init];
     for (NSDictionary *temp in dataDic) {
         NSNumber *traceTime = [temp objectForKey:@"trace_time"];
-        NSString *strAddress = [temp objectForKey:@"address"];
+        NSString *strAddress = [temp objectForKey:@"poi_name"];
         NSDictionary *d = @{ @"trace_time" : traceTime,@"address":strAddress };
         [a addObject:d];
     }

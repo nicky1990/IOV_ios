@@ -8,6 +8,9 @@
 
 #import "CustomView.h"
 
+#define kLabelY (([[UIScreen mainScreen] bounds].size.height == 568)?75:70)
+
+
 @implementation CustomView
 +(UIButton *)buttonViewWithTitle:(NSString *)title withImageName:(NSString *)imageName withFrame:(CGRect) rect{
     
@@ -17,7 +20,7 @@
     contentImage.image = [UIImage imageNamed:imageName];
     [tempButton addSubview:contentImage];
     
-    UILabel *contentLabel =  [[UILabel alloc]initWithFrame:CGRectMake(0, 70, rect.size.width, 14)];
+    UILabel *contentLabel =  [[UILabel alloc]initWithFrame:CGRectMake(0, kLabelY, rect.size.width, 14)];
     contentLabel.backgroundColor = [UIColor clearColor];
     contentLabel.font = [UIFont fontWithName:@"Arial" size:14];
     contentLabel.textAlignment = NSTextAlignmentCenter;

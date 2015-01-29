@@ -11,5 +11,6 @@
 @interface AboutUsViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UITableView *aboutTableView;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 
 @end

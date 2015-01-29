@@ -31,6 +31,7 @@
     self.iconImageView.layer.masksToBounds = YES;
     _typeArray = @[@"慷慨善良的去评分",@"购买设备",@"官方微信",@"官方微博",@"功能介绍",@"版本更新"];
     self.aboutTableView.tableFooterView = [self getView];
+    self.versionLabel.text = kVersions;
 }
 
 #pragma mark uitableview delegate

@@ -8,6 +8,7 @@
 
 #import "ShareDLineTitleView.h"
 #import "AppDelegate.h"
+#import "ToolImage.h"
 
 #define iOS(version) (([[[UIDevice currentDevice] systemVersion] intValue] >= version)?1:0)
 
@@ -130,7 +131,13 @@
     [[iconView layer]setCornerRadius:with*(72.6/750.0)];//圆角
     [iconView.layer setMasksToBounds:YES];
     [iconView setImage:userIcon];
-    
+    /////////////
+//    if ([ToolImage getHeadImage]) {
+//        iconView.image = [ToolImage getHeadImage];
+//    }else{
+//        iconView.image =  [UIImage imageNamed:@"person_userhead"];
+//    }
+    //////////////
     [userNameLabel setFrame:CGRectMake(with*(108.0/375.0), height*(45.0/116.0), with*(268.0/375.0), height*(20.0/116.0))];
     userNameLabel.text = @"label1";
     userNameLabel.textColor = [UIColor whiteColor];

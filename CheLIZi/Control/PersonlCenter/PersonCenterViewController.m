@@ -30,11 +30,16 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
    _userHeadImage.hidden = NO;
+    UIButton *personbtn = (UIButton *)[self.tabBarController.view viewWithTag:398];
+    [personbtn setImage:[UIImage imageNamed:@"home_person_selected"] forState:UIControlStateNormal];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     _userHeadImage.hidden = YES;
+    
+    UIButton *personbtn = (UIButton *)[self.tabBarController.view viewWithTag:398];
+    [personbtn setImage:[UIImage imageNamed:@"home_person_default"] forState:UIControlStateNormal];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,7 +62,7 @@
     if ([ToolImage getHeadImage]) {
         _userHeadImage.image = [ToolImage getHeadImage];
     }else{
-        _userHeadImage.image =  [UIImage imageNamed:@"person_userhead"];
+        _userHeadImage.image =  [UIImage imageNamed:@"home_headdefault"];
     }
 
     
@@ -108,7 +113,7 @@
     }
     
     if (indexPath.section ==2) {
-        UILabel *textLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 12, kW_SreenWidth, 20)];
+        UILabel *textLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 15, kW_SreenWidth, 20)];
         textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.text = @"退出当前账号";
         [cell addSubview:textLabel];
@@ -118,7 +123,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 44;
+    return 50;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -133,7 +138,6 @@
 
 #pragma mark 单元格点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"点击了单元格");
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         switch (indexPath.row) {

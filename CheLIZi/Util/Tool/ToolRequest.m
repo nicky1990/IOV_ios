@@ -28,6 +28,8 @@
             NSNumber *errCode = [dic objectForKey:@"error_code"];
             if ([errCode intValue] == 1004) {
                 [ToolRequest relushAccessToken];
+            }else if ([errCode intValue] == 1003) {
+                [Tool showAlertMessage:@"您的账号在其他设备登陆，请重新登陆！"];
             }else{
                 NSString *failMessage = [dic objectForKey:@"error_msg"];
                 if ([self.delegate respondsToSelector:@selector(requestFailed:withTag:)]) {

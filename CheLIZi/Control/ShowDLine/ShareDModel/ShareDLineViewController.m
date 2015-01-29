@@ -10,6 +10,7 @@
 #import "ShareDLineTitleView.h"
 #import "OBDTableView.h"
 #import "ToolUMShare.h"
+#import "ToolImage.h"
 
 #import "ScreenCaptureImage.h"
 
@@ -97,7 +98,18 @@
     shareDLineTitleView = [[ShareDLineTitleView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width*(116.0/375.0))];
     [shareDLineTitleView setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:shareDLineTitleView];
-    [shareDLineTitleView setUserName:@"naturephoto" userIcon:[UIImage imageNamed:@"titleHead"] delegate:self];
+    
+    UIImage *temp;
+    
+    if ([ToolImage getHeadImage]) {
+        temp = [ToolImage getHeadImage];
+    }else{
+        temp =  [UIImage imageNamed:@"home_headdefault"];
+    }
+
+//    [shareDLineTitleView setUserName:@"naturephoto" userIcon:[UIImage imageNamed:@"titleHead"] delegate:self];
+    [shareDLineTitleView setUserName:@"小咕噜" userIcon:temp delegate:self];
+    
 }
 
 

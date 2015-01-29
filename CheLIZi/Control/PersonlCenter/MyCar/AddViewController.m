@@ -9,6 +9,8 @@
 #import "AddViewController.h"
 #import "AddCarUI.h"
 #import "CarType.h"
+#import "UIButtonWithBottomLine.h"
+#import "ScanQrcodeViewController.h"
 
 #define kTextFieldHight 44
 #define kTextFieldWidth 300
@@ -44,12 +46,14 @@
     self.title = @"添加我的爱车";
     // Do any additional setup after loading the view from its nib.
     [self initUI];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getObdNo:) name:@"qrcodesuccessget" object:nil];
 }
 
 -(void)initUI{
     _pickData = [[NSMutableArray alloc]init];
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kW_SreenWidth, kH_SreenHeight-64)];
-    _scrollView.contentSize = CGSizeMake(kW_SreenWidth, kScrollViewContentHeight);
+    _scrollView.contentSize = CGSizeMake(kW_SreenWidth, kScrollViewContentHeight+40);
     [self.view addSubview:_scrollView];
     
     _selectBrandField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, 10, kTextFieldWidth, kTextFieldHight) withImageName:@"add_pinpai" withStringHolder:nil];
@@ -90,20 +94,48 @@
     _inputPlateField.delegate = self;
     [_scrollView addSubview:_inputPlateField];
     
-    _inputObdidField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*4+10*5, kTextFieldWidth, kTextFieldHight) withImageName:@"add_obdid" withStringHolder:@"请输入OBD设备号(必填)"];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10,kTextFieldHight*4+10*5-5 , kTextFieldWidth, 15)];
+    label.font = [UIFont fontWithName:@"Arial" size:12];
+//    label.textColor = [UIColor redColor];
+    label.text = @"  * 填写后不可修改，请填写真实信息。";
+    [_scrollView addSubview:label];
+    
+    _inputObdidField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*4+10*5+20, kTextFieldWidth, kTextFieldHight) withImageName:@"add_obdid" withStringHolder:@"请输入OBD设备号(必填)"];
     _inputObdidField.delegate = self;
+    
+    UIButton *addQrcodeBtn = [[UIButton alloc]initWithFrame:CGRectMake(kW_SreenWidth-44, 0, kTextFieldHight, kTextFieldHight)];
+    [addQrcodeBtn setImage:[UIImage imageNamed:@"add_qrcode"] forState:UIControlStateNormal];
+    [addQrcodeBtn addTarget:self action:@selector(startScanQrcode) forControlEvents:UIControlEventTouchUpInside];
+    _inputObdidField.rightView = addQrcodeBtn;
+    _inputObdidField.rightViewMode = UITextFieldViewModeAlways;
+    
     [_scrollView addSubview:_inputObdidField];
     
-    _inputFrameField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*5+10*6, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chejiahao" withStringHolder:@"请输入车架号(选填)"];
+    UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(10,kTextFieldHight*5+10*6+15 , kTextFieldWidth-90, 15)];
+    label2.font = [UIFont fontWithName:@"Arial" size:12];
+//    label2.textColor = [UIColor redColor];
+    label2.text = @"  * 绑定车咕噜OBD设备才可显示数据。";
+    [_scrollView addSubview:label2];
+    
+    UIButtonWithBottomLine *buyBtn = [UIButtonWithBottomLine hyperlinksButton];
+    buyBtn.frame = CGRectMake(kTextFieldWidth-95, kTextFieldHight*5+10*6+15+1.5, 60, 12);
+    [buyBtn setTitle:@"去购买" forState:UIControlStateNormal];
+    [buyBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    buyBtn.titleLabel.font = [UIFont fontWithName:@"Arial" size:12];
+//    [_scrollView addSubview:buyBtn];
+    
+    
+    
+    _inputFrameField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*5+10*6+40, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chejiahao" withStringHolder:@"请输入车架号(选填)"];
     _inputFrameField.delegate = self;
     [_scrollView addSubview:_inputFrameField];
     
-    _inputEngineField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*6+10*7, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chepai" withStringHolder:@"请输入发动机号(选填)"];
+    _inputEngineField = [AddCarUI getUITextFieldWithRect:CGRectMake(10, kTextFieldHight*6+10*7+40, kTextFieldWidth, kTextFieldHight) withImageName:@"add_chepai" withStringHolder:@"请输入发动机号(选填)"];
     _inputEngineField.delegate = self;
     [_scrollView addSubview:_inputEngineField];
     
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    saveButton.frame = CGRectMake(10, kTextFieldHight*7+10*9, kTextFieldWidth, kTextFieldHight);
+    saveButton.frame = CGRectMake(10, kTextFieldHight*7+10*9+40, kTextFieldWidth, kTextFieldHight);
     saveButton.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:20];
     saveButton.layer.borderWidth = 1;
     saveButton.layer.borderColor = [RGBCOLOR(51, 162, 178) CGColor];
@@ -139,6 +171,19 @@
 -(void)comfirmClick{
     _selectView.hidden = YES;
 }
+#pragma mark scan Qrcode
+-(void)startScanQrcode{
+    ScanQrcodeViewController * scanQrcodeVC = [[ScanQrcodeViewController alloc]init];
+    [self presentViewController:scanQrcodeVC animated:YES completion:^{
+        
+    }];
+}
+-(void)getObdNo:(NSNotification *)notifiction{
+    NSDictionary *dic = notifiction.userInfo;
+    NSString *obdno = [dic objectForKey:@"obdno"];
+    _inputObdidField.text = obdno;
+}
+
 #pragma mark Request data
 -(void)saveClick{
     NSDictionary *paraDic = @{@"c":@"car",
@@ -180,6 +225,7 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [_pickView reloadAllComponents];
+            [_pickView selectRow:0 inComponent:0 animated:YES];
         });
     }
 }
@@ -193,6 +239,7 @@
 
 #pragma mark Select View
 -(void)selectCarBrand{
+    [self.view endEditing:YES];
     [self getCarDataWithType:1 withValue:0];
     currentTextField = (UITextField *)[_scrollView viewWithTag:500];
     if (_selectView.hidden) {
@@ -203,6 +250,7 @@
 }
 
 -(void)selectCarSeries{
+    [self.view endEditing:YES];
     if ([_selectBrandField.text isEqualToString:@"请选择品牌"]) {
         [Tool showAlertMessage:@"请先选择品牌"];
         return;
@@ -223,6 +271,7 @@
 }
 
 -(void)selectCarModel{
+    [self.view endEditing:YES];
     if ([_selectSeriesField.text isEqualToString:@"请选择车系"]) {
         [Tool showAlertMessage:@"请先选择车系"];
         return;
@@ -294,7 +343,9 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"qrcodesuccessget" object:nil];
+}
 /*
 #pragma mark - Navigation
 

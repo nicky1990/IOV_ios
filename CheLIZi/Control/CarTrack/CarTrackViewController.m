@@ -471,6 +471,7 @@
 //根据坐标获取车辆具体位置名称
 -(void)setCarLocationName:(CLLocationCoordinate2D)coor{
     //初始化检索对象
+
     _searchGeo = [[BMKGeoCodeSearch alloc]init];
     _searchGeo.delegate = self;
     BMKReverseGeoCodeOption *reverGer = [[BMKReverseGeoCodeOption alloc]init];

@@ -53,6 +53,10 @@
     [toolRequest startRequestPostWith:self withParameters:paraDic withTag:REQUESTTAG];
 }
 -(void)requestSucceed:(NSDictionary *)dic withTag:(NSInteger)tag{
+    
+    NSDictionary *userDic = @{@"nicheng":_textField.text};
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"nichengchange" object:nil userInfo:userDic];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
